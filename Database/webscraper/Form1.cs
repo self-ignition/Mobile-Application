@@ -92,7 +92,7 @@ namespace webscraper
 
         private void CommitFilesToDB()
         {
-            SqlConnection con = new SqlConnection()
+            SqlConnection con = new SqlConnection();
         }
 
         private void DownloadContent(string uri)
