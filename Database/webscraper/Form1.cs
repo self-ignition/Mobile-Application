@@ -1,19 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Net.Http;
-using System.Web;
-using System.IO;
-using System.Data;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace webscraper
 {
@@ -71,10 +62,11 @@ namespace webscraper
                 }
 
                 if (i < recipes.Count - 1)
+                //if (i < 50)
                 {
                     busy = true;
                     //to fix the problem of trying to get through the loop too quickly
-                    if(i <= currentI)
+                    if (i <= currentI)
                     {
                         i++;
                         Console.WriteLine("I: " + i + " out of " + recipes.Count.ToString());
@@ -87,12 +79,97 @@ namespace webscraper
 
             }
 
+            //When the program has finished downloading pages, wait for threads to finish. Then commit to db
+            Thread.Sleep(60000);
+            Console.WriteLine("Calling commit to db");
             CommitFilesToDB();
         }
 
         private void CommitFilesToDB()
         {
-            SqlConnection con = new SqlConnection()
+            string constring = "datasource=127.0.0.1;port=3306;username=root;password=;database=si_recipe;";
+            MySqlConnection con = new MySqlConnection(constring);
+            List<Recipe> clonedRecipies = new List<Recipe>();
+            clonedRecipies.AddRange(list);
+
+            Console.WriteLine("Recipes: " + list.Count);
+
+            foreach (var r in clonedRecipies)
+            {
+
+                con.Open();
+
+                try
+                {
+                    MySqlCommand command = new MySqlCommand("INSERT INTO author (name) VALUES (\"" + r.author + "\");", con);
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                try
+                {
+                    MySqlCommand command = new MySqlCommand("INSERT INTO recipe (title, preptime, cooktime, author, yield) VALUES (\"" + r.Title + "\", \"" + r.prepTime + "\", \"" + r.cookTime + "\", \"" + r.author + "\", \"" + r.yield + "\" );", con);
+                    Console.WriteLine(command.CommandText);
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception: " + e.Message);
+                }
+
+                int ingreNo = 0;
+                foreach (var s in r.ingredients)
+                {
+                    try
+                    {
+                        if (s.Length >= 1)
+                        {
+                            string ingre = "INSERT INTO ingredient (num, title, information) VALUES (\"" + ingreNo + "\", \"" + r.Title + "\", \"" + s + "\");";
+                            ingreNo++;
+                            MySqlCommand command = new MySqlCommand(ingre, con);
+                            Console.WriteLine(command.CommandText);
+                            command.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: " + e.Message);
+                    }
+                }
+
+                int stepNo = 0;
+                foreach (var s in r.method)
+                {
+                    try
+                    {
+                        if (s.Length >= 1)
+                        {
+                            string step = "INSERT INTO step (step, title, information) VALUES (\"" + stepNo + "\", \"" + r.Title + "\", \"" + s + "\");";
+                            stepNo++;
+                            MySqlCommand command = new MySqlCommand(step, con);
+                            command.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Exception: " + e.Message);
+                    }
+                }
+
+                con.Close();
+            }
+
         }
 
         private void DownloadContent(string uri)
@@ -111,7 +188,8 @@ namespace webscraper
 
                     if (page != "")
                     {
-                        MatchCollection mc = Regex.Matches(page, @"itemprop=""(\w+)""[^>]*>([^<]+)<[^>]+>([^<]+)?[</a>]?(.*)<");
+                        Regex re = new Regex(@"itemprop=""(\w+)""[^>]*>([^<]*)(?:<[^>]*>)?([^<]*)");
+                        MatchCollection mc = re.Matches(page);
                         foreach (Match m in mc)
                         {
                             if (m.Success)
@@ -128,16 +206,21 @@ namespace webscraper
                                         recipe.author = m.Groups[2].Value;
                                         break;
                                     case "ingredients":
+                                        string ingredient = "";
                                         for (int i = 2; i < m.Groups.Count; i++)
                                         {
-                                            recipe.ingredients.Add(m.Groups[i].Value);
+                                            ingredient += m.Groups[i].Value;
+
                                         }
+                                        recipe.ingredients.Add(ingredient);
                                         break;
                                     case "recipeInstructions":
+                                        string method = "";
                                         for (int i = 2; i < m.Groups.Count; i++)
                                         {
-                                            recipe.method.Add(m.Groups[i].Value);
+                                            method += m.Groups[i].Value;
                                         }
+                                        recipe.method.Add(method);
                                         break;
                                     case "prepTime":
                                         recipe.prepTime = m.Groups[2].Value;
