@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import android.os.PatternMatcher;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -83,7 +84,6 @@ public class SignUpActivity extends AppCompatActivity {
                     {
                         return "";
                     }
-
                 }
             }
             return null;
@@ -105,7 +105,11 @@ public class SignUpActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        validate();
+                        try {
+                            validate();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
                         // On complete call either onLoginSuccess or onLoginFailed
                         progressDialog.dismiss();
                     }
@@ -152,6 +156,9 @@ public class SignUpActivity extends AppCompatActivity {
 
             try
             {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
                 URL url = new URL("http://computing.derby.ac.uk/~cabbage/signup.php");
                 URLConnection client = url.openConnection();
                 client.setDoOutput(true);
@@ -167,6 +174,8 @@ public class SignUpActivity extends AppCompatActivity {
             finally
             {
                 valid = true;
+                Intent intent = new Intent(this, LogInActivity.class);
+                startActivity(intent);
             }
         }
         return valid;
