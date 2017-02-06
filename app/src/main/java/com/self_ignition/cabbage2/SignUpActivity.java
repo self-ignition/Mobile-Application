@@ -15,6 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,8 +112,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-    public boolean validate()
-    {
+    public boolean validate() throws UnsupportedEncodingException {
         boolean valid = true;
 
         String _user = user.getText().toString();
@@ -112,30 +124,51 @@ public class SignUpActivity extends AppCompatActivity {
             user.setError("Please enter a valid username");
             valid = false;
         }
-        else
-        {
-            user.setError(null);
-        }
 
-        if (_email.isEmpty())
+        else if (_email.isEmpty())
         {
             email.setError("Please enter a valid email address");
             valid = false;
         }
-        else
-        {
-            email.setError(null);
-        }
 
-        if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
+        else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
         {
             password.setError("Please enter a valid password");
+            valid = false;
         }
         else
         {
             password.setError(null);
-        }
 
+            String data = URLEncoder.encode("user", "UTF-8")
+                    + "=" + URLEncoder.encode(_user, "UTF-8");
+
+            data += "&" + URLEncoder.encode("email", "UTF-8") + "="
+                    + URLEncoder.encode(_email, "UTF-8");
+
+            data += "&" + URLEncoder.encode("password", "UTF-8")
+                    + "=" + URLEncoder.encode(_password, "UTF-8");
+
+
+            try
+            {
+                URL url = new URL("http://computing.derby.ac.uk/~cabbage/signup.php");
+                URLConnection client = url.openConnection();
+                client.setDoOutput(true);
+
+                OutputStreamWriter outputPost = new OutputStreamWriter(client.getOutputStream());
+                outputPost.write(data);
+                outputPost.flush();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                valid = true;
+            }
+        }
         return valid;
     }
 }
