@@ -1,6 +1,7 @@
 package com.self_ignition.cabbage2;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.os.PatternMatcher;
@@ -35,6 +36,9 @@ import java.util.regex.Pattern;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static android.R.attr.data;
+import static android.R.attr.value;
+
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -58,8 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    public void clickFunction(View v)
-    {
+    public void clickFunction(View v) {
         Intent intent = new Intent(this, LogInActivity.class);
         startActivity(intent);
     }
@@ -70,18 +73,12 @@ public class SignUpActivity extends AppCompatActivity {
                                    Spanned dest, int dstart, int dend) {
             String characterSet = "@ .";
             for (int i = start; i < end; i++) {
-                if (!Character.isLetterOrDigit(source.charAt(i)))
-                {
-                    if(characterSet.contains("" + source.charAt(i)))
-                    {
+                if (!Character.isLetterOrDigit(source.charAt(i))) {
+                    if (characterSet.contains("" + source.charAt(i))) {
                         return "@";
-                    }
-                    else if(characterSet.contains("" + source.charAt(i)))
-                    {
+                    } else if (characterSet.contains("" + source.charAt(i))) {
                         return ".";
-                    }
-                    else
-                    {
+                    } else {
                         return "";
                     }
                 }
@@ -90,13 +87,11 @@ public class SignUpActivity extends AppCompatActivity {
         }
     };
 
-    public void buttonFunction(View v)
-    {
+    public void buttonFunction(View v) {
         signup();
     }
 
-    public void signup()
-    {
+    public void signup() {
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating account...");
@@ -116,69 +111,91 @@ public class SignUpActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-    public boolean validate() throws UnsupportedEncodingException {
-        boolean valid = true;
+    public void validate() throws UnsupportedEncodingException {
 
-        String _user = user.getText().toString();
-        String _email = email.getText().toString();
-        String _password = password.getText().toString();
+        final String _user = user.getText().toString();
+        final String _email = email.getText().toString();
+        final  String _password = password.getText().toString();
 
         if (_user.isEmpty())
         {
             user.setError("Please enter a valid username");
-            valid = false;
-        }
-
-        else if (_email.isEmpty())
+        } else if (_email.isEmpty())
         {
             email.setError("Please enter a valid email address");
-            valid = false;
-        }
-
-        else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
+        } else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
         {
             password.setError("Please enter a valid password");
-            valid = false;
-        }
-        else
+        } else
         {
-            password.setError(null);
+            new sendToDB().execute();
+        }
+    }
 
-            String data = URLEncoder.encode("user", "UTF-8")
-                    + "=" + URLEncoder.encode(_user, "UTF-8");
-
-            data += "&" + URLEncoder.encode("email", "UTF-8") + "="
-                    + URLEncoder.encode(_email, "UTF-8");
-
-            data += "&" + URLEncoder.encode("password", "UTF-8")
-                    + "=" + URLEncoder.encode(_password, "UTF-8");
-
+    private class sendToDB extends AsyncTask<Void, Void, Void>
+    {
+        final String _user = user.getText().toString();
+        final String _email = email.getText().toString();
+        final  String _password = password.getText().toString();
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            String data = null;
+            try
+            {
+                data = URLEncoder.encode("user", "UTF-8")
+                        + "=" + URLEncoder.encode(_user, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
 
             try
             {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
+                data += "&" + URLEncoder.encode("email", "UTF-8") + "="
+                        + URLEncoder.encode(_email, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
 
+            try
+            {
+                data += "&" + URLEncoder.encode("password", "UTF-8")
+                        + "=" + URLEncoder.encode(_password, "UTF-8");
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
+
+            try
+            {
                 URL url = new URL("http://computing.derby.ac.uk/~cabbage/signup.php");
                 URLConnection client = url.openConnection();
                 client.setDoOutput(true);
 
                 OutputStreamWriter outputPost = new OutputStreamWriter(client.getOutputStream());
+                assert data != null;
                 outputPost.write(data);
                 outputPost.flush();
+                outputPost.close();
             }
             catch (IOException e)
             {
                 e.printStackTrace();
             }
-            finally
-            {
-                valid = true;
-                Intent intent = new Intent(this, LogInActivity.class);
-                startActivity(intent);
-            }
+            return null;
         }
-        return valid;
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            Intent myIntent = new Intent(SignUpActivity.this, LogInActivity.class);
+            SignUpActivity.this.startActivity(myIntent);
+        }
     }
 }
 
