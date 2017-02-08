@@ -1,48 +1,30 @@
 package com.self_ignition.cabbage2;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.os.PatternMatcher;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.io.UnsupportedEncodingException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-import static android.R.attr.data;
-import static android.R.attr.value;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SignUpActivity extends AppCompatActivity {
-
-    EditText user;
+    //Textbox variables
+    EditText username;
     EditText email;
     EditText password;
 
@@ -52,44 +34,28 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         getSupportActionBar().hide();
 
-        user = (EditText) findViewById(R.id.input_name);
+        username = (EditText) findViewById(R.id.input_name);
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
 
-        user.setFilters(new InputFilter[]{filter});
+        username.setFilters(new InputFilter[]{filter});
         email.setFilters(new InputFilter[]{filter});
         password.setFilters(new InputFilter[]{filter});
-    }
-
-
-    public void clickFunction(View v) {
-        Intent intent = new Intent(this, LogInActivity.class);
-        startActivity(intent);
     }
 
     InputFilter filter = new InputFilter() {
         @Override
         public CharSequence filter(CharSequence source, int start, int end,
                                    Spanned dest, int dstart, int dend) {
-            String characterSet = "@ .";
+            String blockCharacterSet = " !#$%&()*+,-.:;<=>?@[]^_{|}~";
             for (int i = start; i < end; i++) {
-                if (!Character.isLetterOrDigit(source.charAt(i))) {
-                    if (characterSet.contains("" + source.charAt(i))) {
-                        return "@";
-                    } else if (characterSet.contains("" + source.charAt(i))) {
-                        return ".";
-                    } else {
-                        return "";
-                    }
+                if (source != null && !Character.isLetterOrDigit(source.charAt(i)) && !blockCharacterSet.contains("" + source)) {
+                    return "";
                 }
             }
             return null;
         }
     };
-
-    public void buttonFunction(View v) {
-        signup();
-    }
 
     public void signup() {
         final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
@@ -100,102 +66,81 @@ public class SignUpActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        try {
-                            validate();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                        validate();
+
                         // On complete call either onLoginSuccess or onLoginFailed
                         progressDialog.dismiss();
                     }
                 }, 3000);
     }
 
-    public void validate() throws UnsupportedEncodingException {
+    public void validate(){
 
-        final String _user = user.getText().toString();
+        final String _user = username.getText().toString();
         final String _email = email.getText().toString();
         final  String _password = password.getText().toString();
 
-        if (_user.isEmpty())
-        {
-            user.setError("Please enter a valid username");
-        } else if (_email.isEmpty())
-        {
+        if (_user.isEmpty()) {
+            username.setError("Please enter a valid username");
+        } else if (_email.isEmpty()) {
             email.setError("Please enter a valid email address");
-        } else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
-        {
+        } else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
-        } else
-        {
-            new sendToDB().execute();
+        } else {
+            volleyMethod();
+            Intent intent = new Intent(this, LogInActivity.class);
+            startActivity(intent);
         }
     }
 
-    private class sendToDB extends AsyncTask<Void, Void, Void>
-    {
-        final String _user = user.getText().toString();
-        final String _email = email.getText().toString();
-        final  String _password = password.getText().toString();
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            String data = null;
-            try
-            {
-                data = URLEncoder.encode("user", "UTF-8")
-                        + "=" + URLEncoder.encode(_user, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                e.printStackTrace();
-            }
+    public void volleyMethod() {
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://computing.derby.ac.uk/~cabbage/signup.php";
 
-            try
-            {
-                data += "&" + URLEncoder.encode("email", "UTF-8") + "="
-                        + URLEncoder.encode(_email, "UTF-8");
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("volley", "Response is: " + response.substring(0, 150));
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
             }
-            catch (UnsupportedEncodingException e)
-            {
-                e.printStackTrace();
-            }
-
-            try
-            {
-                data += "&" + URLEncoder.encode("password", "UTF-8")
-                        + "=" + URLEncoder.encode(_password, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                e.printStackTrace();
-            }
-
-            try
-            {
-                URL url = new URL("http://computing.derby.ac.uk/~cabbage/signup.php");
-                URLConnection client = url.openConnection();
-                client.setDoOutput(true);
-
-                OutputStreamWriter outputPost = new OutputStreamWriter(client.getOutputStream());
-                assert data != null;
-                outputPost.write(data);
-                outputPost.flush();
-                outputPost.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            return null;
         }
+                //Some touchy-feely with body to add post payload
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
 
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            Intent myIntent = new Intent(SignUpActivity.this, LogInActivity.class);
-            SignUpActivity.this.startActivity(myIntent);
-        }
+                //Finding variables because of this inner class
+                EditText username = (EditText) findViewById(R.id.input_name);
+                EditText email = (EditText) findViewById(R.id.input_email);
+                EditText password = (EditText) findViewById(R.id.input_password);
+
+                params.put("username", username.getText().toString());
+                params.put("password", password.getText().toString());
+                params.put("email", email.getText().toString());
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+    }
+
+    public void clickFunction(View v) {
+        Intent intent = new Intent(this, LogInActivity.class);
+        startActivity(intent);
+    }
+
+    public void buttonFunction(View v) {
+        signup();
     }
 }
-
