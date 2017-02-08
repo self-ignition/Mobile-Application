@@ -12,7 +12,7 @@
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:focusableInTouchMode="True">
+        android:focusableInTouchMode="true">
         style="@android:style/TextAppearance.DeviceDefault.Medium">
 
         <ImageView android:src="@drawable/logo"
