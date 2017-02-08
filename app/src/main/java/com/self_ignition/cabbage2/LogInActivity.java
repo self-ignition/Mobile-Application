@@ -3,6 +3,8 @@ package com.self_ignition.cabbage2;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
@@ -23,6 +25,8 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 
+import static android.R.attr.filter;
+
 public class LogInActivity extends AppCompatActivity {
 
     EditText email;
@@ -32,23 +36,29 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        getSupportActionBar().hide();
 
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
 
-        getSupportActionBar().hide();
+        email.setFilters(new InputFilter[]{filter});
+        password.setFilters(new InputFilter[]{filter});
+
     }
 
-    public void buttonFunction(View v)
-    {
-        login();
-    }
-
-    public void clickFunction(View v)
-    {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
-    }
+    InputFilter filter = new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            String blockCharacterSet = " !#$%&()*+,-.:;<=>?@[]^_{|}~";
+            for (int i = start; i < end; i++) {
+                if (source != null && !Character.isLetterOrDigit(source.charAt(i)) && !blockCharacterSet.contains("" + source)) {
+                    return "";
+                }
+            }
+            return null;
+        }
+    };
 
     public void login()
     {
@@ -73,8 +83,6 @@ public class LogInActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-   // RequestQueue MyRequestQueue = Volley.newRequestQueue(this);
-
     public boolean validate()
     {
         boolean valid = true;
@@ -82,49 +90,29 @@ public class LogInActivity extends AppCompatActivity {
         final String _email = email.getText().toString();
         final String _password = password.getText().toString();
 
-      /*  String url = "http://computing.derby.ac.uk/~cabbage";
-        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //This code is executed if the server responds, whether or not the response contains data.
-                //The String 'response' contains the server's response.
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put(_email, _password); //Add the data you'd like to send to the server.
-                return MyData;
-            }
-        };
-
-        MyRequestQueue.add(MyStringRequest);*/
-
-        if (_email.isEmpty())
-        {
+        if (_email.isEmpty()) {
             email.setError("Please enter a valid email address");
             valid = false;
-        }
-        else
-        {
+        } else {
             email.setError(null);
-        }
-
-        if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12)
-        {
+        } if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
-        }
-        else
-        {
+        } else {
             password.setError(null);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         }
 
         return valid;
+    }
+
+
+    public void buttonFunction(View v) {
+        login();
+    }
+
+    public void clickFunction(View v) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }
