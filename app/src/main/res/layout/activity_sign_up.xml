@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@drawable/backgroundgradient">
 
     <LinearLayout
         android:orientation="vertical"
@@ -12,8 +13,7 @@
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:focusableInTouchMode="True"
-        android:background="@drawable/backgroundgradient">
+        android:focusableInTouchMode="True">
 
         <ImageView android:src="@drawable/logo"
             android:layout_width="wrap_content"
