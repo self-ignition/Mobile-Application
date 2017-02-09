@@ -104,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("volley", "Response is: " + response.substring(0, 150));
+                        Log.d("volley", "Response is: " + response);
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {

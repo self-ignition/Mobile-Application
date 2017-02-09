@@ -103,9 +103,52 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        //Added volley method here.
+        volleyMethod();
+
         return valid;
     }
 
+    public void volleyMethod() {
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://computing.derby.ac.uk/~cabbage/login.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("volley", "Response is: " + response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+            }
+        }
+                //Some touchy-feely with body to add post payload
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+
+                //Finding variables because of this inner class
+                EditText username = (EditText) findViewById(R.id.input_name);
+                EditText email = (EditText) findViewById(R.id.input_email);
+                EditText password = (EditText) findViewById(R.id.input_password);
+
+                params.put("password", password.getText().toString());
+                params.put("email", email.getText().toString());
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+    }
 
     public void buttonFunction(View v) {
         login();
