@@ -1,7 +1,16 @@
 package com.self_ignition.cabbage2;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
+import android.media.browse.MediaBrowser;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -27,6 +36,10 @@ import butterknife.ButterKnife;
 
 import static android.R.attr.filter;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.self_ignition.cabbage2.SeverRequests;
+import com.google.android.gms.location.LocationServices;
+
 public class LogInActivity extends AppCompatActivity {
 
     EditText email;
@@ -43,7 +56,6 @@ public class LogInActivity extends AppCompatActivity {
 
         email.setFilters(new InputFilter[]{filter});
         password.setFilters(new InputFilter[]{filter});
-
     }
 
     InputFilter filter = new InputFilter() {
@@ -60,8 +72,7 @@ public class LogInActivity extends AppCompatActivity {
         }
     };
 
-    public void login()
-    {
+    public void login() {
         final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
@@ -76,15 +87,14 @@ public class LogInActivity extends AppCompatActivity {
                     }
                 }, 3000);
     }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         // disable going back to the MainActivity
         moveTaskToBack(true);
     }
 
-    public boolean validate()
-    {
+    public boolean validate() {
         boolean valid = true;
 
         final String _email = email.getText().toString();
@@ -95,7 +105,8 @@ public class LogInActivity extends AppCompatActivity {
             valid = false;
         } else {
             email.setError(null);
-        } if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
+        }
+        if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
         } else {
             password.setError(null);
@@ -103,51 +114,31 @@ public class LogInActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        //Added volley method here.
-        volleyMethod();
+        //Login method here.
+        SeverRequests req = new SeverRequests();
+        req.Login(this, _email, _password);
+
+        //Find location
+        try {
+            LocationManager locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            Location location = null;
+            Criteria criteria = new Criteria();
+
+            //Check for permission
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //Criteria for provider search
+                location = locman.getLastKnownLocation(locman.getBestProvider(criteria, true));
+            }
+
+            //send location to server
+            req.SendLocation(this, _email, location);
+        }
+        catch (Exception e)
+        {
+            Log.e("LOCATION ERROR", e.getMessage());
+        }
 
         return valid;
-    }
-
-    public void volleyMethod() {
-        Map<String, String> mParams;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://computing.derby.ac.uk/~cabbage/login.php";
-
-        //Create the request
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                //What happens when the request completes
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("volley", "Response is: " + response);
-                    }
-                    //What happens if the request fails
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("volley", "That didn't work!");
-            }
-        }
-                //Some touchy-feely with body to add post payload
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                //create the map for keypairs
-                Map<String, String> params = new HashMap<String, String>();
-
-                //Finding variables because of this inner class
-                EditText username = (EditText) findViewById(R.id.input_name);
-                EditText email = (EditText) findViewById(R.id.input_email);
-                EditText password = (EditText) findViewById(R.id.input_password);
-
-                params.put("password", password.getText().toString());
-                params.put("email", email.getText().toString());
-                return params;
-            }
-        };
-        //add the request to the queue
-        queue.add(request);
     }
 
     public void buttonFunction(View v) {
