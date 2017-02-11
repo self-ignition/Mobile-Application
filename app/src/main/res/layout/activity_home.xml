@@ -14,9 +14,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Suggested Recipes"
+            android:text="@string/suggestedRecipe"
             android:gravity="center"
-            android:textSize="24dip" />
+            android:textSize="24sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,34 +29,16 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Cabbage"
-            android:background="@drawable/pizza"/>
+            android:text="@string/title1"
+            android:background="@drawable/placeholder"
+            android:onClick="searchResults"/>
 
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Cabbage"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        android:padding="5dp">
-
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Cabbage"/>
-
-        <Button
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Cabbage"/>
+            android:background="@drawable/placeholder"
+            android:text="@string/title2"/>
     </LinearLayout>
 
     <LinearLayout
@@ -70,13 +52,37 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Cabbage"/>
+            android:background="@drawable/placeholder"
+            android:text="@string/title3"/>
 
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Cabbage"/>
+            android:background="@drawable/placeholder"
+            android:text="@string/title4"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:padding="5dp">
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/placeholder"
+            android:text="@string/title5" />
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/placeholder"
+            android:text="@string/title6"/>
     </LinearLayout>
 
     <LinearLayout
@@ -89,9 +95,9 @@
         <TextView android:id="@+id/new_suggestions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="New Suggestions"
+            android:text="@string/newSuggestions"
             android:gravity="center"
-            android:textSize="16dip"
+            android:textSize="16sp"
             android:onClick="clickFunction"/>
     </LinearLayout>
 
