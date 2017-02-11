@@ -1,9 +1,57 @@
 <resources>
     <string name="app_name">Cabbage2</string>
-    <string name="title_activity_navigation">Navigation</string>
 
+    <string name="title_activity_navigation">Navigation</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!--Strings for options_menu.xml-->
+    <string name="search_hint">Search hint</string>
+    <string name="search">Search title</string>
+
+    <!--Strings for activity_home.xml-->
+    <string name="title1">title1</string>
+    <string name="title2">title2</string>
+    <string name="title3">title3</string>
+    <string name="title4">title4</string>
+    <string name="title5">title5</string>
+    <string name="title6">title6</string>
+    <string name="newSuggestions">New Suggestions</string>
+    <string name="suggestedRecipe">Suggested Recipes</string>
+
+    <!--Strings for login and sign up xml-->
+    <string name="hintUsername">Username</string>
+    <string name="hintEmail">Email Address</string>
+    <string name="hintPassword">Password</string>
+    <string name="login">Login</string>
+    <string name="createAccount">Create Account</string>
+    <string name="existing">Already a member? Log in</string>
+
+    <string-array name="Titles">
+        <item>Title 1</item>
+        <item>Title 2</item>
+        <item>Title 3</item>
+        <item>Title 4</item>
+        <item>Title 5</item>
+        <item>Title 6</item>
+        <item>Title 7</item>
+        <item>Title 8</item>
+        <item>Title 9</item>
+        <item>Title 10</item>
+    </string-array>
+
+    <string-array name="Preptime" >
+        <item>prep1</item>
+        <item>prep2</item>
+        <item>prep3</item>
+        <item>prep4</item>
+        <item>prep5</item>
+        <item>prep6</item>
+        <item>prep7</item>
+        <item>prep8</item>
+        <item>prep9</item>
+        <item>prep10</item>
+    </string-array>
 </resources>
