@@ -38,7 +38,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/placeholder"
-            android:text="@string/title2"/>
+            android:text="@string/title2"
+            android:onClick="recipe"/>
     </LinearLayout>
 
     <LinearLayout
