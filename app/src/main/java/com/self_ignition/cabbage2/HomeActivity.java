@@ -30,4 +30,9 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SearchResultsActivity.class);
         startActivity(intent);
     }
+
+    public void recipe(View v) {
+        Intent intent = new Intent(this, RecipeActivity.class);
+        startActivity(intent);
+    }
 }
