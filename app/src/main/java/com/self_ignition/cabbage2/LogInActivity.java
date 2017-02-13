@@ -2,6 +2,7 @@ package com.self_ignition.cabbage2;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -9,6 +10,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,13 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -110,8 +105,6 @@ public class LogInActivity extends AppCompatActivity {
             password.setError("Please enter a valid password");
         } else {
             password.setError(null);
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
         }
 
         //Login method here.
@@ -148,5 +141,38 @@ public class LogInActivity extends AppCompatActivity {
     public void clickFunction(View v) {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
+    }
+}
+
+class SaveSharedPreference {
+    static final String PREF_USER_NAME= "username";
+    static final String PREF_LOGGED_IN= "LoggedIn";
+
+    static SharedPreferences getSharedPreferences(Context ctx) {
+        return PreferenceManager.getDefaultSharedPreferences(ctx);
+    }
+
+    public static void setUserName(Context ctx, String userName)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PREF_USER_NAME, userName);
+        editor.commit();
+    }
+
+    public static String getUserName(Context ctx)
+    {
+        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
+    }
+
+    public static void setLoggedIn(Context ctx, Boolean isLoggedIn)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putBoolean(PREF_LOGGED_IN, isLoggedIn);
+        editor.commit();
+    }
+
+    public static Boolean getLoggedIn(Context ctx)
+    {
+        return getSharedPreferences(ctx).getBoolean(PREF_LOGGED_IN, false);
     }
 }

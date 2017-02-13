@@ -1,9 +1,11 @@
 package com.self_ignition.cabbage2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +23,7 @@ import java.util.Map;
 
 public class SeverRequests {
 
-    public void Login(Context context, String _email, String _password) {
+    public void Login(final Context context, String _email, String _password) {
         final String email = _email;
         final String password = _password;
         Map<String, String> mParams;
@@ -36,6 +38,17 @@ public class SeverRequests {
                     public void onResponse(String response) {
                         Log.d("volley", "Response is: " + response);
                         //CALL THE LOGIN METHOD
+                        if(response.charAt(0) == '1')
+                        {
+                            SaveSharedPreference.setLoggedIn(context, true);
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            context.startActivity(intent);
+                        }
+                        else
+                        {
+                            Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
