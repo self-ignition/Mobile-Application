@@ -38,7 +38,7 @@ public class SeverRequests {
                     public void onResponse(String response) {
                         Log.d("volley", "Response is: " + response);
                         //CALL THE LOGIN METHOD
-                        if(response.charAt(0) == '1')
+                        if(response.equals("1"))
                         {
                             SaveSharedPreference.setLoggedIn(context, true);
                             Intent intent = new Intent(context, HomeActivity.class);
