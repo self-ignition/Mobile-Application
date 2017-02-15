@@ -153,5 +153,7 @@ public class SeverRequests {
                 return params;
             }
         };
+
+        queue.add(request);
     }
 }
