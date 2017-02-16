@@ -45,6 +45,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {
     }
+    
+    @IBAction func unwindToLogIn(segue: UIStoryboardSegue) {
+    }
 
     //Funciton to create an alert message. CRW
     func displayMyAlertMessage(userMessage:String)

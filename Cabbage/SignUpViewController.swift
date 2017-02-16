@@ -53,6 +53,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate
         ScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
+    @IBAction func unwindToLogIn(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "unwindToLogInSegue", sender: self)
+    }
+    
     //Funciton to create an alert message. CRW
     func displayMyAlertMessage(userMessage:String)
     {

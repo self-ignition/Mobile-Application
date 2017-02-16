@@ -138,17 +138,17 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FxN-bi-zo6">
-                                        <rect key="frame" x="132" y="320" width="56" height="30"/>
-                                        <state key="normal" title="Sign Up"/>
+                                        <rect key="frame" x="94" y="326" width="133" height="30"/>
+                                        <state key="normal" title="CREATE ACCOUNT"/>
                                         <connections>
                                             <segue destination="ZSz-8b-48Y" kind="presentation" id="1NN-zM-FWo"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="FxN-bi-zo6" firstAttribute="leading" secondItem="0vn-wz-lRX" secondAttribute="leading" constant="132" id="0ur-06-Q0S"/>
                                     <constraint firstAttribute="trailing" secondItem="8sU-cf-477" secondAttribute="trailing" constant="8" id="6yR-FM-gd2"/>
                                     <constraint firstItem="Ot3-Db-X2A" firstAttribute="top" secondItem="vW1-iG-PNP" secondAttribute="bottom" constant="8" id="8Tu-lQ-gFd"/>
+                                    <constraint firstItem="FxN-bi-zo6" firstAttribute="centerX" secondItem="Ot3-Db-X2A" secondAttribute="centerX" id="8gL-lI-PSw"/>
                                     <constraint firstItem="USx-7K-wmK" firstAttribute="leading" secondItem="0vn-wz-lRX" secondAttribute="leading" constant="96" id="95G-im-nzt"/>
                                     <constraint firstItem="Ot3-Db-X2A" firstAttribute="leading" secondItem="0vn-wz-lRX" secondAttribute="leading" constant="137" id="Ccj-Sn-HKU"/>
                                     <constraint firstAttribute="trailing" secondItem="Ot3-Db-X2A" secondAttribute="trailing" constant="137" id="DHS-hi-PXg"/>
@@ -156,14 +156,13 @@
                                     <constraint firstAttribute="trailing" secondItem="vW1-iG-PNP" secondAttribute="trailing" constant="8" id="GFB-rt-Gfh"/>
                                     <constraint firstItem="8sU-cf-477" firstAttribute="leading" secondItem="0vn-wz-lRX" secondAttribute="leading" constant="8" id="K3d-cZ-Vqr"/>
                                     <constraint firstItem="vW1-iG-PNP" firstAttribute="top" secondItem="8sU-cf-477" secondAttribute="bottom" constant="8" id="L9b-lU-0bh"/>
-                                    <constraint firstAttribute="trailing" secondItem="FxN-bi-zo6" secondAttribute="trailing" constant="132" id="Nqg-Cd-lhe"/>
                                     <constraint firstItem="8sU-cf-477" firstAttribute="top" secondItem="USx-7K-wmK" secondAttribute="bottom" constant="26" id="PK1-lX-fQr"/>
                                     <constraint firstItem="Ot3-Db-X2A" firstAttribute="top" secondItem="vW1-iG-PNP" secondAttribute="bottom" constant="8" id="XE8-5l-bgN"/>
                                     <constraint firstItem="vW1-iG-PNP" firstAttribute="leading" secondItem="0vn-wz-lRX" secondAttribute="leading" constant="8" id="ddo-n3-qbL"/>
                                     <constraint firstAttribute="bottom" secondItem="USx-7K-wmK" secondAttribute="bottom" constant="269" id="kVi-Kd-mSn"/>
                                     <constraint firstAttribute="trailing" secondItem="USx-7K-wmK" secondAttribute="trailing" constant="96" id="nik-GI-fl8"/>
                                     <constraint firstItem="USx-7K-wmK" firstAttribute="centerX" secondItem="0vn-wz-lRX" secondAttribute="centerX" id="ppP-Rf-sRE"/>
-                                    <constraint firstItem="FxN-bi-zo6" firstAttribute="top" secondItem="Ot3-Db-X2A" secondAttribute="bottom" constant="2" id="sIz-db-YLu"/>
+                                    <constraint firstItem="FxN-bi-zo6" firstAttribute="top" secondItem="Ot3-Db-X2A" secondAttribute="bottom" constant="8" symbolic="YES" id="way-bS-yWd"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="V3D-Q2-pqy" id="LLl-9E-Oog"/>
@@ -181,7 +180,7 @@
                             <constraint firstItem="0vn-wz-lRX" firstAttribute="trailing" secondItem="8sE-EK-eIP" secondAttribute="trailing" id="vGg-Hu-Vm7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="r7y-E7-yt2"/>
+                    <navigationItem key="navigationItem" title="Account" id="r7y-E7-yt2"/>
                     <connections>
                         <outlet property="LogInButton" destination="Ot3-Db-X2A" id="YFM-wK-COw"/>
                         <outlet property="LogInScrollView" destination="0vn-wz-lRX" id="kac-4c-Y3l"/>
@@ -290,8 +289,16 @@
                                             <action selector="signupButtonTapped:" destination="EbY-Je-bIB" eventType="touchUpInside" id="e3L-iW-MrK"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gu9-Jc-C2j">
+                                        <rect key="frame" x="69" y="354" width="183" height="30"/>
+                                        <state key="normal" title="Already a member? Log in"/>
+                                        <connections>
+                                            <action selector="unwindToLogIn:" destination="EbY-Je-bIB" eventType="touchUpInside" id="cmk-iq-na5"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="gu9-Jc-C2j" firstAttribute="leading" secondItem="p7b-Hp-Yw6" secondAttribute="leading" constant="69" id="106-K9-OfT"/>
                                     <constraint firstItem="zo6-02-Qnv" firstAttribute="top" secondItem="Zm8-vP-5vZ" secondAttribute="bottom" constant="8" symbolic="YES" id="Aka-XE-iRr"/>
                                     <constraint firstItem="DHT-qI-rza" firstAttribute="top" secondItem="4YB-7G-jDk" secondAttribute="bottom" constant="8" symbolic="YES" id="B4p-Gh-hhJ"/>
                                     <constraint firstItem="4YB-7G-jDk" firstAttribute="trailing" secondItem="p7b-Hp-Yw6" secondAttribute="trailingMargin" id="GW2-YR-0Nj"/>
@@ -299,9 +306,11 @@
                                     <constraint firstItem="kfY-rX-LDU" firstAttribute="leading" secondItem="Zm8-vP-5vZ" secondAttribute="leading" id="NOG-oM-VmF"/>
                                     <constraint firstItem="4YB-7G-jDk" firstAttribute="trailing" secondItem="DHT-qI-rza" secondAttribute="trailing" id="OGY-Q5-LpK"/>
                                     <constraint firstItem="4YB-7G-jDk" firstAttribute="centerX" secondItem="p7b-Hp-Yw6" secondAttribute="centerX" id="Q7V-5n-LV6"/>
+                                    <constraint firstItem="gu9-Jc-C2j" firstAttribute="top" secondItem="zo6-02-Qnv" secondAttribute="bottom" constant="8" symbolic="YES" id="aZ6-O4-hCO"/>
                                     <constraint firstItem="DHT-qI-rza" firstAttribute="trailing" secondItem="kfY-rX-LDU" secondAttribute="trailing" id="brK-za-QMn"/>
                                     <constraint firstAttribute="bottom" secondItem="zo6-02-Qnv" secondAttribute="bottom" constant="158" id="g7a-1T-U7n"/>
                                     <constraint firstItem="kfY-rX-LDU" firstAttribute="top" secondItem="DHT-qI-rza" secondAttribute="bottom" constant="8" symbolic="YES" id="gpL-fZ-AZR"/>
+                                    <constraint firstItem="gu9-Jc-C2j" firstAttribute="centerX" secondItem="zo6-02-Qnv" secondAttribute="centerX" id="krm-Mn-J1w"/>
                                     <constraint firstItem="4YB-7G-jDk" firstAttribute="leading" secondItem="DHT-qI-rza" secondAttribute="leading" id="lZk-oM-yfV"/>
                                     <constraint firstItem="Zm8-vP-5vZ" firstAttribute="centerX" secondItem="zo6-02-Qnv" secondAttribute="centerX" id="mLC-7i-xha"/>
                                     <constraint firstItem="kfY-rX-LDU" firstAttribute="trailing" secondItem="Zm8-vP-5vZ" secondAttribute="trailing" id="nGq-8e-mzu"/>
@@ -337,6 +346,7 @@
                         <outlet property="ScrollView" destination="p7b-Hp-Yw6" id="rzB-CI-6K1"/>
                         <outlet property="SignUpButton" destination="zo6-02-Qnv" id="GE0-6f-gDq"/>
                         <outlet property="UsernameTextField" destination="4YB-7G-jDk" id="v1n-RR-N7T"/>
+                        <segue destination="zRO-ri-4Nu" kind="unwind" identifier="unwindToLogInSegue" unwindAction="unwindToLogInSegue:" id="MsB-2D-Ucf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5JX-Kt-65T" userLabel="First Responder" sceneMemberID="firstResponder"/>
