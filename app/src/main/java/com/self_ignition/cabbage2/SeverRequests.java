@@ -17,10 +17,6 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by r-bur on 10/02/2017.
- */
-
 public class SeverRequests {
 
     public void Login(final Context context, String _email, String _password) {
@@ -153,6 +149,31 @@ public class SeverRequests {
                 return params;
             }
         };
+
+        queue.add(request);
+    }
+
+    public void GetRecipe(Context context, String url, final VolleyCallback callback){
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("volley recipe", response.substring(0,50));
+                        callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley recipe", "That didn't work!");
+                callback.onSuccess("Failed");
+            }
+        });
 
         queue.add(request);
     }

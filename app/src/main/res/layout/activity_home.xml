@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -31,7 +32,8 @@
             android:layout_weight="1"
             android:text="@string/title1"
             android:background="@drawable/placeholder"
-            android:onClick="searchResults"/>
+            android:onClick="searchResults"
+            android:id="@+id/home_button_one" />
 
         <Button
             android:layout_width="0dip"
@@ -39,7 +41,8 @@
             android:layout_weight="1"
             android:background="@drawable/placeholder"
             android:text="@string/title2"
-            android:onClick="recipe"/>
+            android:onClick="recipe"
+            android:id="@+id/home_button_two" />
     </LinearLayout>
 
     <LinearLayout
@@ -54,14 +57,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/placeholder"
-            android:text="@string/title3"/>
+            android:text="@string/title3"
+            android:id="@+id/home_button_three" />
 
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/placeholder"
-            android:text="@string/title4"/>
+            android:text="@string/title4"
+            android:id="@+id/home_button_four" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,14 +81,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/placeholder"
-            android:text="@string/title5" />
+            android:text="@string/title5"
+            android:id="@+id/home_button_five" />
 
         <Button
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/placeholder"
-            android:text="@string/title6"/>
+            android:text="@string/title6"
+            android:id="@+id/home_button_six" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,7 +106,7 @@
             android:text="@string/newSuggestions"
             android:gravity="center"
             android:textSize="16sp"
-            android:onClick="clickFunction"/>
+            android:onClick="NewRecipies"/>
     </LinearLayout>
 
 </LinearLayout>
