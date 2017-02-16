@@ -17,6 +17,8 @@
 		A525D0611E45036B00E855F2 /* CabbageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A525D0601E45036B00E855F2 /* CabbageUITests.swift */; };
 		A52756291E4E43B600F8A295 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52756281E4E43B600F8A295 /* LogInViewController.swift */; };
 		A59600281E4E43020052D6B3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59600271E4E43020052D6B3 /* SignUpViewController.swift */; };
+		A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */; };
+		A5D318F11E5649B900C4A9D7 /* RandomMealTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D318F01E5649B900C4A9D7 /* RandomMealTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		A525D0621E45036B00E855F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52756281E4E43B600F8A295 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		A59600271E4E43020052D6B3 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomMealTableViewCell.swift; sourceTree = "<group>"; };
+		A5D318F01E5649B900C4A9D7 /* RandomMealTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomMealTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				A525D0401E45036B00E855F2 /* HomepageViewController.swift */,
 				A525D0421E45036B00E855F2 /* SecondViewController.swift */,
 				A525D0441E45036B00E855F2 /* Main.storyboard */,
+				A5D318F01E5649B900C4A9D7 /* RandomMealTableViewController.swift */,
+				A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */,
 				A59600271E4E43020052D6B3 /* SignUpViewController.swift */,
 				A52756281E4E43B600F8A295 /* LogInViewController.swift */,
 				A525D0471E45036B00E855F2 /* Assets.xcassets */,
@@ -274,6 +280,8 @@
 				A525D0431E45036B00E855F2 /* SecondViewController.swift in Sources */,
 				A59600281E4E43020052D6B3 /* SignUpViewController.swift in Sources */,
 				A525D03F1E45036B00E855F2 /* AppDelegate.swift in Sources */,
+				A5D318F11E5649B900C4A9D7 /* RandomMealTableViewController.swift in Sources */,
+				A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */,
 				A52756291E4E43B600F8A295 /* LogInViewController.swift in Sources */,
 				A525D0411E45036B00E855F2 /* HomepageViewController.swift in Sources */,
 			);

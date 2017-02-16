@@ -10,6 +10,12 @@ import UIKit
 
 class HomepageViewController: UIViewController {
 
+    @IBOutlet weak var randomMealNameLabel: UILabel!
+    
+    @IBOutlet weak var randomMealIngredientsLabel: UILabel!
+    
+    @IBOutlet weak var randomMealPhotoImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
