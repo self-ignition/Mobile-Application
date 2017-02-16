@@ -50,8 +50,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
 
     //Funciton to create an alert message. CRW
-    func displayMyAlertMessage(userMessage:String)
-    {
+    func displayMyAlertMessage(userMessage:String) {
         //Creating an alert called my alert
         let myAlert = UIAlertController(title:"Alert", message:userMessage, preferredStyle: UIAlertControllerStyle.alert);
         //Creating an aciton called okAciton
@@ -62,8 +61,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         self.present(myAlert, animated:true, completion:nil);
     }
     
-    @IBAction func loginButtonTapped(_ sender: Any)
-    {
+    @IBAction func loginButtonTapped(_ sender: Any) {
+        
         /*let userEmail = UsernameTextField.text;
         let userPassword = PasswordTextField.text;*/
         
@@ -91,9 +90,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             print("responseString = \(responseString)")
         }
-        task.resume()
         
+        task.resume()
     }
     
-
+    
 }

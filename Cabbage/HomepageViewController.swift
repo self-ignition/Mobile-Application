@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  HomepageViewController.swift
 //  Cabbage
 //
 //  Created by Bartlomiej Morawiec on 03/02/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class HomepageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,5 +1,5 @@
 //
-//  SignUpViewController2.swift
+//  SignUpViewController.swift
 //  Cabbage
 //
 //  Created by Bartlomiej Morawiec on 10/02/2017.
@@ -8,9 +8,8 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController, UITextFieldDelegate
-{
-
+class SignUpViewController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var ScrollView: UIScrollView!
     
     @IBOutlet weak var UsernameTextField: UITextField!
@@ -23,15 +22,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate
     
     @IBOutlet weak var SignUpButton: UIButton!
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning()
-    {
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -136,5 +133,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate
         self.present(successAlert, animated:true, completion:nil);*/
 
     }
+    
     
 }
