@@ -13,6 +13,8 @@ import com.self_ignition.cabbage2.SeverRequests;
  */
 
 public class Recipe implements VolleyCallback {
+    RecipeReadyCallback callback;
+
     private String title = "none";
     private String prepTime = "none";
     private String cookTime = "none";
@@ -66,12 +68,15 @@ public class Recipe implements VolleyCallback {
         this.steps = steps;
     }
 
-    public void setRecipe(Context context, String url) {
-        url = "http://computing.derby.ac.uk/~cabbage/recipe.php?terms=%20Chicken%20chasseur%20with%20creamy%20mash";
+    public void setRecipe(Context context, String term, final RecipeReadyCallback callback) {
+        this.callback = callback;
+        term = term.replace(" ", "%20");
+        String url = "http://computing.derby.ac.uk/~cabbage/recipe.php?terms=" + term;
         SeverRequests ser = new SeverRequests();
         ser.GetRecipe(context, url, this);
     }
-    public void setRandomRecipe(Context context){
+    public void setRandomRecipe(Context context, final RecipeReadyCallback callback){
+        this.callback = callback;
         String url = "http://computing.derby.ac.uk/~cabbage/randomrecipe.php";
         SeverRequests ser = new SeverRequests();
         ser.GetRecipe(context, url, this);
@@ -89,7 +94,6 @@ public class Recipe implements VolleyCallback {
 
         try
         {
-
             this.setTitle(parts.get(0));
             this.setPrepTime(parts.get(1));
             this.setCookTime(parts.get(2));
@@ -104,7 +108,7 @@ public class Recipe implements VolleyCallback {
         try
         {
             //Spilt second table into ingredients;
-            parts = Arrays.asList(tables.get(1).split(","));
+            parts = Arrays.asList(tables.get(1).split("|"));
             this.setIngredients(parts);
         }
         catch (Exception e)
@@ -115,13 +119,15 @@ public class Recipe implements VolleyCallback {
         try
         {
             //split third table into steps;
-            parts = Arrays.asList(tables.get(2).split(","));
+            parts = Arrays.asList(tables.get(2).split("|"));
             this.setSteps(parts);
         }
         catch (Exception e)
         {
             Log.e("Recipe Exception", e.getMessage());
         }
+
+        callback.onReady(this);
     }
 }
 

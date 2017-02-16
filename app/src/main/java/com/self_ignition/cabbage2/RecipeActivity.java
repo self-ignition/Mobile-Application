@@ -3,9 +3,11 @@ package com.self_ignition.cabbage2;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -20,9 +22,11 @@ import static android.R.color.white;
 import static android.R.id.extractArea;
 import static android.R.id.list;
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity implements RecipeReadyCallback {
 
     ExpandableListView expandableListView;
+
+    Recipe recipe = new Recipe();
 
     List<String> titles;
     Map<String,List<String>> details;
@@ -34,14 +38,24 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
 
         expandableListView = (ExpandableListView) findViewById(R.id.exp_list);
-        data();
+        init();
 
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
+
+        recipe.setRecipe(this, getIntent().getStringExtra("recipe-title"), this);
+        Log.i("Intent Extra", "onCreate: " + getIntent().getStringExtra("recipe-title"));
+        //recipe.setRandomRecipe(this,this);
     }
 
-    public void data()
+    public void init()
     {
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("Loading, Please wait...");
+
+        TextView time = (TextView) findViewById(R.id.time);
+        time.setText("...");
+
         titles = new ArrayList<>();
         details = new HashMap<>();
 
@@ -68,7 +82,40 @@ public class RecipeActivity extends AppCompatActivity {
         details.put(titles.get(0),ingredients);
         details.put(titles.get(1),method);
         details.put(titles.get(2),reviews);
+    }
 
+    @Override
+    public void onReady(Recipe r) {
+        recipe = r;
+        Log.i("Recipe callback", "Title of recipe:" + recipe.getTitle());
+        UpdateFields();
+    }
+
+    private void UpdateFields() {
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(recipe.getTitle());
+
+        TextView time = (TextView) findViewById(R.id.time);
+        time.setText("Prep time: " + recipe.getPrepTime() + "/ Cook Time: " + recipe.getCookTime());
+
+        titles = new ArrayList<>();
+        details = new HashMap<>();
+
+        titles.add("Ingredients");
+        titles.add("Method");
+        titles.add("Reviews");
+
+        List<String> reviews = new ArrayList<>();
+
+        reviews.add("I love when my nan makes me these. 10/10.\n");
+
+        details.put(titles.get(0),recipe.getIngredients());
+        details.put(titles.get(1),recipe.getSteps());
+        details.put(titles.get(2),reviews);
+
+        listAdapter = new MyListAdapter(this,titles,details);
+        expandableListView.setAdapter(listAdapter);
+        ((BaseAdapter) expandableListView.getAdapter()).notifyDataSetChanged();
     }
 }
 

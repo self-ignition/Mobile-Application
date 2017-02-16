@@ -153,7 +153,7 @@ public class SeverRequests {
         queue.add(request);
     }
 
-    public void GetRecipe(Context context, String url, final VolleyCallback callback){
+    public void GetRecipe(Context context, final String url, final VolleyCallback callback){
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -163,14 +163,21 @@ public class SeverRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("volley recipe", response.substring(0,50));
+                        if(response.length() < 50)
+                        {
+                            Log.i("volley", "url: " + url);
+                            Log.i("volley", "Valid Response: " + response);
+                        }
+                        else
+                        {
+                            Log.i("volley", "Valid Response: " + response.substring(0,50));
+                        }
                         callback.onSuccess(response);
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("volley recipe", "That didn't work!");
                 callback.onSuccess("Failed");
             }
         });
