@@ -2,6 +2,7 @@ package com.self_ignition.cabbage2;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,6 +89,7 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
                 startActivity(i);
             }
         });
+        button.setBackground(new BitmapDrawable(recipe.getImage()));
         buttonToSet++;
     }
 

@@ -184,4 +184,35 @@ public class SeverRequests {
 
         queue.add(request);
     }
+
+    public void DoSearch(Context context, final String url, final VolleyCallback callback){
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.length() < 50)
+                        {
+                            Log.i("volley", "Valid Response: " + response);
+                        }
+                        else
+                        {
+                            Log.i("volley", "Valid Response: " + response.substring(0,50));
+                        }
+                        callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onSuccess("Failed");
+            }
+        });
+
+        queue.add(request);
+    }
 }

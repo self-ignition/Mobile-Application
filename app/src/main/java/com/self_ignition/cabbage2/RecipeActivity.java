@@ -1,6 +1,7 @@
 package com.self_ignition.cabbage2;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -116,6 +118,10 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
         ((BaseAdapter) expandableListView.getAdapter()).notifyDataSetChanged();
+
+        //Update the image
+        ImageView image = (ImageView)findViewById(R.id.image);
+        image.setBackground(new BitmapDrawable(recipe.getImage()));
     }
 }
 

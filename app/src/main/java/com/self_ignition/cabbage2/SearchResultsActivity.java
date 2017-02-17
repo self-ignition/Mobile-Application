@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import static android.media.CamcorderProfile.get;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements VolleyCallback{
 
     ListView list;
     @Override
@@ -39,7 +39,13 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    public void onSuccess(String result) {
+
+    }
 }
+
 class SingleRow {
     String title;
     String prepTime;
