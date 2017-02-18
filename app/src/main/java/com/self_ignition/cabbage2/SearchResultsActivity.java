@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -28,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.media.CamcorderProfile.get;
@@ -44,21 +48,23 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        list=(ListView)findViewById(R.id.listView);
-        list.setAdapter(new adapter(this));
-
         //Set the terms and commence search
         String terms = getIntent().getStringExtra("query");
         searchResults.Search(terms, this);
+
+        list=(ListView)findViewById(R.id.listView);
+        list.setAdapter(new adapter(this));
     }
 
 
     @Override
     public void onSearchComplete() {
         //// TODO: 18/02/2017 fill out list of recipes for list view
+
         recipies = searchResults.results;
+
         for (Recipe r: recipies) {
-            //Log.i("RESULTS", "onSearchComplete: " + r.getTitle());
+            Log.i("RESULTS", "onSearchComplete: " + r.getTitle());
         }
     }
 }
@@ -77,15 +83,17 @@ class adapter extends BaseAdapter {
     ArrayList<SingleRow> list;
     Context context;
 
+
     adapter(Context c) {
         context = c;
         list = new ArrayList<SingleRow>();
-        Resources res = c.getResources();
-        String[] titles = res.getStringArray(R.array.Titles);
-        String[] prepTime = res.getStringArray(R.array.Preptime);
-        for(int i =0; i < 10; i++)
+        SearchResult searchResults = new SearchResult(c);
+        List<Recipe> recipies;
+
+        recipies = searchResults.results;
+        for(Recipe r: recipies)
         {
-            list.add(new SingleRow(titles[i], prepTime[i]));
+            list.add(new SingleRow(r.getTitle(), r.getPrepTime()));
         }
     }
 
