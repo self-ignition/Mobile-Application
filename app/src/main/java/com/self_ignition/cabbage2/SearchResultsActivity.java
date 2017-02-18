@@ -1,10 +1,16 @@
 package com.self_ignition.cabbage2;
 
 import android.app.ActionBar;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,14 +18,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.media.CamcorderProfile.get;
 
-public class SearchResultsActivity extends AppCompatActivity implements VolleyCallback{
+public class SearchResultsActivity extends AppCompatActivity  implements VolleyCallback {
 
+    search search = new search();
     ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +45,12 @@ public class SearchResultsActivity extends AppCompatActivity implements VolleyCa
 
         list=(ListView)findViewById(R.id.listView);
         list.setAdapter(new adapter(this));
+
+        String terms = getIntent().getStringExtra("query");
+        search.Search(terms);
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        return true;
-    }
 
     @Override
     public void onSuccess(String result) {
@@ -102,3 +114,18 @@ class adapter extends BaseAdapter {
         return row;
     }
 }
+
+class search implements VolleyCallback {
+
+    SearchReadyCallback callback;
+
+    public void Search(String terms) {
+        SeverRequests req = new SeverRequests();
+        req.DoSearch(context,terms,callback);
+    }
+
+    public void onSuccess(String result) {
+
+    }
+}
+

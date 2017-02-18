@@ -71,6 +71,38 @@ public class SeverRequests {
 
     }
 
+    public void DoSearch(Context context, final String query, final VolleyCallback callback){
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/dosearch.php?terms=" +query.replace(" ", "%20") + "&search=OR";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.length() < 50)
+                        {
+                            Log.i("volley", "Valid Response: " + response);
+                        }
+                        else
+                        {
+                            Log.i("volley", "Valid Response: " + response.substring(0,50));
+                        }
+                        callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onSuccess("Failed");
+            }
+        });
+
+        queue.add(request);
+    }
+
     public void SendLocation(Context context, String _email, Location _location) {
         final Location location = _location;
         final String email = _email;
@@ -166,37 +198,6 @@ public class SeverRequests {
                         if(response.length() < 50)
                         {
                             Log.i("volley", "url: " + url);
-                            Log.i("volley", "Valid Response: " + response);
-                        }
-                        else
-                        {
-                            Log.i("volley", "Valid Response: " + response.substring(0,50));
-                        }
-                        callback.onSuccess(response);
-                    }
-                    //What happens if the request fails
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onSuccess("Failed");
-            }
-        });
-
-        queue.add(request);
-    }
-
-    public void DoSearch(Context context, final String url, final VolleyCallback callback){
-        Map<String, String> mParams;
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        //Create the request
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                //What happens when the request completes
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(response.length() < 50)
-                        {
                             Log.i("volley", "Valid Response: " + response);
                         }
                         else

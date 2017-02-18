@@ -1,16 +1,21 @@
 package com.self_ignition.cabbage2;
 
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Switch;
 
 import com.google.android.gms.nearby.messages.internal.Update;
@@ -33,7 +38,17 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         UpdateRecipes();
+
+        // Get the intent, verify the action and get the query
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
     }
+
+
+
     public void NewRecipies(View v) {
         UpdateRecipes();
     }
@@ -48,6 +63,36 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
             r.setRandomRecipe(this, this);
             recipes.add(r);
         }
+    }
+
+    public void doMySearch(String query) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                doMySearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -91,14 +136,6 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
         });
         button.setBackground(new BitmapDrawable(recipe.getImage()));
         buttonToSet++;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        return true;
     }
 
     public void searchResults(View v) {
