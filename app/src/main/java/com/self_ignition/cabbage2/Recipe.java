@@ -152,7 +152,7 @@ public class Recipe implements VolleyCallback {
         }
 
         //IMAGE TABLE
-        this.setImageURL(tables.get(3));
+        this.setImageURL(tables.get(3).replace(" ", "%20"));
         new downloadImage(this).execute();
     }
 }
@@ -177,7 +177,10 @@ class downloadImage extends AsyncTask<String, Void, String>{
             connection.connect();
             InputStream input = connection.getInputStream();
 
-            x = BitmapFactory.decodeStream(input);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.outWidth = 200;
+            options.outHeight = 113;
+            x = BitmapFactory.decodeStream(input, null, options);
             r.setImage(x);
 
         } catch (MalformedURLException e) {

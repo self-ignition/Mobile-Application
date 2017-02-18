@@ -32,9 +32,10 @@ import java.util.List;
 
 import static android.media.CamcorderProfile.get;
 
-public class SearchResultsActivity extends AppCompatActivity  implements VolleyCallback {
+public class SearchResultsActivity extends AppCompatActivity  implements SearchResultCallback {
 
-    search search = new search();
+    SearchResult searchResults = new SearchResult(this);
+    List<Recipe> recipies;
     ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,19 @@ public class SearchResultsActivity extends AppCompatActivity  implements VolleyC
         list=(ListView)findViewById(R.id.listView);
         list.setAdapter(new adapter(this));
 
+        //Set the terms and commence search
         String terms = getIntent().getStringExtra("query");
-        search.Search(terms);
-
+        searchResults.Search(terms, this);
     }
 
 
     @Override
-    public void onSuccess(String result) {
-
+    public void onSearchComplete() {
+        //// TODO: 18/02/2017 fill out list of recipes for list view
+        recipies = searchResults.results;
+        for (Recipe r: recipies) {
+            //Log.i("RESULTS", "onSearchComplete: " + r.getTitle());
+        }
     }
 }
 
@@ -112,20 +117,6 @@ class adapter extends BaseAdapter {
         prepTime.setText(temp.prepTime);
 
         return row;
-    }
-}
-
-class search implements VolleyCallback {
-
-    SearchReadyCallback callback;
-
-    public void Search(String terms) {
-        SeverRequests req = new SeverRequests();
-        req.DoSearch(context,terms,callback);
-    }
-
-    public void onSuccess(String result) {
-
     }
 }
 
