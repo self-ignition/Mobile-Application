@@ -39,7 +39,11 @@ import static android.media.CamcorderProfile.get;
 public class SearchResultsActivity extends AppCompatActivity  implements SearchResultCallback {
 
     SearchResult searchResults = new SearchResult(this);
+    Recipe recipe = new Recipe();
+
     List<Recipe> recipies;
+    List<String> title;
+    List<String> prepTime;
     ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
         searchResults.Search(terms, this);
 
         list=(ListView)findViewById(R.id.listView);
-        list.setAdapter(new adapter(this));
+        list.setAdapter(new adapter(this, title, prepTime));
     }
 
 
@@ -66,6 +70,23 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
         for (Recipe r: recipies) {
             Log.i("RESULTS", "onSearchComplete: " + r.getTitle());
         }
+
+        UpdateFields();
+    }
+
+    private void UpdateFields() {
+
+        title = new ArrayList<>();
+        prepTime = new ArrayList<>();
+
+        for (Recipe r: recipies) {
+            title.add(r.getTitle());
+            prepTime.add(r.getPrepTime());
+
+        }
+        list=(ListView)findViewById(R.id.listView);
+        list.setAdapter(new adapter(this, title, prepTime));
+        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 }
 
@@ -82,18 +103,17 @@ class SingleRow {
 class adapter extends BaseAdapter {
     ArrayList<SingleRow> list;
     Context context;
+    List<String> title;
+    List<String> prepTime;
 
-
-    adapter(Context c) {
+    adapter(Context c, List<String> title, List<String> prepTime) {
         context = c;
-        list = new ArrayList<SingleRow>();
-        SearchResult searchResults = new SearchResult(c);
-        List<Recipe> recipies;
 
-        recipies = searchResults.results;
-        for(Recipe r: recipies)
+        this.title = title;
+        this.prepTime = prepTime;
+        for(int i = 0; i < 10; i++)
         {
-            list.add(new SingleRow(r.getTitle(), r.getPrepTime()));
+            list.add(new SingleRow(title.get(i), prepTime.get(i)));
         }
     }
 
