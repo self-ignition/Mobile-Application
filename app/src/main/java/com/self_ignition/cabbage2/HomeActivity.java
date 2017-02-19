@@ -15,8 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.nearby.messages.internal.Update;
 
@@ -35,8 +37,6 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         UpdateRecipes();
 
         // Get the intent, verify the action and get the query
@@ -47,9 +47,7 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
         }
     }
 
-
-
-    public void NewRecipies(View v) {
+    public void NewRecipes(View v) {
         UpdateRecipes();
     }
 
@@ -96,35 +94,55 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.refresh:
+                UpdateRecipes();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onReady(Recipe r) {
         final Recipe recipe = r;
-        Button button;
+        ImageView button;
+        TextView text;
 
         switch(buttonToSet){
             case 1:
-                button = (Button) findViewById(R.id.home_button_one);
+                button = (ImageView) findViewById(R.id.picture1);
+                text = (TextView) findViewById(R.id.text1);
                 break;
             case 2:
-                button = (Button) findViewById(R.id.home_button_two);
+                button = (ImageView) findViewById(R.id.picture2);
+                text = (TextView) findViewById(R.id.text2);
                 break;
             case 3:
-                button = (Button) findViewById(R.id.home_button_three);
+                button = (ImageView) findViewById(R.id.picture3);
+                text = (TextView) findViewById(R.id.text3);
                 break;
             case 4:
-                button = (Button) findViewById(R.id.home_button_four);
+                button = (ImageView) findViewById(R.id.picture4);
+                text = (TextView) findViewById(R.id.text4);
                 break;
             case 5:
-                button = (Button) findViewById(R.id.home_button_five);
+                button = (ImageView) findViewById(R.id.picture5);
+                text = (TextView) findViewById(R.id.text5);
                 break;
             case 6:
-                button = (Button) findViewById(R.id.home_button_six);
+                button = (ImageView) findViewById(R.id.picture6);
+                text = (TextView) findViewById(R.id.text6);
                 break;
             default:
-                button = (Button) findViewById(R.id.home_button_one);
+                button = (ImageView) findViewById(R.id.picture1);
+                text = (TextView) findViewById(R.id.text1);
                 Log.e("Button set", "OOB Exception: Value for int was " + Integer.toString(buttonToSet));
         }
 
-        button.setText(recipe.getTitle());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,17 +153,8 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
             }
         });
         button.setBackground(new BitmapDrawable(recipe.getImage()));
+        text.setText(recipe.getTitle());
         buttonToSet++;
-    }
-
-    public void searchResults(View v) {
-        Intent intent = new Intent(this, SearchResultsActivity.class);
-        startActivity(intent);
-    }
-
-    public void recipe(View v) {
-        Intent intent = new Intent(this, RecipeActivity.class);
-        startActivity(intent);
     }
 }
 
