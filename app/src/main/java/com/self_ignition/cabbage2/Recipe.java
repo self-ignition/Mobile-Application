@@ -30,6 +30,7 @@ public class Recipe implements VolleyCallback {
     private String yield = "none";
     private String imageURL = "none";
     private Bitmap image = null;
+    private String rating = "none";
 
     private List<String> ingredients = new ArrayList<>();
     private List<String> steps = new ArrayList<>();
@@ -59,6 +60,7 @@ public class Recipe implements VolleyCallback {
     public String getImageURL() {
         return imageURL;
     }
+    public String getRating() { return rating; }
 
     public void setTitle(String title) {
         this.title = title;
@@ -85,6 +87,7 @@ public class Recipe implements VolleyCallback {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
+    public void setRating(String rating) { this.rating = rating; }
 
     public void setRecipe(Context context, String term, final RecipeReadyCallback callback) {
         this.callback = callback;
