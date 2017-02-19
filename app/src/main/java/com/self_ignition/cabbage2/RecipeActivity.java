@@ -1,11 +1,16 @@
 package com.self_ignition.cabbage2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,6 +18,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -49,6 +55,39 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         //recipe.setRandomRecipe(this,this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.refresh);
+        item.setVisible(false);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                doMySearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void doMySearch(String query) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
+    }
+
     public void init()
     {
         TextView title = (TextView) findViewById(R.id.title);
@@ -56,6 +95,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         TextView time = (TextView) findViewById(R.id.time);
         time.setText("...");
+
+        TextView yield = (TextView) findViewById(R.id.yield);
+        yield.setText("...");
+
+        TextView author = (TextView) findViewById(R.id.author);
+        author.setText("...");
 
         titles = new ArrayList<>();
         details = new HashMap<>();
@@ -68,15 +113,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         List<String> method = new ArrayList<>();
         List<String> reviews = new ArrayList<>();
 
-        ingredients.add("2 slices of white bread\n");
-        ingredients.add("1 tin of heinz baked beans\n");
-        ingredients.add("40g of grated mature cheddar\n");
-
-        method.add("Place both slices of white bread in toaster.\n");
-        method.add("Warm beans on the hob for 3 - 4 mins stirring constantly.\n");
-        method.add("Grate cheese.\n");
-        method.add("Place toast on plate. Pour on beans.\n");
-        method.add("Sprinkle with cheese according to taste.\n");
 
         reviews.add("I love when my nan makes me these. 10/10.\n");
 
@@ -98,6 +134,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         TextView time = (TextView) findViewById(R.id.time);
         time.setText("Prep time: " + recipe.getPrepTime() + "/ Cook Time: " + recipe.getCookTime());
+
+        TextView yield = (TextView) findViewById(R.id.yield);
+        yield.setText(recipe.getYield());
+
+        TextView author = (TextView) findViewById(R.id.author);
+        author.setText("Created by: " + recipe.getAuthor());
 
         titles = new ArrayList<>();
         details = new HashMap<>();

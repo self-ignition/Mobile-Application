@@ -46,7 +46,6 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
             r.setAuthor(parts.get(3));
             r.setYield(parts.get(4));
             r.setImageURL(parts.get(5).replace(" ", "%20"));
-            r.setRating(parts.get(6));
             r.DownloadImage(this);
         }
     }

@@ -31,9 +31,11 @@
         <activity android:name=".HomeActivity"
             android:label="Home"/>
 
-        <activity android:name=".SearchResultsActivity" > </activity>
+        <activity android:name=".SearchResultsActivity"
+            android:label = "Search Results" />
 
-        <activity android:name=".RecipeActivity" />
+        <activity android:name=".RecipeActivity"
+            android:label = "Recipe"/>
 
     </application>
 

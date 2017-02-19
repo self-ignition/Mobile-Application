@@ -9,12 +9,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -51,8 +53,6 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         //Set list view values
         list=(ListView)findViewById(R.id.listView);
         list.setAdapter(new adapter(this, recipies));
@@ -60,6 +60,40 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
         //Set the terms and commence search
         String terms = getIntent().getStringExtra("query");
         searchResults.Search(terms, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+
+        MenuItem item = menu.findItem(R.id.refresh);
+        item.setVisible(false);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                doMySearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void doMySearch(String query) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putExtra("query", query);
+        startActivity(intent);
     }
 
     public void onSearchComplete(Recipe r) {
@@ -119,10 +153,12 @@ class adapter extends ArrayAdapter<Recipe> {
         View row = inflater.inflate(R.layout.single_row, parent, false);
         TextView title = (TextView) row.findViewById(R.id.textView2);
         TextView prepTime = (TextView) row.findViewById(R.id.textView3);
+        TextView servings = (TextView) row.findViewById(R.id.textView4);
         ImageView image = (ImageView) row.findViewById(R.id.imageView);
 
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
+        servings.setText(recipes.get(position).getYield());
         image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
 
         return row;
