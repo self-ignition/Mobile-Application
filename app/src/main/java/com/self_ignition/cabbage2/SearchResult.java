@@ -11,7 +11,7 @@ import java.util.List;
  * Created by r-bur on 18/02/2017.
  */
 
-public class SearchResult implements VolleyCallback{
+public class SearchResult implements VolleyCallback, RecipeReadyCallback{
     Context context;
     List<Recipe> results = new ArrayList<>();
     SearchResultCallback callback;
@@ -43,17 +43,15 @@ public class SearchResult implements VolleyCallback{
             r.setTitle(parts.get(0));
             r.setPrepTime(parts.get(1));
             r.setCookTime(parts.get(2));
-            r.setImageURL(parts.get(4));
-            //TODO: Download the image
+            r.setImageURL(parts.get(3).replace(" ", "%20"));
+            r.DownloadImage(this);
 
             //TODO: SET RATING
-            //r.setYield(parts.get(4));
-            Log.i("parts", "onSuccess: " + r.getTitle());
-            //add recipe to results list
-            this.results.add(r);
         }
+    }
 
-        //when completed callback to activity
-        callback.onSearchComplete();
+    @Override
+    public void onReady(Recipe r) {
+        callback.onSearchComplete(r);
     }
 }

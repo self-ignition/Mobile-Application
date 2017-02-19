@@ -153,16 +153,25 @@ public class Recipe implements VolleyCallback {
 
         //IMAGE TABLE
         this.setImageURL(tables.get(3).replace(" ", "%20"));
-        new downloadImage(this).execute();
+        new downloadImage(this, this.callback).execute();
+    }
+
+    public void DownloadImage(RecipeReadyCallback callback){
+        if(!this.imageURL.equals("none"))
+        {
+            new downloadImage(this, callback).execute();
+        }
     }
 }
 
 class downloadImage extends AsyncTask<String, Void, String>{
 
     Recipe r = null;
+    RecipeReadyCallback callback;
 
-    public downloadImage(Recipe r){
+    public downloadImage(Recipe r, RecipeReadyCallback callback){
         this.r = r;
+        this.callback = callback;
     }
 
     @Override
@@ -194,6 +203,6 @@ class downloadImage extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        r.callback.onReady(r);
+        callback.onReady(r);
     }
 }

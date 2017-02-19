@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -52,12 +53,6 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //Some default values to prevent crash
-        Recipe r = new Recipe();
-        r.setTitle("Loading Please Wait...");
-        r.setPrepTime("...");
-        recipies.add(r);
-
         //Set list view values
         list=(ListView)findViewById(R.id.listView);
         list.setAdapter(new adapter(this, recipies));
@@ -67,16 +62,8 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
         searchResults.Search(terms, this);
     }
 
-
-    @Override
-    public void onSearchComplete() {
-        //// TODO: 18/02/2017 fill out list of recipes for list view
-
-        recipies = searchResults.results;
-
-        for (Recipe r: recipies) {
-            Log.i("RESULTS", "onSearchComplete: " + r.getTitle());
-        }
+    public void onSearchComplete(Recipe r) {
+        recipies.add(r);
 
         UpdateFields();
     }
@@ -84,6 +71,18 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
     private void UpdateFields() {
         list=(ListView)findViewById(R.id.listView);
         list.setAdapter(new adapter(this, recipies));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the recipe we want to load.
+                Recipe r = (Recipe) list.getItemAtPosition(position);
+
+               //Start the recipe activity for the recipe we chose.
+                Intent i = new Intent(getBaseContext(), RecipeActivity.class);
+                i.putExtra("recipe-title", r.getTitle());
+                startActivity(i);
+            }
+        });
         ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 }
@@ -120,9 +119,11 @@ class adapter extends ArrayAdapter<Recipe> {
         View row = inflater.inflate(R.layout.single_row, parent, false);
         TextView title = (TextView) row.findViewById(R.id.textView2);
         TextView prepTime = (TextView) row.findViewById(R.id.textView3);
+        ImageView image = (ImageView) row.findViewById(R.id.imageView);
 
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
+        image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
 
         return row;
     }
