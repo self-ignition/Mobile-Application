@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,17 +35,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.R.id.list;
 import static android.media.CamcorderProfile.get;
 
 public class SearchResultsActivity extends AppCompatActivity  implements SearchResultCallback {
 
     SearchResult searchResults = new SearchResult(this);
-    Recipe recipe = new Recipe();
 
-    List<Recipe> recipies;
-    List<String> title;
-    List<String> prepTime;
+    List<Recipe> recipies = new ArrayList<>();
     ListView list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +52,19 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //Some default values to prevent crash
+        Recipe r = new Recipe();
+        r.setTitle("Loading Please Wait...");
+        r.setPrepTime("...");
+        recipies.add(r);
+
+        //Set list view values
+        list=(ListView)findViewById(R.id.listView);
+        list.setAdapter(new adapter(this, recipies));
+
         //Set the terms and commence search
         String terms = getIntent().getStringExtra("query");
         searchResults.Search(terms, this);
-
-        list=(ListView)findViewById(R.id.listView);
-        list.setAdapter(new adapter(this, title, prepTime));
     }
 
 
@@ -75,56 +82,31 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
     }
 
     private void UpdateFields() {
-
-        title = new ArrayList<>();
-        prepTime = new ArrayList<>();
-
-        for (Recipe r: recipies) {
-            title.add(r.getTitle());
-            prepTime.add(r.getPrepTime());
-
-        }
         list=(ListView)findViewById(R.id.listView);
-        list.setAdapter(new adapter(this, title, prepTime));
+        list.setAdapter(new adapter(this, recipies));
         ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 }
 
-class SingleRow {
-    String title;
-    String prepTime;
+class adapter extends ArrayAdapter<Recipe> {
 
-    SingleRow(String title, String prepTime) {
-        this.title = title;
-        this.prepTime = prepTime;
-    }
-}
-
-class adapter extends BaseAdapter {
-    ArrayList<SingleRow> list;
     Context context;
-    List<String> title;
-    List<String> prepTime;
+    List<Recipe> recipes;
 
-    adapter(Context c, List<String> title, List<String> prepTime) {
-        context = c;
-
-        this.title = title;
-        this.prepTime = prepTime;
-        for(int i = 0; i < 10; i++)
-        {
-            list.add(new SingleRow(title.get(i), prepTime.get(i)));
-        }
+    adapter(Context c, List<Recipe> recipes) {
+        super(c, R.layout.single_row, recipes);
+        this.context = c;
+        this.recipes = recipes;
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return recipes.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
+    public Recipe getItem(int position) {
+        return recipes.get(position);
     }
 
     @Override
@@ -139,10 +121,8 @@ class adapter extends BaseAdapter {
         TextView title = (TextView) row.findViewById(R.id.textView2);
         TextView prepTime = (TextView) row.findViewById(R.id.textView3);
 
-        SingleRow temp = list.get(position);
-
-        title.setText(temp.title);
-        prepTime.setText(temp.prepTime);
+        title.setText(recipes.get(position).getTitle());
+        prepTime.setText(recipes.get(position).getPrepTime());
 
         return row;
     }
