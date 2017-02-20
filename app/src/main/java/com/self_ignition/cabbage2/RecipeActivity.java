@@ -51,7 +51,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
 
-        recipe.setRecipe(this, getIntent().getStringExtra("recipe-title"), this);
+        recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
         //recipe.setRandomRecipe(this,this);
     }
 

@@ -6,6 +6,7 @@ android {
     buildToolsVersion "25.0.2"
     compileOptions.encoding "ISO-8859-1"
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.self_ignition.cabbage2"
         minSdkVersion 16
         multiDexEnabled true

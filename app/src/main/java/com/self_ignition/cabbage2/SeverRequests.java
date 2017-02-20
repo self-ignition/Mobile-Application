@@ -195,16 +195,17 @@ public class SeverRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        String s = response.replace("&#39;", "'");
                         if(response.length() < 50)
                         {
                             Log.i("volley", "url: " + url);
-                            Log.i("volley", "Valid Response: " + response);
+                            Log.i("volley", "Valid Response: " + s);
                         }
                         else
                         {
-                            Log.i("volley", "Valid Response: " + response.substring(0,50));
+                            Log.i("volley", "Valid Response: " + s.substring(0,50));
                         }
-                        callback.onSuccess(response);
+                        callback.onSuccess(s);
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {

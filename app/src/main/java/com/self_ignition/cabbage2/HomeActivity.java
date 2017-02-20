@@ -147,8 +147,8 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), RecipeActivity.class);
-                i.putExtra("recipe-title", recipe.getTitle());
-                Log.i("Intent Extra", "Title of recipe:" + recipe.getTitle());
+                i.putExtra("recipe-id", recipe.getId());
+                Log.i("Intent Extra", "id of recipe:" + recipe.getId());
                 startActivity(i);
             }
         });

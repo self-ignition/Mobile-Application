@@ -23,6 +23,7 @@ import com.self_ignition.cabbage2.SeverRequests;
 public class Recipe implements VolleyCallback {
     RecipeReadyCallback callback;
 
+    private String id = "none";
     private String title = "none";
     private String prepTime = "none";
     private String cookTime = "none";
@@ -35,6 +36,7 @@ public class Recipe implements VolleyCallback {
     private List<String> ingredients = new ArrayList<>();
     private List<String> steps = new ArrayList<>();
 
+    public String getId() { return id; }
     public String getTitle() {
         return title;
     }
@@ -62,6 +64,7 @@ public class Recipe implements VolleyCallback {
     }
     public String getRating() { return rating; }
 
+    public void setId (String id) { this.id = id; }
     public void setTitle(String title) {
         this.title = title;
     }
@@ -116,11 +119,13 @@ public class Recipe implements VolleyCallback {
         //RECIPE TABLE
         try
         {
-            this.setTitle(parts.get(0));
-            this.setPrepTime(parts.get(1));
-            this.setCookTime(parts.get(2));
-            this.setAuthor(parts.get(3));
-            this.setYield(parts.get(4));
+            Log.i("shit", "onSuccess: " + tables.get(0));
+            setId(parts.get(0));
+            setTitle(parts.get(1));
+            setPrepTime(parts.get(2));
+            setCookTime(parts.get(3));
+            setAuthor(parts.get(4));
+            setYield(parts.get(5));
         }
         catch (IndexOutOfBoundsException e)
         {
