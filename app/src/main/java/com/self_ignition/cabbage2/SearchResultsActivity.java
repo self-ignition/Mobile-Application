@@ -122,7 +122,6 @@ public class SearchResultsActivity extends AppCompatActivity  implements SearchR
 }
 
 class adapter extends ArrayAdapter<Recipe> {
-
     Context context;
     List<Recipe> recipes;
 
