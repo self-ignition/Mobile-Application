@@ -117,8 +117,7 @@ public class Recipe implements VolleyCallback {
         parts = Arrays.asList(tables.get(0).split("\\|"));
 
         //RECIPE TABLE
-        try
-        {
+        try {
             Log.i("shit", "onSuccess: " + tables.get(0));
             setId(parts.get(0));
             setTitle(parts.get(1));
@@ -126,42 +125,41 @@ public class Recipe implements VolleyCallback {
             setCookTime(parts.get(3));
             setAuthor(parts.get(4));
             setYield(parts.get(5));
-        }
-        catch (IndexOutOfBoundsException e)
-        {
+        } catch (IndexOutOfBoundsException e) {
             Log.e("Recipe IOOB", e.getMessage());
         }
 
         //INGREDIENTS TABLE
-        try
-        {
+        try {
             //Spilt second table into ingredients;
             parts = Arrays.asList(tables.get(1).split("\\|"));
-            for (String s: this.getIngredients()) {
+            for (String s : this.getIngredients()) {
                 Log.i("INGREDIENTS", s);
             }
             this.setIngredients(parts);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("Recipe Exception", e.getMessage());
         }
 
         //METHOD TABLE
-        try
-        {
+        try {
             //split third table into steps;
             parts = Arrays.asList(tables.get(2).split("\\|"));
             this.setSteps(parts);
+        } catch (Exception e) {
+            Log.e("Recipe Exception", e.getMessage());
+        }
+
+        //IMAGE TABLE
+        try
+        {
+            this.setImageURL(tables.get(3).replace(" ", "%20"));
+            new downloadImage(this, this.callback).execute();
         }
         catch (Exception e)
         {
             Log.e("Recipe Exception", e.getMessage());
         }
-
-        //IMAGE TABLE
-        this.setImageURL(tables.get(3).replace(" ", "%20"));
-        new downloadImage(this, this.callback).execute();
     }
 
     public void DownloadImage(RecipeReadyCallback callback){
