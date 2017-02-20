@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomepageViewController: UIViewController {
+class HomepageViewController: UIViewController /*UITableViewDataSource,* UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate*/ {
 
     @IBOutlet weak var randomMealNameLabel: UILabel!
     
