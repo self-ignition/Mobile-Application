@@ -25,6 +25,7 @@
     <string name="hintUsername">Username</string>
     <string name="hintEmail">Email Address</string>
     <string name="hintPassword">Password</string>
+    <string name="hintPassword2">Confirm Password</string>
     <string name="login">Login</string>
     <string name="createAccount">Create Account</string>
     <string name="existing">Already a member? Log in</string>
