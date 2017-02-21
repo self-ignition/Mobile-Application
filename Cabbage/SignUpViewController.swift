@@ -77,7 +77,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let userPassword = PasswordTextField.text;
         let userConfirmPw = ConfirmPasswordTextField.text;
         
-        //Check for empty fields
+        //Check for empty fields. CRW
         if((userUsername?.isEmpty)! || (userEmail?.isEmpty)! || (userPassword?.isEmpty)! || (userConfirmPw?.isEmpty)!)
         {
             //display alert message and return
@@ -85,7 +85,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return;
         }
         
-        //Check if P/W Match
+        //Check if P/W Match. CRW
         if(userPassword != userConfirmPw)
         {
             //dispaly alert message and return
@@ -93,46 +93,46 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return;
         }
         
-        //Add logic to store data here
+        //Add logic to store data here. CRW
 
-        //Create a request variable with the URL for our webserver, using the POST method. CRW
-        let request = NSMutableURLRequest(url: NSURL(string: "http://computing.derby.ac.uk/~cabbage/login.php") as! URL);
-        request.httpMethod = "POST";
+        //Create URL. CRW
+        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/jsignup.php")
+        let request = NSMutableURLRequest(url: myUrl! as URL)
+        //Set Method to POST. CRW
+        request.httpMethod = "POST"
+        //Make the string the details required. CRW
+        let postString = "username=\(userUsername)&email=\(userEmail)&password=\(userPassword)"
+        //set the values and encode it
+        request.httpBody = postString.data(using: String.Encoding.utf8)
         
-        //Create a string to send to the server using the username and password text fields (CURRENTLY NO LIMITED CHARACTERS).CRW
-        let postString = "a=\(UsernameTextField.text)&b=\(PasswordTextField.text)&c\(EmailTextField.text)";
-        
-        //Encode and post the string.CRW
-        request.httpBody = postString.data(using: String.Encoding.utf8);
-        
-        //Start session.CRW
-        let task = URLSession.shared.dataTask(with: request as URLRequest) {
-            data, response, error in
-            
+        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
             if error != nil {
-                print("error=\(error)")
+                print("error\(error)")
                 return
             }
             
-            print("response = \(response)")
+            var err: NSError?
             
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("responseString = \(responseString)")
+            do{
+                let json = try NJSONSerialization.JSONObjectWithDate(data!, options: .MutableContainers) as? NSDictionary
+                
+                if let parseJSON = json {
+                    var resultValue:String = parseJSON["status"] as! String;
+                    print("result: \(resultValue)");
+                    
+                    if(resultValue == "Success"){
+                        //Login is Successful
+                        UserDefaults.standardUserDeafaults().setbool(true, forKey: "isUserLoggedInt");
+                        UserDefaults.standardUSerDeafaults().synchronize();
+                        self.dismiss(animated: true, completion:nil);
+                    }
+                }
+            } catch let error as NSError{
+                err = error
+            }
+            
         }
-        task.resume()
         
-        /*//Display alert message with confirmation of Success. CRW
-        //Create an Alert
-        let successAlert = UIAlertController(title:"Alert", message:"Registration Was Sucessful", preferredStyle: UIAlertControllerStyle.alert);
-        //Create an aciton
-        let successAction = UIAlertAction(title:"OK", style:UIAlertActionStyle.default)
-        {
-            action in self.dismiss(animated: true, completion:nil);
-        }
-        successAlert.addAction(successAction);
-        self.present(successAlert, animated:true, completion:nil);*/
-
+        task.resume()
     }
-    
-    
 }
