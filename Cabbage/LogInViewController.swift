@@ -68,39 +68,36 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let userPassword = PasswordTextField.text!;
         
         //Check for empty fields. CRW
-        if((userEmail.isEmpty) || (userPassword.isEmpty))
-        {
+        if((userEmail.isEmpty) || (userPassword.isEmpty)){
             //display alert message and return
             displayMyAlertMessage(userMessage: "All Fields Must Be Filled");
             return;
         }
-        
-        //Create the Connection
-        
-        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/login.php")
-        let request = NSMutableURLRequest(url: myUrl! as URL)
-        //Set Method to POST. CRW
-        request.httpMethod = "POST"
-        //Make the string the details required. CRW
-        let postString = "email=\(userEmail)&password=\(userPassword)"
-        //set the values and encode it. CRW
-        request.httpBody = postString.data(using: String.Encoding.utf8)
-        //set paramaters of session. CRW
-        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
-            if error != nil {
-                print("ERROR ****\(error)")
-                return
-            }
+        else{
+            let server = serverRequests()
+            server.logIn(email: userEmail, password: userPassword, callBack: self)
             
         }
-        task.resume()
         
         //Check if email entered is the same as server response
         
         //Check if password entered is the same as server response
         
-        
     }
     
+    func onRequestComplete(response: String) -> Void {
+        print("RESPONSE ***** \(response)")
+        let dataStringArr = response.components(separatedBy: ":")
+        //Get last char of first string. CRW
+        if dataStringArr[0].characters.last! == "1"{
+            //Open HomePage. CRW
+            let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Homepage") as! HomepageViewController
+            self.present(login, animated: true)
+        }
+        else{
+            displayMyAlertMessage(userMessage:dataStringArr[1])
+        }
+
+    }
     
 }
