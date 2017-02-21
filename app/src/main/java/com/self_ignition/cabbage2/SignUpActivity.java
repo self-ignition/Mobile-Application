@@ -27,6 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText username;
     EditText email;
     EditText password;
+    EditText password2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,12 @@ public class SignUpActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.input_name);
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
+        password2 = (EditText) findViewById(R.id.input_confirmPassword);
 
         username.setFilters(new InputFilter[]{filter});
         email.setFilters(new InputFilter[]{filter});
         password.setFilters(new InputFilter[]{filter});
+        password2.setFilters(new InputFilter[]{filter});
     }
 
     InputFilter filter = new InputFilter() {
@@ -79,6 +82,8 @@ public class SignUpActivity extends AppCompatActivity {
         final String _user = username.getText().toString();
         final String _email = email.getText().toString();
         final  String _password = password.getText().toString();
+        final  String _password2 = password2.getText().toString();
+
 
         if (_user.isEmpty()) {
             username.setError("Please enter a valid username");
@@ -86,7 +91,13 @@ public class SignUpActivity extends AppCompatActivity {
             email.setError("Please enter a valid email address");
         } else if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
-        } else {
+        } else if (!_password.equals(_password2)) {
+            password.setError("Passwords do not match");
+            password2.setError("Passwords do not match");
+        } else if(!_email.contains("@")) {
+            email.setError("Please enter a valid email address");
+        }
+        else {
             SeverRequests serverRequest = new SeverRequests();
             serverRequest.SignUp(this, _user, _email, _password);
             Intent intent = new Intent(this, LogInActivity.class);

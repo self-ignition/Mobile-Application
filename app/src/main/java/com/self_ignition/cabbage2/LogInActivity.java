@@ -97,38 +97,14 @@ public class LogInActivity extends AppCompatActivity {
 
         if (_email.isEmpty()) {
             email.setError("Please enter a valid email address");
-            valid = false;
-        } else {
-            email.setError(null);
-        }
-        if (_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
+        } else if(_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
+        } else if (_email.length() < 1) {
+            email.setError("Please enter a valid email address");
         } else {
-            password.setError(null);
-        }
-
-        //Login method here.
-        SeverRequests req = new SeverRequests();
-        req.Login(this, _email, _password);
-
-        //Find location
-        try {
-            LocationManager locman = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            Location location = null;
-            Criteria criteria = new Criteria();
-
-            //Check for permission
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                //Criteria for provider search
-                location = locman.getLastKnownLocation(locman.getBestProvider(criteria, true));
-            }
-
-            //send location to server
-            req.SendLocation(this, _email, location);
-        }
-        catch (Exception e)
-        {
-            Log.e("LOCATION ERROR", e.getMessage());
+            //Login method here.
+            SeverRequests req = new SeverRequests();
+            req.Login(this, _email, _password);
         }
 
         return valid;
