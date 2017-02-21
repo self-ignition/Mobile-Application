@@ -24,6 +24,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +35,11 @@ import butterknife.ButterKnife;
 import static android.R.attr.filter;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.self_ignition.cabbage2.SeverRequests;
 import com.google.android.gms.location.LocationServices;
 
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity implements VolleyCallback {
 
     EditText email;
     EditText password;
@@ -51,6 +55,15 @@ public class LogInActivity extends AppCompatActivity {
 
         email.setFilters(new InputFilter[]{filter});
         password.setFilters(new InputFilter[]{filter});
+
+        email.setText(SaveSharedPreference.getUserName(this));
+
+        //// TODO: 21/02/2017 FINISH CHECKING DATES TO AUTO LOG IN
+        if(SaveSharedPreference.getDateLoggedIn(this) != null) {
+            if (SaveSharedPreference.getDateLoggedIn(this).getTime() + 86400000 <= new Date().getTime()) {
+                this.onSuccess("1");
+            }
+        }
     }
 
     InputFilter filter = new InputFilter() {
@@ -104,7 +117,7 @@ public class LogInActivity extends AppCompatActivity {
         } else {
             //Login method here.
             SeverRequests req = new SeverRequests();
-            req.Login(this, _email, _password);
+            req.Login(this, _email, _password, this);
         }
 
         return valid;
@@ -118,11 +131,28 @@ public class LogInActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onSuccess(String result) {
+        if(result.equals("1"))
+        {
+            SaveSharedPreference.setUserName(this, email.getText().toString());
+            SaveSharedPreference.setDateLoggedIn(this, new Date());
+            SaveSharedPreference.setLoggedIn(this, true);
+            Intent intent = new Intent(this, HomeActivity.class);
+            this.startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
 class SaveSharedPreference {
     static final String PREF_USER_NAME= "username";
     static final String PREF_LOGGED_IN= "LoggedIn";
+    static final String PREF_DATE_LOGGED_IN = new Date().toString();
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -150,5 +180,26 @@ class SaveSharedPreference {
     public static Boolean getLoggedIn(Context ctx)
     {
         return getSharedPreferences(ctx).getBoolean(PREF_LOGGED_IN, false);
+    }
+
+    public static void setDateLoggedIn(Context ctx, Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PREF_DATE_LOGGED_IN, sdf.format(date));
+        editor.commit();
+    }
+
+    public static Date getDateLoggedIn(Context ctx){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        try {
+            return (Date) sdf.parse(getSharedPreferences(ctx).getString(PREF_DATE_LOGGED_IN, ""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        finally
+        {
+            return null;
+        }
+
     }
 }

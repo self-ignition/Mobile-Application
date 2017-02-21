@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SeverRequests {
 
-    public void Login(final Context context, String _email, String _password) {
+    public void Login(final Context context, String _email, String _password, final VolleyCallback callback) {
         final String email = _email;
         final String password = _password;
         Map<String, String> mParams;
@@ -34,16 +34,7 @@ public class SeverRequests {
                     public void onResponse(String response) {
                         Log.d("volley", "Response is: " + response);
                         //CALL THE LOGIN METHOD
-                        if(response.equals("1"))
-                        {
-                            SaveSharedPreference.setLoggedIn(context, true);
-                            Intent intent = new Intent(context, HomeActivity.class);
-                            context.startActivity(intent);
-                        }
-                        else
-                        {
-                            Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-                        }
+                        callback.onSuccess(response);
 
                     }
                     //What happens if the request fails
