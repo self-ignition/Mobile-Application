@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
@@ -66,19 +67,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         //creating a new view controller of itself with the alert in
         self.present(myAlert, animated:true, completion:nil);
     }
-
     
     //When the sign up button is tapped following code will execute. CRW
     @IBAction func signupButtonTapped(_ sender: Any)
     {
         
-        let userUsername = UsernameTextField.text;
-        let userEmail = EmailTextField.text;
-        let userPassword = PasswordTextField.text;
-        let userConfirmPw = ConfirmPasswordTextField.text;
+        let userUsername = UsernameTextField.text!;
+        let userEmail = EmailTextField.text!;
+        let userPassword = PasswordTextField.text!;
+        let userConfirmPw = ConfirmPasswordTextField.text!;
         
         //Check for empty fields. CRW
-        if((userUsername?.isEmpty)! || (userEmail?.isEmpty)! || (userPassword?.isEmpty)! || (userConfirmPw?.isEmpty)!)
+        if((userUsername.isEmpty) || (userEmail.isEmpty) || (userPassword.isEmpty) || (userConfirmPw.isEmpty))
         {
             //display alert message and return
             displayMyAlertMessage(userMessage: "All Fields Must Be Filled");
@@ -94,45 +94,33 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
         
         //Add logic to store data here. CRW
-
+        
         //Create URL. CRW
-        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/jsignup.php")
+        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/signup.php")
         let request = NSMutableURLRequest(url: myUrl! as URL)
         //Set Method to POST. CRW
         request.httpMethod = "POST"
         //Make the string the details required. CRW
         let postString = "username=\(userUsername)&email=\(userEmail)&password=\(userPassword)"
-        //set the values and encode it
+        //set the values and encode it. CRW
         request.httpBody = postString.data(using: String.Encoding.utf8)
-        
+        //set paramaters of session. CRW
         let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
             if error != nil {
-                print("error\(error)")
+                print("ERROR ****\(error)")
                 return
             }
-            
-            var err: NSError?
-            
-            do{
-                let json = try NJSONSerialization.JSONObjectWithDate(data!, options: .MutableContainers) as? NSDictionary
+            let dataString =  String(data: data!, encoding: String.Encoding.utf8)
+            let dataStringArr = dataString?.components(separatedBy: ":")
+            //Get last char of first string
+            if dataStringArr![0].characters.last! == "1"{
                 
-                if let parseJSON = json {
-                    var resultValue:String = parseJSON["status"] as! String;
-                    print("result: \(resultValue)");
-                    
-                    if(resultValue == "Success"){
-                        //Login is Successful
-                        UserDefaults.standardUserDeafaults().setbool(true, forKey: "isUserLoggedInt");
-                        UserDefaults.standardUSerDeafaults().synchronize();
-                        self.dismiss(animated: true, completion:nil);
-                    }
-                }
-            } catch let error as NSError{
-                err = error
             }
-            
-        }
-        
+            else{
+                
+            }
+       }
+        //run session
         task.resume()
     }
 }

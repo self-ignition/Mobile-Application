@@ -61,37 +61,45 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         self.present(myAlert, animated:true, completion:nil);
     }
     
+    //When Login is tapped
     @IBAction func loginButtonTapped(_ sender: Any) {
         
-        /*let userEmail = UsernameTextField.text;
-        let userPassword = PasswordTextField.text;*/
+        let userEmail = UsernameTextField.text!;
+        let userPassword = PasswordTextField.text!;
         
-        //Create a request variable with the URL for our webserver, using the POST method
-        let request = NSMutableURLRequest(url: NSURL(string: "http://computing.derby.ac.uk/~cabbage/login.php") as! URL);
-            request.httpMethod = "POST";
+        //Check for empty fields. CRW
+        if((userEmail.isEmpty) || (userPassword.isEmpty))
+        {
+            //display alert message and return
+            displayMyAlertMessage(userMessage: "All Fields Must Be Filled");
+            return;
+        }
         
-        //Create a string to send to the server using the username and password text fields (CURRENTLY NO LIMITED CHARACTERS)
-        let postString = "a=\(UsernameTextField.text)&b=\(PasswordTextField.text)";
+        //Create the Connection
         
-        //Encode the string
-        request.httpBody = postString.data(using: String.Encoding.utf8);
-        
-        //Start session
-        let task = URLSession.shared.dataTask(with: request as URLRequest) {
-            data, response, error in
-            
+        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/login.php")
+        let request = NSMutableURLRequest(url: myUrl! as URL)
+        //Set Method to POST. CRW
+        request.httpMethod = "POST"
+        //Make the string the details required. CRW
+        let postString = "email=\(userEmail)&password=\(userPassword)"
+        //set the values and encode it. CRW
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        //set paramaters of session. CRW
+        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
             if error != nil {
-                print("error=\(error)")
+                print("ERROR ****\(error)")
                 return
             }
             
-            print("response = \(response)")
-            
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("responseString = \(responseString)")
         }
-        
         task.resume()
+        
+        //Check if email entered is the same as server response
+        
+        //Check if password entered is the same as server response
+        
+        
     }
     
     
