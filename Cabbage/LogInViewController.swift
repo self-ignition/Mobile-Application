@@ -85,14 +85,24 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    //when Server has made a request. CRW
     func onRequestComplete(response: String) -> Void {
         print("RESPONSE ***** \(response)")
         let dataStringArr = response.components(separatedBy: ":")
         //Get last char of first string. CRW
         if dataStringArr[0].characters.last! == "1"{
             //Open HomePage. CRW
-            let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Homepage") as! HomepageViewController
-            self.present(login, animated: true)
+            
+            // Move to a background thread to do some long running work. CRW
+            DispatchQueue.global(qos: .userInitiated).async {
+                let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Homepage") as! HomepageViewController
+                
+                // Bounce back to the main thread to update the UI. CRW
+                DispatchQueue.main.async {
+                    self.present(login, animated: true)
+                }
+            }
+            
         }
         else{
             displayMyAlertMessage(userMessage:dataStringArr[1])
