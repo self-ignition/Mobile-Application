@@ -52,7 +52,7 @@
 		A525D0601E45036B00E855F2 /* CabbageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabbageUITests.swift; sourceTree = "<group>"; };
 		A525D0621E45036B00E855F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52756281E4E43B600F8A295 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
-		A59600271E4E43020052D6B3 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		A59600271E4E43020052D6B3 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomMealTableViewCell.swift; sourceTree = "<group>"; };
 		A5D318F01E5649B900C4A9D7 /* RandomMealTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomMealTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
