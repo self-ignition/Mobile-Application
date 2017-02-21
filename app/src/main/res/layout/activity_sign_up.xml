@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/backgroundgradient">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="24dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:focusableInTouchMode="true">
 
-        <ImageView android:src="@drawable/logo"
+
+        <ImageView
+            android:src="@drawable/logo"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/logo"
             android:layout_gravity="center_horizontal" />
 
         <!--  Name Label -->
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_name1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_below="@+id/logo">
             <EditText android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,10 +40,12 @@
 
         <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_email1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_below="@+id/input_name1">
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,10 +55,12 @@
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_password1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_below="@+id/input_email1">
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,26 +68,43 @@
                 android:hint="@string/hintPassword"/>
         </android.support.design.widget.TextInputLayout>
 
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_confirmPassword1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_below="@+id/input_password1">
+            <EditText android:id="@+id/input_confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/hintPassword2"/>
+        </android.support.design.widget.TextInputLayout>
+
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:padding="12dp"
             android:text="@string/createAccount"
-            android:onClick="buttonFunction"/>
+            android:onClick="buttonFunction"
+            android:layout_below="@+id/input_confirmPassword1"/>
 
         <!-- Returns Back to Login Page -->
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/existing"
             android:gravity="center"
             android:textSize="16sp"
-            android:onClick="clickFunction"/>
+            android:onClick="clickFunction"
+            android:layout_below="@id/btn_signup"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
