@@ -39,6 +39,9 @@ public class HomeActivity extends AppCompatActivity implements RecipeReadyCallba
         setContentView(R.layout.activity_home);
         UpdateRecipes();
 
+        //Intent intent2 = new Intent(this, Navigation.class);
+        //startActivity(intent2);
+
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
