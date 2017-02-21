@@ -58,11 +58,11 @@ public class LogInActivity extends AppCompatActivity implements VolleyCallback {
 
         email.setText(SaveSharedPreference.getUserName(this));
 
-        //// TODO: 21/02/2017 FINISH CHECKING DATES TO AUTO LOG IN
-        if(SaveSharedPreference.getDateLoggedIn(this) != null) {
-            if (SaveSharedPreference.getDateLoggedIn(this).getTime() + 86400000 <= new Date().getTime()) {
-                this.onSuccess("1");
-            }
+        long Expire = SaveSharedPreference.getDateLoggedIn(this).getTime() + 86400000;
+        long Now = new Date().getTime();
+        Log.i("COMPARE TIME", "Delta Time: " + (Expire - Now));
+        if (Expire <=  Now) {
+            this.onSuccess("1");
         }
     }
 
@@ -152,7 +152,7 @@ public class LogInActivity extends AppCompatActivity implements VolleyCallback {
 class SaveSharedPreference {
     static final String PREF_USER_NAME= "username";
     static final String PREF_LOGGED_IN= "LoggedIn";
-    static final String PREF_DATE_LOGGED_IN = new Date().toString();
+    static final String PREF_DATE_LOGGED_IN = "date";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -186,13 +186,16 @@ class SaveSharedPreference {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_DATE_LOGGED_IN, sdf.format(date));
+        Log.i("date", "setDateLoggedIn: Date ====== " + sdf.format(date));
         editor.commit();
     }
 
     public static Date getDateLoggedIn(Context ctx){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String date = getSharedPreferences(ctx).getString(PREF_DATE_LOGGED_IN, "");
         try {
-            return (Date) sdf.parse(getSharedPreferences(ctx).getString(PREF_DATE_LOGGED_IN, ""));
+            Log.i("date", "getDateLoggedIn: Date ====== " + date);
+            return sdf.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
