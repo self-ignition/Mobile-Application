@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/search"
-        android:title="@string/search"
-        android:hint="@string/search_hint"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"
@@ -15,6 +13,6 @@
         android:title="Refresh"
         android:icon="@drawable/ic_action_refresh"
         android:orderInCategory="1"
-        app:showAsAction="always"
-        />
+        app:showAsAction="always" />
+
 </menu>
