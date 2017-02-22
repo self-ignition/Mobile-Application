@@ -64,35 +64,27 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //When Login is tapped
     @IBAction func loginButtonTapped(_ sender: Any) {
         
-        let userEmail = UsernameTextField.text!;
-        let userPassword = PasswordTextField.text!;
+        let userEmail = UsernameTextField.text!
+        let userPassword = PasswordTextField.text!
         
         //Check for empty fields. CRW
         if((userEmail.isEmpty) || (userPassword.isEmpty)){
             //display alert message and return
-            displayMyAlertMessage(userMessage: "All Fields Must Be Filled");
-            return;
+            displayMyAlertMessage(userMessage: "All Fields Must Be Filled")
+            return
         }
         else{
             let server = serverRequests()
             server.logIn(email: userEmail, password: userPassword, callBack: self)
-            
         }
-        
-        //Check if email entered is the same as server response
-        
-        //Check if password entered is the same as server response
-        
-    }
+}
     
     //when Server has made a request. CRW
     func onRequestComplete(response: String) -> Void {
         print("RESPONSE ***** \(response)")
         let dataStringArr = response.components(separatedBy: ":")
-        //Get last char of first string. CRW
+        //Get last char of first string, the 1 means all okay. CRW
         if dataStringArr[0].characters.last! == "1"{
-            //Open HomePage. CRW
-            
             // Move to a background thread to do some long running work. CRW
             DispatchQueue.global(qos: .userInitiated).async {
                 let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Homepage") as! HomepageViewController
@@ -105,7 +97,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
         }
         else{
-            displayMyAlertMessage(userMessage:dataStringArr[1])
+            DispatchQueue.global(qos: .userInitiated).async {
+                let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Login") as! LogInViewController
+                DispatchQueue.main.async {
+                    //Pop Up alert with relevant message as to why they couldnt log in 
+                    self.displayMyAlertMessage(userMessage:dataStringArr[1])
+                    self.present(login, animated: true)
+                }
+                
+            }
+            
         }
 
     }

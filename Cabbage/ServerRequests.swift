@@ -40,5 +40,33 @@ class serverRequests {
         }
         task.resume()
     }
+    
+    func signUp(username: String, password: String, email: String, callBack: SignUpViewController) -> Void {
+        
+        //Make URL. CRW
+        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/signup.php")
+        let request = NSMutableURLRequest(url: myUrl! as URL)
+        
+        //Set Method to POST. CRW
+        request.httpMethod = "POST"
+        
+        //Make the string the details required. CRW
+        let postString = "username=\(username)&password=\(password)&email=\(email)"
+        
+        //set the values and encode it. CRW
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        
+        //set paramaters of session. CRW
+        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
+            if error != nil {
+                print("ERROR ****\(error)")
+                return
+            }
+            let dataString =  String(data: data!, encoding: String.Encoding.utf8)
+            callBack.onRequestComplete(response: dataString!)
+        }
+        task.resume()
+    }
+
 }
 
