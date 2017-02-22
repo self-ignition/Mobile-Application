@@ -67,6 +67,25 @@ class serverRequests {
         }
         task.resume()
     }
+    
+    func downloadRecipe(callBack: Recipe)-> Void{
+        //Make URL. CRW
+        let myUrl = NSURL(string: "http://computing.derby.ac.uk/~cabbage/randomrecipe.php")
+        let request = NSMutableURLRequest(url: myUrl! as URL)
+        
+        //Set Method to POST. CRW
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
+            if error != nil {
+                print("ERROR ****\(error)")
+                return
+            }
+            let dataString =  String(data: data!, encoding: String.Encoding.utf8)
+            callBack.randomRecipe(recipe: dataString!)
+        }
+        task.resume()
+    }
 
 }
 

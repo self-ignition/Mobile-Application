@@ -26,6 +26,9 @@ class HomepageViewController: UIViewController /*UITableViewDataSource,* UITable
         // Dispose of any resources that can be recreated.
     }
 
-
+    func onRequestComplete(recipe: String) -> Void {
+       
+        
+    }
 }
 
