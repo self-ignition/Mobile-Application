@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment">
+    tools:context=".fragment.NotificationsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello, setting fragment" />
+        android:text="hello, notifications fragment" />
 
 </FrameLayout>

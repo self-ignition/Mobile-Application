@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.fragment.FriendsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.HomeFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.MyFoodFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.NotificationsFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.SavedRecipesFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment;
 import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
 import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
@@ -195,21 +200,26 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                 // home
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
-           /* case 1:
-                // photos
-                PhotosFragment photosFragment = new PhotosFragment();
-                return photosFragment;
+           case 1:
+                // saved recipes
+                SavedRecipesFragment savedRecipesFragment = new SavedRecipesFragment();
+                return savedRecipesFragment;
             case 2:
-                // movies fragment
-                MoviesFragment moviesFragment = new MoviesFragment();
-                return moviesFragment;
+                // my fridge fragment
+                MyFoodFragment myFoodFragment = new MyFoodFragment();
+                return myFoodFragment;
             case 3:
+                // friends fragment
+                FriendsFragment friendsFragment = new FriendsFragment();
+                return friendsFragment;
+            case 4:
                 // notifications fragment
                 NotificationsFragment notificationsFragment = new NotificationsFragment();
-                return notificationsFragment;*/
+                return notificationsFragment;
 
-            case 4:
+            case 5:
                 // settings fragment
+                Log.i("asodms", "getHomeFragment: Called settings fragment");
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
@@ -257,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                         CURRENT_TAG = TAG_NOTIFICATIONS;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
 
