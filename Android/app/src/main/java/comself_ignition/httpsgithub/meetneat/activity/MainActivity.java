@@ -26,9 +26,12 @@ import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.fragment.HomeFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment;
 import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
+import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -106,9 +109,12 @@ public class MainActivity extends AppCompatActivity {
      * name, website, notifications action view (dot)
      */
     private void loadNavHeader() {
+        String emailAddress = SaveSharedPreference.getUserName(this);
+        ServerRequests sr = new ServerRequests();
+        sr.getUsername(this, emailAddress, this);
         // name, website
-        txtName.setText("Susan Boyle");
-        txtWebsite.setText("www.susanboyle.com");
+        txtName.setText("Loading...");
+        txtWebsite.setText(emailAddress);
 
         // loading header background image
         Glide.with(this).load(urlNavHeaderBg)
@@ -361,5 +367,10 @@ public class MainActivity extends AppCompatActivity {
             fab.show();
         else
             fab.hide();
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        txtName.setText(result);
     }
 }

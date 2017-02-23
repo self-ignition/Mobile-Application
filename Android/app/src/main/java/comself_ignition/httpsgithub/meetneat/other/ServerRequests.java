@@ -29,7 +29,6 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("volley", "Response is: " + response);
                         //CALL THE LOGIN METHOD
                         callback.onSuccess(response);
 
@@ -70,14 +69,6 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.length() < 50)
-                        {
-                            Log.i("volley", "Valid Response: " + response);
-                        }
-                        else
-                        {
-                            Log.i("volley", "Valid Response: " + response.substring(0,50));
-                        }
                         callback.onSuccess(response);
                     }
                     //What happens if the request fails
@@ -104,7 +95,6 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("volley", "Response is: " + response);
                         //CALL THE LOGIN METHOD
                     }
                     //What happens if the request fails
@@ -147,7 +137,7 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("volley", "Response is: " + response);
+
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -184,15 +174,6 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         String s = response.replace("&#39;", "'");
-                        if(response.length() < 50)
-                        {
-                            Log.i("volley", "url: " + url);
-                            Log.i("volley", "Valid Response: " + s);
-                        }
-                        else
-                        {
-                            Log.i("volley", "Valid Response: " + s.substring(0,50));
-                        }
                         callback.onSuccess(s);
                     }
                     //What happens if the request fails
@@ -205,4 +186,44 @@ public class ServerRequests {
 
         queue.add(request);
     }
+
+    public void getUsername(final Context context, final String _email, final VolleyCallback callback) {
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/getusername.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //CALL THE LOGIN METHOD
+                        callback.onSuccess(response);
+
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }
+                //Some touchy-feely with body to add post payload
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("email", _email);
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+
+    }
+
 }

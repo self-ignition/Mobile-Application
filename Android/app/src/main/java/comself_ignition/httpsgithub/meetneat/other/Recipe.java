@@ -122,7 +122,6 @@ public class Recipe implements VolleyCallback {
 
         //RECIPE TABLE
         try {
-            Log.i("shit", "onSuccess: " + tables.get(0));
             setId(parts.get(0));
             setTitle(parts.get(1));
             setPrepTime(parts.get(2));
@@ -130,19 +129,16 @@ public class Recipe implements VolleyCallback {
             setAuthor(parts.get(4));
             setYield(parts.get(5));
         } catch (IndexOutOfBoundsException e) {
-            Log.e("Recipe IOOB", e.getMessage());
+            e.printStackTrace();
         }
 
         //INGREDIENTS TABLE
         try {
             //Spilt second table into ingredients;
             parts = Arrays.asList(tables.get(1).split("\\|"));
-            for (String s : this.getIngredients()) {
-                Log.i("INGREDIENTS", s);
-            }
             this.setIngredients(parts);
         } catch (Exception e) {
-            Log.e("Recipe Exception", e.getMessage());
+            e.printStackTrace();
         }
 
         //METHOD TABLE
@@ -151,7 +147,7 @@ public class Recipe implements VolleyCallback {
             parts = Arrays.asList(tables.get(2).split("\\|"));
             this.setSteps(parts);
         } catch (Exception e) {
-            Log.e("Recipe Exception", e.getMessage());
+            e.printStackTrace();
         }
 
         //IMAGE TABLE
@@ -162,7 +158,7 @@ public class Recipe implements VolleyCallback {
         }
         catch (Exception e)
         {
-            Log.e("Recipe Exception", e.getMessage());
+            e.printStackTrace();
         }
     }
 
