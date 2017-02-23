@@ -364,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         {
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+                SaveSharedPreference.setLoggedIn(this, false);
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;
