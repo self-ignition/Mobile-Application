@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 
 import android.app.ProgressDialog;
 

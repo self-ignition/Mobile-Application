@@ -1,7 +1,6 @@
-package comself_ignition.httpsgithub.meetneat;
+package comself_ignition.httpsgithub.meetneat.other;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;

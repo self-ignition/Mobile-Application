@@ -7,14 +7,18 @@
             android:icon="@drawable/placeholder_icon"
             android:title="@string/nav_home" />
         <item
-            android:id="@+id/nav_photos"
+            android:id="@+id/nav_recipes"
             android:icon="@drawable/placeholder_icon"
-            android:title="@string/nav_photos" />
+            android:title="@string/nav_recipes" />
         <item
-            android:id="@+id/nav_movies"
+            android:id="@+id/nav_fridge"
             android:icon="@drawable/placeholder_icon"
-            android:title="@string/nav_movies" />
+            android:title="@string/nav_fridge" />
 
+        <item
+            android:id="@+id/nav_friends"
+            android:icon="@drawable/placeholder_icon"
+            android:title="@string/nav_friends" />
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/placeholder_icon"

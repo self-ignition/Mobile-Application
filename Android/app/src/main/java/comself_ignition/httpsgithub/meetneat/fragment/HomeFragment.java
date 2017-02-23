@@ -20,8 +20,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import comself_ignition.httpsgithub.meetneat.Recipe;
-import comself_ignition.httpsgithub.meetneat.RecipeReadyCallback;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;

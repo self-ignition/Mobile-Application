@@ -1,5 +1,6 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,9 @@ import android.widget.Toast;
 
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.ServerRequests;
-import comself_ignition.httpsgithub.meetneat.VolleyCallback;
-import comself_ignition.httpsgithub.meetneat.fragment.HomeFragment;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
+import dmax.dialog.SpotsDialog;
 
 public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
@@ -51,17 +52,13 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
     };
 
     public void login() {
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
+        final AlertDialog dialog = new SpotsDialog(this,"Authenticating");
+        dialog.show();
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         validate();
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        progressDialog.dismiss();
+                        dialog.dismiss();
                     }
                 }, 3000);
     }

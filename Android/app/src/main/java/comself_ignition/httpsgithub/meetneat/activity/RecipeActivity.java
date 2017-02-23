@@ -1,16 +1,11 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,7 +13,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,12 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.Recipe;
-import comself_ignition.httpsgithub.meetneat.RecipeReadyCallback;
-
-import static android.R.color.white;
-import static android.R.id.extractArea;
-import static android.R.id.list;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeReadyCallback {
 

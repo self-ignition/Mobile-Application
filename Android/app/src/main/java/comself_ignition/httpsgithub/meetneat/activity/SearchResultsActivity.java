@@ -3,10 +3,7 @@ package comself_ignition.httpsgithub.meetneat.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -28,11 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.Recipe;
-import comself_ignition.httpsgithub.meetneat.SearchResult;
-import comself_ignition.httpsgithub.meetneat.SearchResultCallback;
-
-import static comself_ignition.httpsgithub.meetneat.R.id.toolbar;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.SearchResult;
+import comself_ignition.httpsgithub.meetneat.other.SearchResultCallback;
 
 public class SearchResultsActivity extends AppCompatActivity implements SearchResultCallback {
 
