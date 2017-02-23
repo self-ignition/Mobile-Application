@@ -61,9 +61,6 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
         inflater.inflate(R.menu.options_menu, menu);
 
 
-        MenuItem item = menu.findItem(R.id.refresh);
-        item.setVisible(false);
-
         MenuItem searchViewItem = menu.findItem(R.id.search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

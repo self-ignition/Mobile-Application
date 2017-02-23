@@ -16,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.R;
@@ -102,7 +104,6 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
         inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-
         MenuItem searchViewItem = menu.findItem(R.id.search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -120,6 +121,19 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
 
         });
         //onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_refresh:
+                UpdateRecipes();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void doMySearch(String query) {
@@ -150,7 +164,7 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void UpdateRecipes() {
+    public void UpdateRecipes() {
         recipes.clear();
         buttonToSet = 1;
 
@@ -161,6 +175,7 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
             recipes.add(r);
         }
     }
+
 
     @Override
     public void onReady(Recipe r) {
@@ -209,7 +224,7 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
             }
         });
 
-        button.setBackground(new BitmapDrawable(recipe.getImage()));
+        button.setImageDrawable(new BitmapDrawable(recipe.getImage()));
         text.setText(recipe.getTitle());
         buttonToSet++;
 

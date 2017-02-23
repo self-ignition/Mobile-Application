@@ -30,6 +30,8 @@ import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
+import static android.R.attr.fragment;
+
 
 public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
@@ -43,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
     // urls to load navigation header background image
     // and profile image
-    private static final String urlNavHeaderBg = "http://static6.tellymixcdn.com/wp-content/blogs.dir/1/files/2016/09/susan-boyle.jpg";
-    private static final String urlProfileImg = "http://static6.tellymixcdn.com/wp-content/blogs.dir/1/files/2016/09/susan-boyle.jpg";
+    private static final String urlNavHeaderBg = "http://i.imgur.com/AMf9X7E.jpg";
+    private static final String urlProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -347,18 +349,17 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
-            return true;
+        switch (item.getItemId())
+        {
+            case R.id.action_logout:
+                Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     // show or hide the fab
