@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import dmax.dialog.SpotsDialog;
 
+import static android.R.attr.filter;
+
 public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
     EditText email;
@@ -30,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //getSupportActionBar().hide();
 
         email = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
@@ -39,8 +41,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         password.setFilters(new InputFilter[]{filter});
 
         email.setText(SaveSharedPreference.getUserName(this));
-        if(SaveSharedPreference.getLoggedIn(this))
-        {
+        if(SaveSharedPreference.getLoggedIn(this)) {
             onSuccess("1");
         }
     }
