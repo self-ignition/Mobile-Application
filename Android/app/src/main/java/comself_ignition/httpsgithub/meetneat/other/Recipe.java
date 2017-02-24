@@ -98,8 +98,9 @@ public class Recipe implements VolleyCallback {
 
     public void setRecipe(Context context, String term, final RecipeReadyCallback callback) {
         this.callback = callback;
-        term = term.replace(" ", "%20");
+        term = term.replace(" ", "%20").trim();
         String url = "http://computing.derby.ac.uk/~cabbage/recipe.php?terms=" + term;
+        Log.e("Result", "setRecipe: " + url);
         ServerRequests ser = new ServerRequests();
         ser.GetRecipe(context, url, this);
     }
@@ -122,6 +123,7 @@ public class Recipe implements VolleyCallback {
 
         //RECIPE TABLE
         try {
+            Log.d("Result", "shit result: " + result);
             setId(parts.get(0));
             setTitle(parts.get(1));
             setPrepTime(parts.get(2));

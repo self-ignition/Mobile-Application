@@ -30,6 +30,7 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
         this.callback = callback;
         for (String id: terms.split("\\|")) {
             ServerRequests ser = new ServerRequests();
+            Log.d("Result", "Retrieve: " + id);
             ser.DoSearch(context, id, SearchType.THIS, this);
         }
     }

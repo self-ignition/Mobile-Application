@@ -169,9 +169,6 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
 
                 //Start the recipe activity for the recipe we chose.
                 Intent i = new Intent(getContext(), RecipeActivity.class);
-
-                Log.e("FAV RECIPE", "ID for this recipe is: " +r.getId() + "----");
-
                 i.putExtra("recipe-id", r.getId());
                 startActivity(i);
             }
