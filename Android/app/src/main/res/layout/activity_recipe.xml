@@ -64,6 +64,18 @@
             android:textAlignment="center"
             android:paddingBottom="30dp"/>
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/author"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Save Recipe"
+            android:onClick="saveFunction"
+            android:layout_weight="0.25"/>
+
         <ExpandableListView
             android:id="@+id/exp_list"
             android:layout_width="match_parent"
@@ -71,7 +83,7 @@
             android:indicatorLeft="?android:attr/expandableListPreferredChildIndicatorLeft"
             android:divider="#f44242"
             android:dividerHeight="2dip"
-            android:layout_below="@+id/author"
+            android:layout_below="@+id/btn_save"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true">
         </ExpandableListView>

@@ -15,6 +15,12 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +29,8 @@ import java.util.Map;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
+
+import static android.R.attr.data;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeReadyCallback {
 
@@ -46,6 +54,20 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         expandableListView.setAdapter(listAdapter);
 
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
+    }
+
+    public void saveFunction(View v)
+    {
+
+        String data = recipe.getId();
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.append(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
     }
 
   /*  @Override
