@@ -50,13 +50,9 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    SearchResult searchResults = new SearchResult(getActivity());
+    SearchResult searchResults;
     List<Recipe> recipes = new ArrayList<>();
     ListView list;
 
@@ -85,18 +81,13 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        readRecipes();
-
+        searchResults = new SearchResult(getActivity().getBaseContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        readRecipes();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_search_results, container, false);
     }
@@ -107,17 +98,6 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
             mListener.onFragmentInteraction(uri);
         }
     }
-
-  /*  @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
 
     @Override
     public void onDetach() {
@@ -190,6 +170,8 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
+
+        //Search ( Query, Callback )
         searchResults.Search(ret, this);
     }
 }
