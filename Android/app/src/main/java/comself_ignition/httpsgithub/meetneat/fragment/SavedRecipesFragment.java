@@ -1,6 +1,8 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -16,10 +24,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.SearchResult;
+import comself_ignition.httpsgithub.meetneat.other.SearchResultCallback;
+
+import static android.R.id.list;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +44,7 @@ import comself_ignition.httpsgithub.meetneat.R;
  * Use the {@link SavedRecipesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedRecipesFragment extends Fragment {
+public class SavedRecipesFragment extends Fragment implements SearchResultCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,6 +55,10 @@ public class SavedRecipesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    SearchResult searchResults = new SearchResult(getActivity());
+    List<Recipe> recipes = new ArrayList<>();
+    ListView list;
 
     public SavedRecipesFragment() {
         // Required empty public constructor
@@ -72,6 +91,7 @@ public class SavedRecipesFragment extends Fragment {
         }
 
         readRecipes();
+
     }
 
     @Override
@@ -103,6 +123,30 @@ public class SavedRecipesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onSearchComplete(Recipe r) {
+        recipes.add(r);
+
+        UpdateFields();
+    }
+
+    private void UpdateFields() {
+        list=(ListView) getActivity().findViewById(R.id.listView);
+        list.setAdapter(new adapter(getActivity(), recipes)); /*MAYBE NO*/
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the recipe we want to load.
+                Recipe r = (Recipe) list.getItemAtPosition(position);
+
+                //Start the recipe activity for the recipe we chose.
+                Intent i = new Intent(getContext(), RecipeActivity.class);
+                i.putExtra("recipe-id", r.getId());
+                startActivity(i);
+            }
+        });
+        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 
     /**
@@ -146,87 +190,49 @@ public class SavedRecipesFragment extends Fragment {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
+        searchResults.Search(ret, this);
     }
 }
 
-class MyListAdapter extends BaseExpandableListAdapter {
+class adapter extends ArrayAdapter<Recipe> {
     Context context;
-    List<String> titles;
-    Map<String,List<String>> details;
+    List<Recipe> recipes;
 
-
-    public MyListAdapter(Context context, List<String> titles, Map<String, List<String>> details) {
-        this.details = details;
-        this.context = context;
-        this.titles = titles;
+    adapter(Context c, List<Recipe> recipes) {
+        super(c, R.layout.activity_search_results_row, recipes);
+        this.context = c;
+        this.recipes = recipes;
     }
 
     @Override
-    public int getGroupCount() {
-        return titles.size();
+    public int getCount() {
+        return recipes.size();
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
-        return details.get(titles.get(groupPosition)).size();
+    public Recipe getItem(int position) {
+        return recipes.get(position);
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
-        return titles.get(groupPosition);
+    public long getItemId(int position) {
+        return 0;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return details.get(titles.get(groupPosition)).get(childPosition);
-    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.activity_search_results_row, parent, false);
+        TextView title = (TextView) row.findViewById(R.id.textView2);
+        TextView prepTime = (TextView) row.findViewById(R.id.textView3);
+        TextView servings = (TextView) row.findViewById(R.id.textView4);
+        ImageView image = (ImageView) row.findViewById(R.id.imageView);
 
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
+        title.setText(recipes.get(position).getTitle());
+        prepTime.setText(recipes.get(position).getPrepTime());
+        servings.setText(recipes.get(position).getYield());
+        image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
 
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String title = (String) getGroup(groupPosition);
-
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.activity_recipe_parent,null);
-        }
-
-        TextView txtParent = (TextView) convertView.findViewById(R.id.txtParent);
-        txtParent.setText(title);
-        return convertView;
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String details = (String) getChild(groupPosition, childPosition);
-
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.activity_recipe_child,null);
-        }
-
-        TextView txtChild = (TextView) convertView.findViewById(R.id.txtChild);
-        txtChild.setText(details);
-
-        return convertView;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return row;
     }
 }
