@@ -58,10 +58,26 @@ public class ServerRequests {
 
     }
 
-    public void DoSearch(Context context, final String query, final VolleyCallback callback){
+    public void DoSearch(Context context, final String query, final SearchType type, final VolleyCallback callback){
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
-        final String url = "http://computing.derby.ac.uk/~cabbage/dosearch.php?terms=" +query.replace(" ", "%20") + "&search=OR";
+        String searchMethod = "";
+        switch (type)
+        {
+            case OR:
+                searchMethod = "OR";
+                break;
+            case AND:
+                searchMethod = "AND";
+                break;
+            case THIS:
+                searchMethod = "THIS";
+                break;
+            default:
+                searchMethod = "OR";
+        }
+
+        final String url = "http://computing.derby.ac.uk/~cabbage/dosearch.php?terms=" +query.replace(" ", "%20") + "&search="+searchMethod;
 
         //Create the request
         StringRequest request = new StringRequest(Request.Method.POST, url,

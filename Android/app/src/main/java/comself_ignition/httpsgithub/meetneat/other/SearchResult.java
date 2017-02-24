@@ -1,6 +1,7 @@
 package comself_ignition.httpsgithub.meetneat.other;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,15 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
     public void Search(String terms, SearchResultCallback callback){
         this.callback = callback;
         ServerRequests ser = new ServerRequests();
-        ser.DoSearch(context, terms, this);
+        ser.DoSearch(context, terms, SearchType.OR, this);
+    }
+
+    public void Retrieve(String terms, SearchResultCallback callback){
+        this.callback = callback;
+        for (String id: terms.split("\\|")) {
+            ServerRequests ser = new ServerRequests();
+            ser.DoSearch(context, id, SearchType.THIS, this);
+        }
     }
 
     @Override
@@ -61,3 +70,4 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
         callback.onSearchComplete(r);
     }
 }
+

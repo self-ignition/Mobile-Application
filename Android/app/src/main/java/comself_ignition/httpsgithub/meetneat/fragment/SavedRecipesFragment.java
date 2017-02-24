@@ -105,30 +105,6 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
         mListener = null;
     }
 
-    public void onSearchComplete(Recipe r) {
-        recipes.add(r);
-
-        UpdateFields();
-    }
-
-    private void UpdateFields() {
-        list=(ListView) getActivity().findViewById(R.id.listView);
-        list.setAdapter(new adapter(getActivity(), recipes)); /*MAYBE NO*/
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Get the recipe we want to load.
-                Recipe r = (Recipe) list.getItemAtPosition(position);
-
-                //Start the recipe activity for the recipe we chose.
-                Intent i = new Intent(getContext(), RecipeActivity.class);
-                i.putExtra("recipe-id", r.getId());
-                startActivity(i);
-            }
-        });
-        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -173,7 +149,34 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
         }
 
         //Search ( Query, Callback )
-        searchResults.Search(recipe, this);
+        searchResults.Retrieve(recipe, this);
+    }
+
+    public void onSearchComplete(Recipe r) {
+        recipes.add(r);
+
+        UpdateFields();
+    }
+
+    private void UpdateFields() {
+        list=(ListView) getActivity().findViewById(R.id.listView);
+        list.setAdapter(new adapter(getActivity(), recipes)); /*MAYBE NO*/
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the recipe we want to load.
+                Recipe r = (Recipe) list.getItemAtPosition(position);
+
+                //Start the recipe activity for the recipe we chose.
+                Intent i = new Intent(getContext(), RecipeActivity.class);
+
+                Log.e("FAV RECIPE", "ID for this recipe is: " +r.getId() + "----");
+
+                i.putExtra("recipe-id", r.getId());
+                startActivity(i);
+            }
+        });
+        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 }
 
