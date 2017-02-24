@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="#000000">
@@ -16,10 +16,10 @@
         android:scaleType="centerCrop"
         android:alpha="0.5"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingTop="24dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
@@ -45,7 +45,7 @@
                 android:textColorHint="#ffffff">
                 <EditText android:id="@+id/input_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:inputType="textCapWords"
                     android:hint="@string/hintUsername"
                     android:textColor="#ffffff"
@@ -116,7 +116,7 @@
                 android:padding="12dp"
                 android:text="@string/createAccount"
                 android:onClick="buttonFunction"
-                android:layout_below="@+id/input_confirmPassword1"/>
+                android:layout_below="@+id/input_confirmPassword1" />
 
             <!-- Returns Back to Login Page -->
             <TextView android:id="@+id/link_login"
@@ -131,6 +131,6 @@
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"/>
 
-        </RelativeLayout>
+        </LinearLayout>
     </FrameLayout>
-</RelativeLayout>
+</LinearLayout>
