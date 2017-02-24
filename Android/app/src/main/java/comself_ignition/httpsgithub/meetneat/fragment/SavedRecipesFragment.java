@@ -1,14 +1,29 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.SearchResult;
+import comself_ignition.httpsgithub.meetneat.other.SearchResultCallback;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,11 +33,18 @@ import comself_ignition.httpsgithub.meetneat.R;
  * Use the {@link SavedRecipesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SavedRecipesFragment extends Fragment {
+public class SavedRecipesFragment extends Fragment implements SearchResultCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    SearchResult searchResults = new SearchResult(getContext());
+    Context c = getContext();
+
+    List<Recipe> recipes = new ArrayList<>();
+    ListView list;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,6 +81,14 @@ public class SavedRecipesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //Set list view values
+        list=(ListView) getActivity().findViewById(R.id.listView);
+        list.setAdapter(new adapter(c, recipes));
+
+        //Set the terms and commence search
+        String terms = getActivity().getIntent().getStringExtra("query");
+        searchResults.Search(terms, this);
     }
 
     @Override
@@ -92,6 +122,30 @@ public class SavedRecipesFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSearchComplete(Recipe r) {
+        recipes.add(r);
+        UpdateFields();
+    }
+
+    private void UpdateFields() {
+        list=(ListView) getActivity().findViewById(R.id.listView);
+        list.setAdapter(new adapter(getContext(), recipes));
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Get the recipe we want to load.
+                Recipe r = (Recipe) list.getItemAtPosition(position);
+
+                //Start the recipe activity for the recipe we chose.
+                Intent i = new Intent(getContext(), RecipeActivity.class);
+                i.putExtra("recipe-id", r.getId());
+                startActivity(i);
+            }
+        });
+        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -107,3 +161,47 @@ public class SavedRecipesFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+
+class adapter extends ArrayAdapter<Recipe> {
+    Context context;
+    List<Recipe> recipes;
+
+    adapter(Context c, List<Recipe> recipes) {
+        super(c, R.layout.activity_search_results_row, recipes);
+        this.context = c;
+        this.recipes = recipes;
+    }
+
+    @Override
+    public int getCount() {
+        return recipes.size();
+    }
+
+    @Override
+    public Recipe getItem(int position) {
+        return recipes.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.activity_search_results_row, parent, false);
+        TextView title = (TextView) row.findViewById(R.id.textView2);
+        TextView prepTime = (TextView) row.findViewById(R.id.textView3);
+        TextView servings = (TextView) row.findViewById(R.id.textView4);
+        ImageView image = (ImageView) row.findViewById(R.id.imageView);
+
+        title.setText(recipes.get(position).getTitle());
+        prepTime.setText(recipes.get(position).getPrepTime());
+        servings.setText(recipes.get(position).getYield());
+        image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
+
+        return row;
+    }
+}
+
