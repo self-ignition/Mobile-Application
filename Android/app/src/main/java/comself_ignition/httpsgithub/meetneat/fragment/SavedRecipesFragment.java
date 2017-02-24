@@ -146,7 +146,8 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
 
     private void readRecipes()
     {
-        String ret = "";
+        String recipe =
+                "";
         try {
             InputStream inputStream = getActivity().openFileInput("config.txt");
 
@@ -161,8 +162,8 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
                 }
 
                 inputStream.close();
-                ret = stringBuilder.toString();
-                Log.i("HELLO", ret);
+                recipe = stringBuilder.toString();
+                Log.i("HELLO", recipe);
             }
         }
         catch (FileNotFoundException e) {
@@ -172,7 +173,7 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
         }
 
         //Search ( Query, Callback )
-        searchResults.Search(ret, this);
+        searchResults.Search(recipe, this);
     }
 }
 

@@ -61,8 +61,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         String data = recipe.getId();
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
-            outputStreamWriter.append(data);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_APPEND));
+            outputStreamWriter.append(data + "|");
             outputStreamWriter.close();
         }
         catch (IOException e) {

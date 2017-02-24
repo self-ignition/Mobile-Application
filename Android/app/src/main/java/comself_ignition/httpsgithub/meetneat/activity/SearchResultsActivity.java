@@ -46,10 +46,6 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Set list view values
-        list=(ListView) findViewById(R.id.listView);
-        list.setAdapter(new adapter(this, recipes));
-
         //Set the terms and commence search
         String terms = this.getIntent().getStringExtra("query");
         searchResults.Search(terms, this);

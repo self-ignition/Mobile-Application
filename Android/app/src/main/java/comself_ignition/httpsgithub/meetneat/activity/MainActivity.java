@@ -1,8 +1,14 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +29,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.fragment.FriendsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.HomeFragment;
@@ -36,6 +49,8 @@ import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import static android.R.attr.fragment;
+import static android.provider.CalendarContract.CalendarCache.URI;
+import static comself_ignition.httpsgithub.meetneat.R.id.imageView;
 
 
 public class MainActivity extends AppCompatActivity implements VolleyCallback{
@@ -47,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-
-    // urls to load navigation header background image
-    // and profile image
-    private static final String urlNavHeaderBg = "http://i.imgur.com/AMf9X7E.jpg";
-    private static final String urlProfileImg = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -107,9 +117,43 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
-
     }
 
+    public void image(View v)
+    {
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto , 1);
+    }
+
+    private int PICK_IMAGE_REQUEST = 1;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+            String stringUri;
+            stringUri = uri.toString();
+
+                try {
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("image.txt", Context.MODE_PRIVATE));
+                    outputStreamWriter.append(stringUri);
+                    outputStreamWriter.close();
+                    }
+                    catch (IOException e) {
+                        Log.e("Exception", "File write failed: " + e.toString());
+                    }
+
+                Glide.with(this).load(uri)
+                        .crossFade()
+                        .thumbnail(0.5f)
+                        .bitmapTransform(new CircleTransform(this))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imgProfile);
+        }
+    }
     /***
      * Load navigation menu header information
      * like background image, profile image
@@ -124,23 +168,52 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         txtWebsite.setText(emailAddress);
 
         // loading header background image
-        Glide.with(this).load(urlNavHeaderBg)
+        Glide.with(this).load(R.drawable.header_image)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgNavHeaderBg);
 
-        // Loading profile image
-        Glide.with(this).load(urlProfileImg)
+        Glide.with(this).load(R.drawable.placeholder_avatar)
                 .crossFade()
                 .thumbnail(0.5f)
                 .bitmapTransform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
-
         // showing dot next to notifications label
         navigationView.getMenu().getItem(4).setActionView(R.layout.menu_dot);
-    }
 
+        try {
+            InputStream inputStream = this.openFileInput("image.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                String temp = stringBuilder.toString();
+
+                Uri uri;
+                uri = Uri.parse(temp);
+                Glide.with(this).load(uri)
+                        .crossFade()
+                        .thumbnail(0.5f)
+                        .bitmapTransform(new CircleTransform(this))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imgProfile);
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+    }
     /***
      * Returns respected fragment that user
      * selected from navigation menu
