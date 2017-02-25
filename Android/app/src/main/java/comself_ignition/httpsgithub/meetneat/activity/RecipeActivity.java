@@ -1,7 +1,12 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,15 +63,95 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
     public void saveFunction(View v)
     {
-
         String data = recipe.getId();
+        String recipe = "";
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_APPEND));
-            outputStreamWriter.append(data + "|");
+            outputStreamWriter.write("");
             outputStreamWriter.close();
+
+            InputStream inputStream = this.openFileInput("config.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+                inputStream.close();
+                recipe = stringBuilder.toString();
+            }
         }
-        catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        if(!recipe.contains(data))
+        {
+            try {
+
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_APPEND));
+                outputStreamWriter.append(data + "|");
+                outputStreamWriter.close();
+            }
+            catch (IOException e) {
+                Log.e("Exception", "File write failed: " + e.toString());
+            }
+
+            Drawable mDrawable = this.getResources().getDrawable(R.drawable.heart);
+            mDrawable.setColorFilter(new
+                    PorterDuffColorFilter(0xff0000, PorterDuff.Mode.SRC_IN));
+        }
+        else
+        {
+            try {
+                InputStream inputStream = this.openFileInput("config.txt");
+
+                if ( inputStream != null ) {
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String receiveString = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    while ( (receiveString = bufferedReader.readLine()) != null ) {
+                        stringBuilder.append(receiveString);
+                    }
+
+                    inputStream.close();
+                    recipe = stringBuilder.toString();
+
+                    recipe = recipe.replace(data +"|","");
+                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
+                    outputStreamWriter.write(recipe);
+                    outputStreamWriter.close();
+
+                    ImageView mImageGrey = (ImageView) findViewById(R.id.heart_white);
+                    ImageView mImageOrange = (ImageView) findViewById(R.id.heart_red);
+
+                    ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            mImageOrange.setAlpha((Float) animation.getAnimatedValue());
+                        }
+                    });
+
+                    animator.setDuration(1500);
+                    animator.setRepeatMode(ValueAnimator.REVERSE);
+                    animator.setRepeatCount(-1);
+                    animator.start();
+                }
+            }
+            catch (FileNotFoundException e) {
+                Log.e("login activity", "File not found: " + e.toString());
+            } catch (IOException e) {
+                Log.e("login activity", "Can not read file: " + e.toString());
+            }
         }
     }
 

@@ -122,8 +122,7 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
 
     private void readRecipes()
     {
-        String recipe =
-                "";
+        String recipe = "";
         try {
             InputStream inputStream = getActivity().openFileInput("config.txt");
 
