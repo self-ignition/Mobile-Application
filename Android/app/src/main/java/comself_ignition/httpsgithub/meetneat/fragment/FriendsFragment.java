@@ -31,6 +31,7 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 
+import static comself_ignition.httpsgithub.meetneat.activity.MainActivity.navItemIndex;
 
 
 public class FriendsFragment extends Fragment implements VolleyCallback {
@@ -42,7 +43,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     public FriendsFragment() {
         // Required empty public constructor
     }
-
+1
     // TODO: Rename and change types and number of parameters
     public static FriendsFragment newInstance() {
         FriendsFragment fragment = new FriendsFragment();
@@ -56,7 +57,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         super.onCreate(savedInstanceState);
 
         list = (ListView) getActivity().findViewById(R.id.friendsList);
-
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
         sr.Friends(c, this, FriendAction.getRecipient, SaveSharedPreference.getUserName(c), "Susan_Boyle");
@@ -93,6 +94,13 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
 
     public void onButtonClick(View v) {
         //Do shit here
+    }
+
+    private void toggleFab() {
+        if (navItemIndex == 0)
+            fab.show();
+        else
+            fab.hide();
     }
 }
 
