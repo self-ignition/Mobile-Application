@@ -1,8 +1,6 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,12 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,15 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.*;
 import comself_ignition.httpsgithub.meetneat.other.FriendAction;
-import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static comself_ignition.httpsgithub.meetneat.activity.MainActivity.navItemIndex;
 
 
@@ -113,7 +105,7 @@ class adapterFriends extends ArrayAdapter<String> {
     List<String> names;
 
     adapterFriends(Context c, List<String> names) {
-        super(c, R.layout.fragment_friends_list_row, names);
+        super(c, R.layout.fragment_notifications_friend_request_row, names);
         this.context = c;
         this.names = names;
     }
@@ -131,7 +123,7 @@ class adapterFriends extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.fragment_friends_list_row, parent, false);
+        View row = inflater.inflate(R.layout.fragment_notifications_friend_request_row, parent, false);
         TextView name = (TextView) row.findViewById(R.id.FriendName);
 
         name.setText(names.get(position).toString());

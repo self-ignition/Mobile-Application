@@ -9,8 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +26,6 @@ import comself_ignition.httpsgithub.meetneat.other.FriendAction;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
-
-import static android.R.id.list;
 
 
 /**
@@ -126,16 +128,15 @@ public class NotificationsFragment extends Fragment implements VolleyCallback {
             Log.e("RESULT", result);
         }
     }
-
+    List<String> names = new ArrayList<>();
     private void UpdateList() {
-        List<String> names = new ArrayList<>();
+
         for (String s : friends.keySet()) {
             names.add(s);
         }
         list=(ListView) getActivity().findViewById(R.id.friendsList);
-        list.setAdapter(new adapterFriendsNotification(getActivity(), names));
+        list.setAdapter(new adapterFriendsNotification(getActivity(), names, this));
     }
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -153,14 +154,16 @@ public class NotificationsFragment extends Fragment implements VolleyCallback {
     }
 }
 
-class adapterFriendsNotification extends ArrayAdapter<String> {
+final class adapterFriendsNotification extends ArrayAdapter<String> implements VolleyCallback {
     Context context;
     List<String> names;
+    VolleyCallback callback;
 
-    adapterFriendsNotification(Context c, List<String> names) {
-        super(c, R.layout.fragment_friends_list_row, names);
+    adapterFriendsNotification(Context c, List<String> names, final VolleyCallback callback){
+        super(c, R.layout.fragment_notifications_friend_request_row, names);
         this.context = c;
         this.names = names;
+        this.callback = callback;
     }
 
     @Override
@@ -174,13 +177,38 @@ class adapterFriendsNotification extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.fragment_friends_list_row, parent, false);
-        TextView name = (TextView) row.findViewById(R.id.FriendName);
+        View row = inflater.inflate(R.layout.fragment_notifications_friend_request_row, parent, false);
+        final TextView name = (TextView) row.findViewById(R.id.FriendName);
 
         name.setText(names.get(position).toString());
 
+        final String friendName = name.getText().toString();
+
+        ImageButton AcceptButton = (ImageButton) row.findViewById(R.id.acceptButton);
+        AcceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServerRequests req = new ServerRequests();
+                req.Friends(context, callback, FriendAction.confirm, SaveSharedPreference.getUserName(context), friendName);
+
+            }
+        });
+
+        ImageButton DeclineButton = (ImageButton) row.findViewById(R.id.rejectButton);
+        DeclineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ServerRequests req = new ServerRequests();
+                req.Friends(context, callback, FriendAction.remove, friendName, SaveSharedPreference.getUserName(context));
+            }
+        });
         return row;
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
     }
 }
