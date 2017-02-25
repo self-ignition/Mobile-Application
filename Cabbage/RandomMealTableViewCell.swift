@@ -10,6 +10,12 @@ import UIKit
 
 class RandomMealTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var randomMealPicture: UIImageView!
+    
+    @IBOutlet weak var randomMealIngredients: UILabel!
+    
+    @IBOutlet weak var randomMealName: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -43,11 +43,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         LogInScrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
     }
     
-    @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {
-    }
+    @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {}
     
-    @IBAction func unwindToLogIn(segue: UIStoryboardSegue) {
-    }
+    @IBAction func unwindToLogIn(segue: UIStoryboardSegue) {}
 
     //Funciton to create an alert message. CRW
     func displayMyAlertMessage(userMessage:String) {
