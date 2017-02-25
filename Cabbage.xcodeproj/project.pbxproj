@@ -21,7 +21,6 @@
 		A5B435491E619E6D002251AC /* MyFridgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B435481E619E6D002251AC /* MyFridgeTableViewCell.swift */; };
 		A5B4354B1E619E8E002251AC /* MyFridgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4354A1E619E8E002251AC /* MyFridgeTableViewController.swift */; };
 		A5B4354D1E61A6BB002251AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4354C1E61A6BB002251AC /* SettingsViewController.swift */; };
-		A5B4354F1E61B358002251AC /* TabBar1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4354E1E61B358002251AC /* TabBar1.swift */; };
 		A5CAC5021E61945700BD8BC0 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CAC5011E61945700BD8BC0 /* AccountViewController.swift */; };
 		A5CAC5041E61971D00BD8BC0 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CAC5031E61971D00BD8BC0 /* ChangePasswordViewController.swift */; };
 		A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */; };
@@ -66,7 +65,6 @@
 		A5B435481E619E6D002251AC /* MyFridgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFridgeTableViewCell.swift; sourceTree = "<group>"; };
 		A5B4354A1E619E8E002251AC /* MyFridgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFridgeTableViewController.swift; sourceTree = "<group>"; };
 		A5B4354C1E61A6BB002251AC /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		A5B4354E1E61B358002251AC /* TabBar1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBar1.swift; sourceTree = "<group>"; };
 		A5CAC5011E61945700BD8BC0 /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		A5CAC5031E61971D00BD8BC0 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		A5D318EE1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomMealTableViewCell.swift; sourceTree = "<group>"; };
@@ -138,7 +136,6 @@
 				5D12D8391E5C919B00C85053 /* ServerRequests.swift */,
 				A5B4354C1E61A6BB002251AC /* SettingsViewController.swift */,
 				A59600271E4E43020052D6B3 /* SignUpViewController.swift */,
-				A5B4354E1E61B358002251AC /* TabBar1.swift */,
 			);
 			path = Cabbage;
 			sourceTree = "<group>";
@@ -301,7 +298,6 @@
 				A59600281E4E43020052D6B3 /* SignUpViewController.swift in Sources */,
 				A525D03F1E45036B00E855F2 /* AppDelegate.swift in Sources */,
 				A5B4354B1E619E8E002251AC /* MyFridgeTableViewController.swift in Sources */,
-				A5B4354F1E61B358002251AC /* TabBar1.swift in Sources */,
 				A5D318F11E5649B900C4A9D7 /* RandomMealTableViewController.swift in Sources */,
 				A5CAC5041E61971D00BD8BC0 /* ChangePasswordViewController.swift in Sources */,
 				A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */,
