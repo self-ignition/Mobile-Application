@@ -1,6 +1,7 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import java.util.Map;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.*;
 import comself_ignition.httpsgithub.meetneat.other.FriendAction;
+import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
@@ -69,7 +73,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     public void onSuccess(String result) {
         String[] friends = result.split("¦");
 
-        for (String friend: friends) {
+        for (String friend : friends) {
             String name = friend.split("\\|")[0];
             Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
             this.friends.put(name, confirmed);
@@ -80,23 +84,50 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
 
     private void UpdateList() {
         List<String> names = new ArrayList<>();
-        for (String s: friends.keySet()) {
+        for (String s : friends.keySet()) {
             names.add(s);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.friends_list_row, R.id.FriendName, names);
+        //ArrayAdapter<String> adapterFriends = new ArrayAdapter<String>(getActivity(), R.layout.friends_list_row, R.id.FriendName, names);
+        list=(ListView) getActivity().findViewById(R.id.friendsList);
+        list.setAdapter(new adapterFriends(getActivity(), names));
+        //list.setAdapter(adapterFriends);
 
-        list.setAdapter(adapter);
-
-        list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //shit here
-            }
-
-        });
     }
 
     public void onButtonClick(View v) {
         //Do shit here
+    }
+
+}
+
+class adapterFriends extends ArrayAdapter<String> {
+    Context context;
+    List<String> names;
+
+    adapterFriends(Context c, List<String> names) {
+        super(c, R.layout.friends_list_row, names);
+        this.context = c;
+        this.names = names;
+    }
+
+    @Override
+    public int getCount() {
+        return names.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.friends_list_row, parent, false);
+        TextView name = (TextView) row.findViewById(R.id.FriendName);
+
+        name.setText(names.get(position).toString());
+
+        return row;
     }
 }
