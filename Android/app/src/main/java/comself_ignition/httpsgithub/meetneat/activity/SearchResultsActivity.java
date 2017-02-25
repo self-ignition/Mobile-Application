@@ -144,7 +144,7 @@ class adapter extends ArrayAdapter<Recipe> {
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
         servings.setText(recipes.get(position).getYield());
-        image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
+        image.setImageDrawable(new BitmapDrawable(recipes.get(position).getImage()));
 
         return row;
     }

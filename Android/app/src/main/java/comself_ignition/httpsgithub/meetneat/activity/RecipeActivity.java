@@ -36,6 +36,7 @@ import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 
 import static android.R.attr.data;
+import static android.os.Build.VERSION_CODES.M;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeReadyCallback {
 
@@ -57,12 +58,55 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
-
+        checkIfSaved();
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
 
-    public void saveFunction(View v)
-    {
+    public void checkIfSaved() {
+        String data = recipe.getId();
+        String recipe = "";
+        try {
+            InputStream inputStream = this.openFileInput("config.txt");
+
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                recipe = stringBuilder.toString();
+
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
+        Log.i("WHAT IS ID: ", data);
+        Log.i("WHAT IS RECIPE: ", recipe);
+        if(recipe.contains(data)) {
+            ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mImageRed.setAlpha((Float) animation.getAnimatedValue());
+                }
+            });
+
+            animator.setDuration(1500);
+            animator.start();
+        }
+    }
+
+    public void saveFunction(View v) {
         String data = recipe.getId();
         String recipe = "";
         try {
@@ -103,8 +147,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
                 Log.e("Exception", "File write failed: " + e.toString());
             }
 
-            final ImageView mImageWhite = (ImageView) findViewById(R.id.btn_save);
-            final ImageView mImageRed = (ImageView) findViewById(R.id.btn_save);
+            final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -115,8 +158,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
             });
 
             animator.setDuration(1500);
-            animator.setRepeatMode(ValueAnimator.REVERSE);
-            animator.setRepeatCount(-1);
             animator.start();
         }
         else
@@ -141,6 +182,19 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
                     outputStreamWriter.write(recipe);
                     outputStreamWriter.close();
+
+                    final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
+
+                    ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            mImageRed.setAlpha((Float) animation.getAnimatedValue());
+                        }
+                    });
+
+                    animator.setDuration(1500);
+                    animator.start();
                 }
             }
             catch (FileNotFoundException e) {
