@@ -278,8 +278,11 @@ public class ServerRequests {
                     case confirm:
                         params.put("request", "confirm");
                         break;
-                    case get:
-                        params.put("request", "get");
+                    case getSender:
+                        params.put("request", "getSender");
+                        break;
+                    case getRecipient:
+                        params.put("request", "getRecipient");
                         break;
                 }
 

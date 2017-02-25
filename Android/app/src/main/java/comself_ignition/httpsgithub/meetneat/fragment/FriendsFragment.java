@@ -59,7 +59,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
 
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.get, SaveSharedPreference.getUserName(c), "Susan_Boyle");
+        sr.Friends(c, this, FriendAction.getRecipient, SaveSharedPreference.getUserName(c), "Susan_Boyle");
     }
 
     @Override
