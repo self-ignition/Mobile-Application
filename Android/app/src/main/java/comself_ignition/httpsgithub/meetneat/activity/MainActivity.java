@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
      * name, website, notifications action view (dot)
      */
     private void loadNavHeader() {
-        String emailAddress = SaveSharedPreference.getUserName(this);
+        String emailAddress = SaveSharedPreference.getEmailAddress(this);
         ServerRequests sr = new ServerRequests();
         sr.getUsername(this, emailAddress, this);
         // name, website
@@ -474,5 +474,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     @Override
     public void onSuccess(String result) {
         txtName.setText(result);
+        SaveSharedPreference.setUserName(this, result);
     }
 }

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -91,8 +92,12 @@ public class SignUpActivity extends AppCompatActivity {
             ServerRequests serverRequest = new ServerRequests();
             Log.i("EMAIL", _email);
             serverRequest.SignUp(this, _user, _email, _password);
-            SaveSharedPreference.setUserName(this, "");
+
+            SaveSharedPreference.setUserName(this, _user);
+            SaveSharedPreference.setEmailAddress(this, _email);
             SaveSharedPreference.setLoggedIn(this, false);
+
+            Toast.makeText(this, "Successfully Signed Up", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }

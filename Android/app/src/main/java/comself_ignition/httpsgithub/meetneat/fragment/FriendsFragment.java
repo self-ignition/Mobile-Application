@@ -61,7 +61,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "Cryodor");
+        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "");
     }
 
     @Override
