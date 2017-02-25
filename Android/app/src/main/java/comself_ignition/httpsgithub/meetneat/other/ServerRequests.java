@@ -242,4 +242,56 @@ public class ServerRequests {
 
     }
 
+    public void Friends(final Context context, final VolleyCallback callback, final FriendAction action, final String You, final String Them) {
+        Map<String, String> mParams;
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/friends.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //CALL THE LOGIN METHOD
+                        callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+                switch (action) {
+                    case add:
+                        params.put("request", "add");
+                        break;
+                    case remove:
+                        params.put("request", "remove");
+                        break;
+                    case confirm:
+                        params.put("request", "confirm");
+                        break;
+                    case get:
+                        params.put("request", "get");
+                        break;
+                }
+
+                params.put("sender", You);
+                params.put("recipient", Them);
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+
+    }
+
 }
+
