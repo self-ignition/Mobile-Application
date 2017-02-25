@@ -1,12 +1,7 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -18,11 +13,10 @@ import android.widget.Toast;
 
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import dmax.dialog.SpotsDialog;
-
-import static android.R.attr.filter;
 
 public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
@@ -124,36 +118,3 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
     }
 }
 
-class SaveSharedPreference {
-    static final String PREF_USER_NAME= "username";
-    static final String PREF_LOGGED_IN= "LoggedIn";
-    static final String PREF_DATE_LOGGED_IN = "date";
-
-    static SharedPreferences getSharedPreferences(Context ctx) {
-        return PreferenceManager.getDefaultSharedPreferences(ctx);
-    }
-
-    public static void setUserName(Context ctx, String userName)
-    {
-        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
-        editor.putString(PREF_USER_NAME, userName);
-        editor.commit();
-    }
-
-    public static String getUserName(Context ctx)
-    {
-        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
-    }
-
-    public static void setLoggedIn(Context ctx, Boolean isLoggedIn)
-    {
-        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
-        editor.putBoolean(PREF_LOGGED_IN, isLoggedIn);
-        editor.commit();
-    }
-
-    public static Boolean getLoggedIn(Context ctx)
-    {
-        return getSharedPreferences(ctx).getBoolean(PREF_LOGGED_IN, false);
-    }
-}

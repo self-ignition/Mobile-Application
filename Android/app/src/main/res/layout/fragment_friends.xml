@@ -21,21 +21,10 @@
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listView"
+            android:id="@+id/friendsList"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="@string/login"
-            android:onClick="buttonFunction"
-            android:layout_weight="0.25" />
 
     </RelativeLayout>
 </android.support.v4.widget.DrawerLayout>

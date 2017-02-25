@@ -2,13 +2,9 @@ package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -44,13 +40,9 @@ import comself_ignition.httpsgithub.meetneat.fragment.NotificationsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SavedRecipesFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment;
 import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
-import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
-
-import static android.R.attr.fragment;
-import static android.provider.CalendarContract.CalendarCache.URI;
-import static comself_ignition.httpsgithub.meetneat.R.id.imageView;
 
 
 public class MainActivity extends AppCompatActivity implements VolleyCallback{
@@ -62,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+    private Fragment fragmentInFocus;
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -124,6 +117,30 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , 1);
+    }
+
+    public void onButtonClicked(View v)
+    {
+        switch (CURRENT_TAG){
+            case TAG_HOME:
+                //((HomeFragment)fragmentInFocus).onButtonPressed( URI stuff....);
+                break;
+            case TAG_RECIPES:
+                //((SavedRecipesFragment)fragmentInFocus).onButtonPressed( URI stuff....);
+                break;
+            case TAG_FRIDGE:
+                //((MyFoodFragment)fragmentInFocus).onButtonPressed( URI stuff....);
+                break;
+            case TAG_FRIENDS:
+                ((FriendsFragment)fragmentInFocus).onButtonClick(v);
+                break;
+            case TAG_NOTIFICATIONS:
+                //((NotificationsFragment)fragmentInFocus).onButtonPressed( URI stuff....);
+                break;
+            case TAG_SETTINGS:
+                //((SettingsFragment)fragmentInFocus).onButtonPressed( URI stuff....);
+                break;
+        }
     }
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -271,32 +288,31 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         switch (navItemIndex) {
             case 0:
                 // home
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                fragmentInFocus = new HomeFragment();
+                return fragmentInFocus;
            case 1:
                 // saved recipes
-                SavedRecipesFragment savedRecipesFragment = new SavedRecipesFragment();
-                return savedRecipesFragment;
+               fragmentInFocus = new SavedRecipesFragment();
+                return fragmentInFocus;
             case 2:
                 // my fridge fragment
-                MyFoodFragment myFoodFragment = new MyFoodFragment();
-                return myFoodFragment;
+                fragmentInFocus = new MyFoodFragment();
+                return fragmentInFocus;
             case 3:
                 // friends fragment
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
+                fragmentInFocus = new FriendsFragment();
+                return fragmentInFocus;
             case 4:
                 // notifications fragment
-                NotificationsFragment notificationsFragment = new NotificationsFragment();
-                return notificationsFragment;
+                fragmentInFocus = new NotificationsFragment();
+                return fragmentInFocus;
 
             case 5:
-                // settings fragment
-                Log.i("asodms", "getHomeFragment: Called settings fragment");
-                SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
+                fragmentInFocus = new SettingsFragment();
+                return fragmentInFocus;
             default:
-                return new HomeFragment();
+                fragmentInFocus = new HomeFragment();
+                return fragmentInFocus;
         }
     }
 

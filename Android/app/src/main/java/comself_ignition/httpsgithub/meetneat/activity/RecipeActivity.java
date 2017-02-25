@@ -103,8 +103,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
                 Log.e("Exception", "File write failed: " + e.toString());
             }
 
-            final ImageView mImageWhite = (ImageView) findViewById(R.id.heart_white);
-            final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
+            final ImageView mImageWhite = (ImageView) findViewById(R.id.btn_save);
+            final ImageView mImageRed = (ImageView) findViewById(R.id.btn_save);
 
             ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
