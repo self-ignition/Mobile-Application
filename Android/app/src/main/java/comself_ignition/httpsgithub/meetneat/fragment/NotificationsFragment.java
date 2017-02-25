@@ -1,9 +1,11 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -178,7 +180,7 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.fragment_notifications_friend_request_row, parent, false);
         final TextView name = (TextView) row.findViewById(R.id.FriendName);
 
@@ -192,7 +194,6 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             public void onClick(View view) {
                 ServerRequests req = new ServerRequests();
                 req.Friends(context, callback, FriendAction.confirm, SaveSharedPreference.getUserName(context), friendName);
-
             }
         });
 
