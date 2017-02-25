@@ -1,15 +1,19 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import dmax.dialog.SpotsDialog;
 
 import android.app.ProgressDialog;
 
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
@@ -53,18 +57,15 @@ public class SignUpActivity extends AppCompatActivity {
     };
 
     public void signup() {
-        final ProgressDialog progressDialog = new ProgressDialog(SignUpActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating account...");
-        progressDialog.show();
-
+        final AlertDialog dialog = new SpotsDialog(this,"Creating Account");
+        dialog.show();
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         validate();
 
                         // On complete call either onLoginSuccess or onLoginFailed
-                        progressDialog.dismiss();
+                        dialog.dismiss();
                     }
                 }, 3000);
     }
@@ -86,14 +87,18 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (!_password.equals(_password2)) {
             password.setError("Passwords do not match");
             password2.setError("Passwords do not match");
-        } else if(!_email.contains("@")) {
-            email.setError("Please enter a valid email address");
-        }
-        else {
+        } else if(android.util.Patterns.EMAIL_ADDRESS.matcher(_email).matches()) {
             ServerRequests serverRequest = new ServerRequests();
+            Log.i("EMAIL", _email);
             serverRequest.SignUp(this, _user, _email, _password);
+            SaveSharedPreference.setUserName(this, "");
+            SaveSharedPreference.setLoggedIn(this, false);
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }
+        else {
+
+            email.setError("Please enter a valid email address");
         }
     }
 

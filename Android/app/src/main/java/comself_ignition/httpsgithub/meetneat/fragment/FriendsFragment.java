@@ -87,17 +87,13 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         for (String s : friends.keySet()) {
             names.add(s);
         }
-        //ArrayAdapter<String> adapterFriends = new ArrayAdapter<String>(getActivity(), R.layout.friends_list_row, R.id.FriendName, names);
         list=(ListView) getActivity().findViewById(R.id.friendsList);
         list.setAdapter(new adapterFriends(getActivity(), names));
-        //list.setAdapter(adapterFriends);
-
     }
 
     public void onButtonClick(View v) {
         //Do shit here
     }
-
 }
 
 class adapterFriends extends ArrayAdapter<String> {
@@ -105,7 +101,7 @@ class adapterFriends extends ArrayAdapter<String> {
     List<String> names;
 
     adapterFriends(Context c, List<String> names) {
-        super(c, R.layout.friends_list_row, names);
+        super(c, R.layout.fragment_friends_list_row, names);
         this.context = c;
         this.names = names;
     }
@@ -123,7 +119,7 @@ class adapterFriends extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.friends_list_row, parent, false);
+        View row = inflater.inflate(R.layout.fragment_friends_list_row, parent, false);
         TextView name = (TextView) row.findViewById(R.id.FriendName);
 
         name.setText(names.get(position).toString());

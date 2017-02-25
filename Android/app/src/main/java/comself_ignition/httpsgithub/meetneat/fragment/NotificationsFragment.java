@@ -7,7 +7,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.other.FriendAction;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
+
+import static android.R.id.list;
 
 
 /**
@@ -18,7 +33,7 @@ import comself_ignition.httpsgithub.meetneat.R;
  * Use the {@link NotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationsFragment extends Fragment {
+public class NotificationsFragment extends Fragment implements VolleyCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +44,9 @@ public class NotificationsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    Map<String, Boolean> friends = new HashMap<>();
+    ListView list;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -55,10 +73,11 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        list = (ListView) getActivity().findViewById(R.id.friendsList);
+
+        Context c = getActivity().getApplicationContext();
+        ServerRequests sr = new ServerRequests();
+        sr.Friends(c, this, FriendAction.get, SaveSharedPreference.getUserName(c), "Susan_Boyle");
     }
 
     @Override
@@ -92,6 +111,29 @@ public class NotificationsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSuccess(String result) {
+        String[] friends = result.split("¦");
+
+        for (String friend : friends) {
+            String name = friend.split("\\|")[0];
+            Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
+            this.friends.put(name, confirmed);
+        }
+
+        UpdateList();
+    }
+
+    private void UpdateList() {
+        List<String> names = new ArrayList<>();
+        for (String s : friends.keySet()) {
+            names.add(s);
+        }
+        list=(ListView) getActivity().findViewById(R.id.friendsList);
+        list.setAdapter(new adapterFriendsNotification(getActivity(), names));
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -105,5 +147,37 @@ public class NotificationsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+}
+
+class adapterFriendsNotification extends ArrayAdapter<String> {
+    Context context;
+    List<String> names;
+
+    adapterFriendsNotification(Context c, List<String> names) {
+        super(c, R.layout.fragment_friends_list_row, names);
+        this.context = c;
+        this.names = names;
+    }
+
+    @Override
+    public int getCount() {
+        return names.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.fragment_friends_list_row, parent, false);
+        TextView name = (TextView) row.findViewById(R.id.FriendName);
+
+        name.setText(names.get(position).toString());
+
+        return row;
     }
 }

@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
@@ -72,25 +74,26 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         moveTaskToBack(true);
     }
 
-    public boolean validate() {
-        boolean valid = true;
-
+    public void validate() {
         final String _email = email.getText().toString();
         final String _password = password.getText().toString();
+        String pattern = "@.+\\.(?:com|co)\\.?(?:uk)?";
 
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(_email);
         if (_email.isEmpty()) {
             email.setError("Please enter a valid email address");
         } else if(_password.isEmpty() || _password.length() < 6 || _password.length() > 12) {
             password.setError("Please enter a valid password");
         } else if (_email.length() < 1) {
             email.setError("Please enter a valid email address");
-        } else {
-            //Login method here.
+        } else if (android.util.Patterns.EMAIL_ADDRESS.matcher(_email).matches()) {
             ServerRequests req = new ServerRequests();
             req.Login(this, _email, _password, this);
-        }
 
-        return valid;
+        }else {
+            email.setError("Please enter a valid email address");
+        }
     }
 
     public void buttonFunction(View v) {
