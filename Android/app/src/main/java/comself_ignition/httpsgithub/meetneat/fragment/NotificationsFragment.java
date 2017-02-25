@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,7 @@ public class NotificationsFragment extends Fragment implements VolleyCallback {
 
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.getRecipient, SaveSharedPreference.getUserName(c), "Susan_Boyle");
+        sr.Friends(c, this, FriendAction.getRecipient, SaveSharedPreference.getUserName(c), "");
     }
 
     @Override
@@ -114,14 +115,16 @@ public class NotificationsFragment extends Fragment implements VolleyCallback {
     @Override
     public void onSuccess(String result) {
         String[] friends = result.split("¦");
-
-        for (String friend : friends) {
-            String name = friend.split("\\|")[0];
-            Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
-            this.friends.put(name, confirmed);
+        try{
+            for (String friend : friends) {
+                String name = friend.split("\\|")[0];
+                Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
+                this.friends.put(name, confirmed);
+            }
+            UpdateList();
+        } catch(IndexOutOfBoundsException e) {
+            Log.e("RESULT", result);
         }
-
-        UpdateList();
     }
 
     private void UpdateList() {

@@ -31,6 +31,7 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static comself_ignition.httpsgithub.meetneat.activity.MainActivity.navItemIndex;
 
 
@@ -43,7 +44,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     public FriendsFragment() {
         // Required empty public constructor
     }
-1
+
     // TODO: Rename and change types and number of parameters
     public static FriendsFragment newInstance() {
         FriendsFragment fragment = new FriendsFragment();
@@ -60,7 +61,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.getRecipient, SaveSharedPreference.getUserName(c), "Susan_Boyle");
+        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "Cryodor");
     }
 
     @Override
@@ -73,14 +74,17 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     @Override
     public void onSuccess(String result) {
         String[] friends = result.split("¦");
-
-        for (String friend : friends) {
-            String name = friend.split("\\|")[0];
-            Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
-            this.friends.put(name, confirmed);
+        try{
+            for (String friend : friends) {
+                String name = friend.split("\\|")[0];
+                Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
+                this.friends.put(name, confirmed);
+            }
+            UpdateList();
+        } catch(IndexOutOfBoundsException e) {
+            Log.e("RESULT", result);
         }
 
-        UpdateList();
     }
 
     private void UpdateList() {
