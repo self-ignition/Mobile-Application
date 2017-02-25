@@ -35,13 +35,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    /*func textFieldDidBeginEditing(_ textField: UITextField) {
         LogInScrollView.setContentOffset(CGPoint(x: 0,y: 60), animated: true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         LogInScrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
-    }
+    }*/
     
     @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {}
     
@@ -85,7 +85,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         if dataStringArr[0].characters.last! == "1"{
             // Move to a background thread to do some long running work. CRW
             DispatchQueue.global(qos: .userInitiated).async {
-                let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Homepage") as! HomepageViewController
+                let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBar1") as! UITabBarController
                 
                 // Bounce back to the main thread to update the UI. CRW
                 DispatchQueue.main.async {
