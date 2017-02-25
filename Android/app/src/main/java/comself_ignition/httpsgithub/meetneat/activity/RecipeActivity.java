@@ -103,9 +103,21 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
                 Log.e("Exception", "File write failed: " + e.toString());
             }
 
-            Drawable mDrawable = this.getResources().getDrawable(R.drawable.heart);
-            mDrawable.setColorFilter(new
-                    PorterDuffColorFilter(0xff0000, PorterDuff.Mode.SRC_IN));
+            final ImageView mImageWhite = (ImageView) findViewById(R.id.heart_white);
+            final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
+
+            ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mImageRed.setAlpha((Float) animation.getAnimatedValue());
+                }
+            });
+
+            animator.setDuration(1500);
+            animator.setRepeatMode(ValueAnimator.REVERSE);
+            animator.setRepeatCount(-1);
+            animator.start();
         }
         else
         {
@@ -129,22 +141,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
                     outputStreamWriter.write(recipe);
                     outputStreamWriter.close();
-
-                    ImageView mImageGrey = (ImageView) findViewById(R.id.heart_white);
-                    ImageView mImageOrange = (ImageView) findViewById(R.id.heart_red);
-
-                    ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
-                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mImageOrange.setAlpha((Float) animation.getAnimatedValue());
-                        }
-                    });
-
-                    animator.setDuration(1500);
-                    animator.setRepeatMode(ValueAnimator.REVERSE);
-                    animator.setRepeatCount(-1);
-                    animator.start();
                 }
             }
             catch (FileNotFoundException e) {
