@@ -83,9 +83,10 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         List<String> names = new ArrayList<>();
         for (String s : friends.keySet()) {
             names.add(s);
+
         }
         list=(ListView) getActivity().findViewById(R.id.friendsList);
-        list.setAdapter(new adapterFriends(getActivity(), names));
+        list.setAdapter(new adapterFriends(getActivity(),friends, names));
     }
 
     public void onButtonClick(View v) {
@@ -102,12 +103,14 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
 
 class adapterFriends extends ArrayAdapter<String> {
     Context context;
+    Map<String, Boolean> friends = new HashMap<>();
     List<String> names;
 
-    adapterFriends(Context c, List<String> names) {
-        super(c, R.layout.fragment_notifications_friend_request_row, names);
-        this.context = c;
+    adapterFriends(Context c, Map<String, Boolean> friends, List<String> names) {
+        super(c, R.layout.fragment_friends_row, names);
         this.names = names;
+        this.context = c;
+        this.friends = friends;
     }
 
     @Override
@@ -123,11 +126,21 @@ class adapterFriends extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.fragment_notifications_friend_request_row, parent, false);
-        TextView name = (TextView) row.findViewById(R.id.FriendName);
 
-        name.setText(names.get(position).toString());
+        if(friends.get(names.get(position))) {
+            View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
+            TextView name = (TextView) row.findViewById(R.id.FriendName);
 
-        return row;
+            name.setText(names.get(position).toString());
+
+            return row;
+        } else {
+            View row = inflater.inflate(R.layout.fragment_friends_pending_row, parent, false);
+            TextView name = (TextView) row.findViewById(R.id.FriendName);
+
+            name.setText(names.get(position).toString());
+
+            return row;
+        }
     }
 }
