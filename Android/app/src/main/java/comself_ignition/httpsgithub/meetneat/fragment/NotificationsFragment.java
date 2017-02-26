@@ -29,6 +29,8 @@ import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -193,7 +195,8 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             @Override
             public void onClick(View view) {
                 ServerRequests req = new ServerRequests();
-                req.Friends(context, callback, FriendAction.confirm, SaveSharedPreference.getUserName(context), friendName);
+                req.Friends(context, callback, FriendAction.confirm, friendName, SaveSharedPreference.getUserName(context));
+                Toast.makeText(context, "Friend request accepted", Toast.LENGTH_SHORT).show();
             }
         });
 

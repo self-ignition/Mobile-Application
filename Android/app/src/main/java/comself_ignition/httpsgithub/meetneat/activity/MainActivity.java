@@ -465,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
     // show or hide the fab
     private void toggleFab() {
-        if (navItemIndex == 0)
+        if (navItemIndex == 3)
             fab.show();
         else
             fab.hide();

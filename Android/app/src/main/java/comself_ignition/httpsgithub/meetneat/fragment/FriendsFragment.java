@@ -1,16 +1,27 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +35,13 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static comself_ignition.httpsgithub.meetneat.activity.MainActivity.navItemIndex;
 
 
 public class FriendsFragment extends Fragment implements VolleyCallback {
     private FloatingActionButton fab;
+    private String m_Text = "";
 
     Map<String, Boolean> friends = new HashMap<>();
     ListView list;
@@ -50,10 +63,19 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         super.onCreate(savedInstanceState);
 
         list = (ListView) getActivity().findViewById(R.id.friendsList);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
         sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "");
+
+        FloatingActionButton myFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                final MyDialogFragment dialogFragment = new MyDialogFragment ();
+                dialogFragment.show(fm, "Sample Fragment");
+
+            }
+        });
     }
 
     @Override
@@ -69,7 +91,14 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         try{
             for (String friend : friends) {
                 String name = friend.split("\\|")[0];
-                Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
+                Boolean confirmed;
+                if(friend.split("\\|")[1].charAt(0) == '1')
+                {
+                    confirmed = true;
+                }
+                else {
+                    confirmed = false;
+                }
                 this.friends.put(name, confirmed);
             }
             UpdateList();
@@ -93,12 +122,6 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         //Do shit here
     }
 
-    private void toggleFab() {
-        if (navItemIndex == 0)
-            fab.show();
-        else
-            fab.hide();
-    }
 }
 
 class adapterFriends extends ArrayAdapter<String> {
@@ -125,7 +148,7 @@ class adapterFriends extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         if(friends.get(names.get(position))) {
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
@@ -144,3 +167,4 @@ class adapterFriends extends ArrayAdapter<String> {
         }
     }
 }
+

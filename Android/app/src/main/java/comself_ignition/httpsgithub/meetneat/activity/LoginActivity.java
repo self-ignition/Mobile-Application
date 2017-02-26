@@ -37,9 +37,9 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         password.setFilters(new InputFilter[]{filter});
 
         email.setText(SaveSharedPreference.getEmailAddress(this));
-        /*if(SaveSharedPreference.getLoggedIn(this)) {
+        if(SaveSharedPreference.getLoggedIn(this)) {
             onSuccess("1");
-        }*/
+        }
     }
 
     InputFilter filter = new InputFilter() {
