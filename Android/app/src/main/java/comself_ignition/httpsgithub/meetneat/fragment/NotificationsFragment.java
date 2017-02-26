@@ -205,7 +205,8 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             @Override
             public void onClick(View view) {
                 ServerRequests req = new ServerRequests();
-                req.Friends(context, callback, FriendAction.remove, friendName, SaveSharedPreference.getUserName(context));
+                req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
+                Toast.makeText(context, "Friend request declined", Toast.LENGTH_SHORT).show();
             }
         });
         return row;
