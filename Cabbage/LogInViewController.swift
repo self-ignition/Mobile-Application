@@ -68,7 +68,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         //Check for empty fields. CRW
         if((userEmail.isEmpty) || (userPassword.isEmpty)){
             //display alert message and return
-            displayMyAlertMessage(userMessage: "All Fields Must Be Filled")
+            displayMyAlertMessage(userMessage: "All fields must be filled")
             return
         }
         else{

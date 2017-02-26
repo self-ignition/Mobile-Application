@@ -32,4 +32,8 @@ class SettingsViewController: UIViewController {
     }
     */
 
+    @IBAction func unwindToAccount(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "unwindToAccount", sender: self)
+    }
+    
 }
