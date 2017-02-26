@@ -353,6 +353,7 @@
                         <outlet property="ScrollView" destination="p7b-Hp-Yw6" id="rzB-CI-6K1"/>
                         <outlet property="SignUpButton" destination="zo6-02-Qnv" id="GE0-6f-gDq"/>
                         <outlet property="UsernameTextField" destination="4YB-7G-jDk" id="v1n-RR-N7T"/>
+                        <outlet property="userNameTextField" destination="4YB-7G-jDk" id="1Lq-G1-qW0"/>
                         <segue destination="zRO-ri-4Nu" kind="unwind" identifier="unwindToLogInSegue" unwindAction="unwindToLogInSegue:" id="MsB-2D-Ucf"/>
                     </connections>
                 </viewController>

@@ -10,10 +10,6 @@ import Foundation
 
 class Recipe{
     
-    //2 mehtods, one for random, one for sepcific 
-    //calls random recipe php
-    //specific passes ID
-    
     var id: String = ""
     var title: String = ""
     var prept: String = ""
@@ -24,19 +20,18 @@ class Recipe{
     var ingredients: Array<String> = []
     var steps: Array<String> = []
     
-    //random
+    //Random Recipe
     init(){
         let server = serverRequests()
         server.downloadRecipe(callBack: self)
     }
     
-    //id
+    //ID Recipe
     init(id: String) {
         
     }
     
     func randomRecipe(recipe: String) -> Void {
-    //do stuff
         //splits it into tables, recipe, ingredient, steps
         let tables = recipe.components(separatedBy: "¦")
         
@@ -59,8 +54,6 @@ class Recipe{
         }
         
         //tables[3] contains image
-        
-        let i = 0
         
     }
 }

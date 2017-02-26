@@ -9,9 +9,11 @@
 import UIKit
 import Foundation
 
-class SignUpViewController: UIViewController, UITextFieldDelegate {
+class SignUpViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet weak var ScrollView: UIScrollView!
+    
+    @IBOutlet weak var userNameTextField: UITextField! //DONT USE, ADDED BUT WHEN REMOVED CRASHES SIGNUP PAGE
     
     @IBOutlet weak var UsernameTextField: UITextField!
     
@@ -25,13 +27,20 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+        self.UsernameTextField.delegate = self
+        self.EmailTextField.delegate = self
+        self.PasswordTextField.delegate = self
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func unwindToLogIn(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "unwindToLogInSegue", sender: self)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -51,10 +60,27 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         ScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
-    @IBAction func unwindToLogIn(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "unwindToLogInSegue", sender: self)
+    //Regex to ensure proper email address 
+    func isValidEmail(email:String) -> Bool {
+        // print("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: email)
     }
     
+    //Regex to ensure secure password
+    func isStrongPassword(password:String) -> Bool {
+        // print("validate calendar: \(testStr)")
+        let regEx = ".*[A-Z]+.*.*[0-9]+.*.*[!&^%$#@()/]+.*" //1 Capital Letter, 1 Special Character, 1 Number
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", regEx)
+        if(password.characters.count < 6 || password.characters.count > 12){
+            return false
+        }
+        else{
+             return passwordTest.evaluate(with: password)
+        }
+    }
+
     //Funciton to create an alert message. CRW
     func displayMyAlertMessage(userMessage:String)
     {
@@ -71,7 +97,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     //When the sign up button is tapped following code will execute. CRW
     @IBAction func signupButtonTapped(_ sender: Any)
     {
-        
         let userUsername = UsernameTextField.text!
         let userEmail = EmailTextField.text!
         let userPassword = PasswordTextField.text!
@@ -81,20 +106,24 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         if((userUsername.isEmpty) || (userEmail.isEmpty) || (userPassword.isEmpty) || (userConfirmPw.isEmpty)){
             //display alert message and return
             displayMyAlertMessage(userMessage: "All Fields Must Be Filled");
-            return;
+            return
         }
-        
-        //Check if P/W Match. CRW
-        if(userPassword != userConfirmPw){
-            //dispaly alert message and return
-            displayMyAlertMessage(userMessage: "Passwords do not match")
-            return;
+        else if(!isValidEmail(email: userEmail)){
+            displayMyAlertMessage(userMessage: "Please Enter a Valid Email Address")
+            
+        }
+        else if(!isStrongPassword(password: userPassword)){
+            displayMyAlertMessage(userMessage: "Password Needs to Contain: 1 Upper Case, 1 Special Character, 1 Number, 1 Lower Case Letter, Length 6")
+        }
+        else if(userPassword != userConfirmPw){
+                            //dispaly alert message and return
+                displayMyAlertMessage(userMessage: "Passwords Do Not Match")
+                return
         }
         else{
             let server = serverRequests()
             server.signUp(username: userUsername, password: userPassword, email: userEmail, callBack: self)
         }
-        
     }
     
     //when Server has made a request. CRW
