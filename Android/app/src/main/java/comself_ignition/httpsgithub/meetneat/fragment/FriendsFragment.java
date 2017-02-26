@@ -69,7 +69,16 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         try{
             for (String friend : friends) {
                 String name = friend.split("\\|")[0];
-                Boolean confirmed = "1".equals(friend.split("\\|")[1].charAt(0));
+                Boolean confirmed;
+
+                if(friend.split("\\|")[1].charAt(0) == '1')
+                {
+                    confirmed = true;
+                }
+                else {
+                    confirmed = false;
+                }
+
                 this.friends.put(name, confirmed);
             }
             UpdateList();
@@ -127,6 +136,7 @@ class adapterFriends extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        Log.d("BLARGH", "getView: " + friends.get(names.get(position)).toString());
         if(friends.get(names.get(position))) {
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
             TextView name = (TextView) row.findViewById(R.id.FriendName);
