@@ -1,21 +1,15 @@
 //
-//  RandomMealTableViewCell.swift
+//  MyFridgeTableViewCell.swift
 //  Cabbage
 //
-//  Created by Bartlomiej Morawiec on 16/02/2017.
+//  Created by Bartlomiej Morawiec on 25/02/2017.
 //  Copyright © 2017 Self-Ignition. All rights reserved.
 //
 
 import UIKit
 
-class RandomMealTableViewCell: UITableViewCell {
+class MyFridgeTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var randomMealPicture: UIImageView!
-    
-    @IBOutlet weak var randomMealIngredients: UILabel!
-    
-    @IBOutlet weak var randomMealName: UILabel!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,6 +17,7 @@ class RandomMealTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+
         // Configure the view for the selected state
     }
 
