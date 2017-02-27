@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F807DD31E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F807DD21E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift */; };
 		5D12D83A1E5C919B00C85053 /* ServerRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D12D8391E5C919B00C85053 /* ServerRequests.swift */; };
 		5D12D83D1E5E322F00C85053 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D12D83B1E5E322F00C85053 /* Main.storyboard */; };
 		5D12D83F1E5E341100C85053 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D12D83E1E5E341100C85053 /* Recipe.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F807DD21E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocol_Recipe_Ready.swift; sourceTree = "<group>"; };
 		5D12D8391E5C919B00C85053 /* ServerRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerRequests.swift; sourceTree = "<group>"; };
 		5D12D83C1E5E322F00C85053 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5D12D83E1E5E341100C85053 /* Recipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				A525D03E1E45036B00E855F2 /* AppDelegate.swift */,
 				A5CAC5031E61971D00BD8BC0 /* ChangePasswordViewController.swift */,
 				A525D0401E45036B00E855F2 /* HomepageViewController.swift */,
+				3F807DD21E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift */,
 				A52756281E4E43B600F8A295 /* LogInViewController.swift */,
 				A5B435481E619E6D002251AC /* MyFridgeTableViewCell.swift */,
 				A5B4354A1E619E8E002251AC /* MyFridgeTableViewController.swift */,
@@ -302,6 +305,7 @@
 				A5CAC5041E61971D00BD8BC0 /* ChangePasswordViewController.swift in Sources */,
 				A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */,
 				5D12D83A1E5C919B00C85053 /* ServerRequests.swift in Sources */,
+				3F807DD31E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift in Sources */,
 				A52756291E4E43B600F8A295 /* LogInViewController.swift in Sources */,
 				A525D0411E45036B00E855F2 /* HomepageViewController.swift in Sources */,
 				A5B435491E619E6D002251AC /* MyFridgeTableViewCell.swift in Sources */,
