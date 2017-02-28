@@ -81,8 +81,16 @@ class serverRequests {
                 print("ERROR ****\(error)")
                 return
             }
+            //recieve
             let dataString =  String(data: data!, encoding: String.Encoding.utf8)
-            callBack.randomRecipe(recipe: dataString!)
+            //
+            if dataString!.characters.first != "0"{
+                //send to recipe which will then split it all
+                callBack.randomRecipe(recipe: dataString!)
+            }
+            else{
+                print("NO RECIPE M9")
+            }
         }
         task.resume()
     }

@@ -12,7 +12,7 @@ class RandomMealTableViewCell: UITableViewCell {
 
     @IBOutlet weak var randomMealPicture: UIImageView!
     
-    @IBOutlet weak var randomMealIngredients: UILabel!
+    @IBOutlet weak var randomMealIngredients: UILabel! //no longer used
     
     @IBOutlet weak var randomMealName: UILabel!
     
@@ -25,5 +25,4 @@ class RandomMealTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
-
 }

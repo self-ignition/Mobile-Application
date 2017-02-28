@@ -19,16 +19,18 @@ class Recipe{
     
     var ingredients: Array<String> = []
     var steps: Array<String> = []
-    
+    let back: HomepageViewController
+
     //Random Recipe
-    init(){
+    init(callBack: HomepageViewController){
         let server = serverRequests()
+        back = callBack
         server.downloadRecipe(callBack: self)
     }
     
     //ID Recipe
-    init(id: String) {
-        
+    init(id: String, callBack: HomepageViewController) {
+        back = callBack
     }
     
     func randomRecipe(recipe: String) -> Void {
@@ -53,7 +55,8 @@ class Recipe{
             self.steps += [stepSplit]
         }
         
-        //tables[3] contains image
         
+        
+        //tables[3] contains image
     }
 }

@@ -18,6 +18,7 @@ class HomepageViewController: UIViewController /*UITableViewDataSource,* UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        populateList()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -25,7 +26,7 @@ class HomepageViewController: UIViewController /*UITableViewDataSource,* UITable
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     func onRequestComplete(recipe: String) -> Void {
        
         
@@ -33,5 +34,17 @@ class HomepageViewController: UIViewController /*UITableViewDataSource,* UITable
     
     @IBAction func unwindToHomepage(segue: UIStoryboardSegue) {}
     
+    var recipeList: Array<Recipe> = []
+
+    func populateList(){
+        //request from recipe class
+        //add to array
+        var i = 0
+        while(i < 6){
+            recipeList += [Recipe(callBack: self)]
+            i += 1
+        }
+    }
+
 }
 
