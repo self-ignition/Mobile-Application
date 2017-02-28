@@ -14,7 +14,6 @@ class RandomMealTableViewCell: UITableViewCell {
     
     @IBOutlet weak var randomMealIngredients: UILabel! //no longer used
     
-    @IBOutlet weak var randomMealName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

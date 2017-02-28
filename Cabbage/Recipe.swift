@@ -14,7 +14,7 @@ class Recipe{
     var title: String = ""
     var prept: String = ""
     var cookt: String = ""
-    var authour: String = ""
+    var author: String = ""
     var yield: String = ""
     
     var ingredients: Array<String> = []
@@ -26,12 +26,15 @@ class Recipe{
         let server = serverRequests()
         back = callBack
         server.downloadRecipe(callBack: self)
+        
     }
     
     //ID Recipe
     init(id: String, callBack: HomepageViewController) {
         back = callBack
     }
+    
+    
     
     func randomRecipe(recipe: String) -> Void {
         //splits it into tables, recipe, ingredient, steps
@@ -40,12 +43,12 @@ class Recipe{
         //splits it into columns
         var parts = tables[0].components(separatedBy: "|")
         
-        self.id = parts[0]
-        self.title = parts[1]
-        self.prept = parts[2]
-        self.cookt = parts[3]
-        self.authour = parts[4]
-        self.yield = parts[5]
+        setId(id: parts[0])
+        setTitle(title: parts[1])
+        setPrepTime(PrepTime: parts[2])
+        setCookTime(CookTime: parts[3])
+        setAuthor(Author: parts[4])
+        setYield(Yield: parts[5])
         
         for ingSplit in tables[1].components(separatedBy: "|"){
             self.ingredients += [ingSplit]
