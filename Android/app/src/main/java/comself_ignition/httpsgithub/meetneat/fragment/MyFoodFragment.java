@@ -7,8 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class MyFoodFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -98,5 +106,35 @@ public class MyFoodFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+}
+
+class adapterFood extends ArrayAdapter<String> {
+    Context context;
+    List<String> names;
+
+    adapterFood(Context c, List<String> names) {
+        super(c, R.layout.fragment_friends_row, names);
+        this.names = names;
+        this.context = c;
+    }
+
+    @Override
+    public int getCount() {
+        return names.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
+
+        return row;
+
     }
 }
