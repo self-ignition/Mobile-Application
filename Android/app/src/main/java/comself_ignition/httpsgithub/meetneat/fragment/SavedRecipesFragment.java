@@ -31,51 +31,22 @@ import java.util.Map;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
+import comself_ignition.httpsgithub.meetneat.other.SavedRecipeAction;
 import comself_ignition.httpsgithub.meetneat.other.SearchResult;
 import comself_ignition.httpsgithub.meetneat.other.SearchResultCallback;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import static android.R.id.list;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SavedRecipesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SavedRecipesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SavedRecipesFragment extends Fragment implements SearchResultCallback {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private OnFragmentInteractionListener mListener;
-
+public class SavedRecipesFragment extends Fragment implements VolleyCallback, SearchResultCallback {
     SearchResult searchResults;
     List<Recipe> recipes = new ArrayList<>();
     ListView list;
 
     public SavedRecipesFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SavedRecipesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SavedRecipesFragment newInstance(String param1, String param2) {
-        SavedRecipesFragment fragment = new SavedRecipesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -87,68 +58,12 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        readRecipes();
+        //Get a list of the saved recipes from the server
+        ServerRequests sr = new ServerRequests();
+        sr.GetSavedRecipes(getActivity(), this, SavedRecipeAction.get, SaveSharedPreference.getUserName(getActivity()));
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_search_results, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-    private void readRecipes()
-    {
-        String recipe = "";
-        try {
-            InputStream inputStream = getActivity().openFileInput("config.txt");
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                recipe = stringBuilder.toString();
-                Log.i("HELLO", recipe);
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-
-        //Search ( Query, Callback )
-        searchResults.Retrieve(recipe, this);
     }
 
     public void onSearchComplete(Recipe r) {
@@ -173,6 +88,11 @@ public class SavedRecipesFragment extends Fragment implements SearchResultCallba
             }
         });
         ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        searchResults.Retrieve(result, this);
     }
 }
 

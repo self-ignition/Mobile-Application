@@ -34,11 +34,15 @@ import java.util.Map;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
+import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
+import comself_ignition.httpsgithub.meetneat.other.SavedRecipeAction;
+import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
+import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import static android.R.attr.data;
 import static android.os.Build.VERSION_CODES.M;
 
-public class RecipeActivity extends AppCompatActivity implements RecipeReadyCallback {
+public class RecipeActivity extends AppCompatActivity implements VolleyCallback, RecipeReadyCallback {
 
     ExpandableListView expandableListView;
 
@@ -47,6 +51,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
     List<String> titles;
     Map<String,List<String>> details;
     ExpandableListAdapter listAdapter;
+
+    boolean isAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,40 +64,18 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
+
+        //Set the recipe
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
 
-    public void checkIfSaved() {
-        String data = recipe.getId();
-        String recipe = "";
-        try {
-            InputStream inputStream = this.openFileInput("config.txt");
-
-            if (inputStream != null) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ((receiveString = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                recipe = stringBuilder.toString();
-
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-
+    @Override
+    public void onSuccess(String result) {
+        //CHECK TO SEE IF THE RECIPE IS IN THE LIST OF RESULTS.
         final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
-        Log.i("WHAT IS ID: ", data);
-        Log.i("WHAT IS RECIPE: ", recipe);
-        if(recipe.contains(data)) {
+
+        if(result.contains(recipe.getId())) {
+            isAdded = true;
             ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -106,49 +90,13 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
     }
 
     public void saveFunction(View v) {
-        String data = recipe.getId();
-        String recipe = "";
-        try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_APPEND));
-            outputStreamWriter.write("");
-            outputStreamWriter.close();
+        final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
+        ServerRequests sr = new ServerRequests();
 
-            InputStream inputStream = this.openFileInput("config.txt");
-
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-                inputStream.close();
-                recipe = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        }
-
-        if(!recipe.contains(data))
-        {
-            try {
-
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_APPEND));
-                outputStreamWriter.append(data + "|");
-                outputStreamWriter.close();
-            }
-            catch (IOException e) {
-                Log.e("Exception", "File write failed: " + e.toString());
-            }
-
-            final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
-
-            ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+        if(isAdded) {
+            sr.GetSavedRecipes(this, null, SavedRecipeAction.remove, SaveSharedPreference.getUserName(this), recipe.getId());
+            isAdded = false;
+            ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -161,81 +109,20 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         }
         else
         {
-            try {
-                InputStream inputStream = this.openFileInput("config.txt");
-
-                if ( inputStream != null ) {
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String receiveString = "";
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    while ( (receiveString = bufferedReader.readLine()) != null ) {
-                        stringBuilder.append(receiveString);
-                    }
-
-                    inputStream.close();
-                    recipe = stringBuilder.toString();
-
-                    recipe = recipe.replace(data +"|","");
-                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput("config.txt", Context.MODE_PRIVATE));
-                    outputStreamWriter.write(recipe);
-                    outputStreamWriter.close();
-
-                    final ImageView mImageRed = (ImageView) findViewById(R.id.heart_red);
-
-                    ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
-                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animation) {
-                            mImageRed.setAlpha((Float) animation.getAnimatedValue());
-                        }
-                    });
-
-                    animator.setDuration(1500);
-                    animator.start();
+            sr.GetSavedRecipes(this, null, SavedRecipeAction.set, SaveSharedPreference.getUserName(this), recipe.getId());
+            isAdded = true;
+            ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mImageRed.setAlpha((Float) animation.getAnimatedValue());
                 }
-            }
-            catch (FileNotFoundException e) {
-                Log.e("login activity", "File not found: " + e.toString());
-            } catch (IOException e) {
-                Log.e("login activity", "Can not read file: " + e.toString());
-            }
+            });
+
+            animator.setDuration(1500);
+            animator.start();
         }
     }
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        MenuItem item = menu.findItem(R.id.refresh);
-        item.setVisible(false);
-
-        MenuItem searchViewItem = menu.findItem(R.id.search);
-        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
-        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchViewAndroidActionBar.clearFocus();
-                doMySearch(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
-*/
-   /* public void doMySearch(String query) {
-        Intent intent = new Intent(this, SearchResultsActivity.class);
-        intent.putExtra("query", query);
-        startActivity(intent);
-    }*/
 
     public void init()
     {
@@ -273,9 +160,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
     @Override
     public void onReady(Recipe r) {
         recipe = r;
-        Log.i("Recipe callback", "Title of recipe:" + recipe.getTitle());
+
+        //Used to set the colour of the heart.
+        ServerRequests sr = new ServerRequests();
+        sr.GetSavedRecipes(this, this, SavedRecipeAction.get, SaveSharedPreference.getUserName(this));
+
         UpdateFields();
-        checkIfSaved();
     }
 
     private void UpdateFields() {

@@ -58,12 +58,11 @@ public class ServerRequests {
 
     }
 
-    public void DoSearch(Context context, final String query, final SearchType type, final VolleyCallback callback){
+    public void DoSearch(Context context, final String query, final SearchType type, final VolleyCallback callback) {
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
         String searchMethod = "";
-        switch (type)
-        {
+        switch (type) {
             case OR:
                 searchMethod = "OR";
                 break;
@@ -77,7 +76,7 @@ public class ServerRequests {
                 searchMethod = "OR";
         }
 
-        final String url = "http://computing.derby.ac.uk/~cabbage/dosearch.php?terms=" +query.replace(" ", "%20") + "&search="+searchMethod;
+        final String url = "http://computing.derby.ac.uk/~cabbage/dosearch.php?terms=" + query.replace(" ", "%20") + "&search=" + searchMethod;
 
         //Create the request
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -137,8 +136,7 @@ public class ServerRequests {
         queue.add(request);
     }
 
-    public void SignUp(Context context, String _username, String _email, String _password)
-    {
+    public void SignUp(Context context, String _username, String _email, String _password) {
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://computing.derby.ac.uk/~cabbage/signup.php";
@@ -179,7 +177,7 @@ public class ServerRequests {
         queue.add(request);
     }
 
-    public void GetRecipe(Context context, final String url, final VolleyCallback callback){
+    public void GetRecipe(Context context, final String url, final VolleyCallback callback) {
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -254,7 +252,7 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        if(callback != null)
+                        if (callback != null)
                             callback.onSuccess(response);
                     }
                     //What happens if the request fails
@@ -297,5 +295,55 @@ public class ServerRequests {
 
     }
 
+    public void GetSavedRecipes(final Context context, final VolleyCallback callback, final SavedRecipeAction action, final String You, final String recipeID) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/savedrecipes.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //CALL THE LOGIN METHOD
+                        if (callback != null)
+                            callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+                switch (action) {
+                    case get:
+                        params.put("request", "get");
+                        break;
+                    case set:
+                        params.put("request", "set");
+                        break;
+                    case remove:
+                        params.put("request", "remove");
+                        break;
+                }
+
+                params.put("recipe_id", recipeID);
+                params.put("username", You);
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+    }
+    public void GetSavedRecipes(final Context context, final VolleyCallback callback, final SavedRecipeAction action, final String You) {
+        GetSavedRecipes(context, callback, action, You, "");
+    }
 }
+
 
