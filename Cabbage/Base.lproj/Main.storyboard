@@ -42,23 +42,29 @@
                                                         <constraint firstAttribute="width" constant="89" id="hJm-Z7-nqD"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" restorationIdentifier="recipeTitle" text="randomMealName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRV-aV-xcd">
+                                                <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Fb4-Ue-n9q">
                                                     <rect key="frame" x="97" y="34" width="215" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </stackView>
+                                                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" restorationIdentifier="recipeTitle" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRV-aV-xcd">
+                                                    <rect key="frame" x="104" y="0.0" width="216" height="89"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="215" id="1YP-0T-pfG"/>
                                                         <constraint firstAttribute="height" constant="21" id="vXa-l0-h1P"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <mutableString key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue</mutableString>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="YjH-Xl-Vaw" firstAttribute="top" secondItem="QRV-aV-xcd" secondAttribute="top" id="A5F-2L-Xj7"/>
-                                                <constraint firstItem="QRV-aV-xcd" firstAttribute="leading" secondItem="YjH-Xl-Vaw" secondAttribute="trailing" constant="8" symbolic="YES" id="Hjj-ZU-YSI"/>
+                                                <constraint firstItem="QRV-aV-xcd" firstAttribute="top" secondItem="t5m-tj-r01" secondAttribute="topMargin" constant="26" id="HEj-z6-sTb"/>
+                                                <constraint firstAttribute="topMargin" secondItem="QRV-aV-xcd" secondAttribute="top" id="SqP-mh-tVb"/>
                                                 <constraint firstItem="YjH-Xl-Vaw" firstAttribute="centerY" secondItem="t5m-tj-r01" secondAttribute="centerY" id="enA-bf-AgM"/>
                                                 <constraint firstItem="YjH-Xl-Vaw" firstAttribute="leading" secondItem="t5m-tj-r01" secondAttribute="leading" id="nf1-I7-9u9"/>
                                                 <constraint firstItem="YjH-Xl-Vaw" firstAttribute="top" secondItem="t5m-tj-r01" secondAttribute="top" id="pn6-dE-iCW"/>
+                                                <constraint firstItem="QRV-aV-xcd" firstAttribute="leading" secondItem="t5m-tj-r01" secondAttribute="leading" constant="104" id="uc4-y0-hBa"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -67,6 +73,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="9pv-A4-QxB" id="jhV-9S-jbD"/>
+                                    <outlet property="delegate" destination="9pv-A4-QxB" id="o1A-sI-V7s"/>
+                                </connections>
                             </tableView>
                             <searchBar contentMode="redraw" placeholder="Search for recipes" translatesAutoresizingMaskIntoConstraints="NO" id="dQ2-7E-nwH">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -103,7 +113,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="988" y="-1091"/>
+            <point key="canvasLocation" x="986.25" y="-1091.1971830985915"/>
         </scene>
         <!--Login-->
         <scene sceneID="gg5-pO-Oed">
