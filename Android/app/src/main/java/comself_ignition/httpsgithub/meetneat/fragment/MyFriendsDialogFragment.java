@@ -22,7 +22,7 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import static android.support.design.R.id.text;
 import static comself_ignition.httpsgithub.meetneat.R.id.name;
 
-public class MyDialogFragment extends DialogFragment implements VolleyCallback {
+public class MyFriendsDialogFragment extends DialogFragment implements VolleyCallback {
 
     VolleyCallback callback;
     @Override

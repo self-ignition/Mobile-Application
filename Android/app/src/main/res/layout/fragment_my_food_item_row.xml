@@ -8,7 +8,7 @@
     android:elevation="8dp">
 
     <TextView
-        android:id="@+id/FriendName"
+        android:id="@+id/FoodName"
         android:layout_width="wrap_content"
         android:text="Header"
         android:layout_height="60dp"
@@ -29,18 +29,4 @@
         android:layout_weight="1"
         android:onClick="declineButton">
     </ImageButton>
-
-    <ImageButton
-        android:id="@+id/acceptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
-        android:elevation="12dp"
-        android:src="@drawable/checkmark"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        android:layout_weight="1"
-        android:onClick="acceptButton">
-    </ImageButton>
-
 </LinearLayout>

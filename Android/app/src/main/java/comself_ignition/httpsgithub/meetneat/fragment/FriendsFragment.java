@@ -1,27 +1,17 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,26 +26,15 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static comself_ignition.httpsgithub.meetneat.activity.MainActivity.navItemIndex;
 
 
 public class FriendsFragment extends Fragment implements VolleyCallback {
-    private FloatingActionButton fab;
-    private String m_Text = "";
 
     Map<String, Boolean> friends = new HashMap<>();
     ListView list;
 
     public FriendsFragment() {
         // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static FriendsFragment newInstance() {
-        FriendsFragment fragment = new FriendsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -71,7 +50,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                final MyDialogFragment dialogFragment = new MyDialogFragment ();
+                final MyFriendsDialogFragment dialogFragment = new MyFriendsDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");
 
             }
