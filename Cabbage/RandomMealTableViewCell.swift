@@ -10,10 +10,8 @@ import UIKit
 
 class RandomMealTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var randomMealPicture: UIImageView!
-    
-    @IBOutlet weak var randomMealIngredients: UILabel! //no longer used
-    
+    @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var recipeTitle: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

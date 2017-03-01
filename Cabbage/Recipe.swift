@@ -19,19 +19,66 @@ class Recipe{
     
     var ingredients: Array<String> = []
     var steps: Array<String> = []
-    let back: HomepageViewController
-
+    
+    var callback : RecipeReady
+    
+    //Getters RB
+    func getId() -> String{
+        return self.id
+    }
+    func getTitle() -> String{
+        return self.title
+    }
+    func getPrepTime() -> String{
+        return self.prept
+    }
+    func getCookTime() -> String{
+        return self.cookt
+    }
+    func getAuthor() -> String{
+        return self.author
+    }
+    func getYield() -> String{
+        return self.yield
+    }
+    
+    //Setters RB
+    func setId(id: String) -> Void{
+        self.id = id
+    }
+    func setTitle(title: String) -> Void{
+        self.title = title
+    }
+    func setPrepTime(PrepTime: String) -> Void{
+        self.prept = PrepTime
+    }
+    func setCookTime(CookTime: String) -> Void{
+        self.cookt = CookTime
+    }
+    func setAuthor(Author: String) -> Void{
+        self.author = Author
+    }
+    func setYield(Yield: String) -> Void{
+        self.yield = Yield
+    }
+    
+    
     //Random Recipe
-    init(callBack: HomepageViewController){
+    init(RecipeReadyCallback: RecipeReady){
+        //Set the callback, so the recipe knows the way home before you send it out into the great wild yonder.
+        //It also needs to be here because swift is a whiney bitch
+        callback = RecipeReadyCallback
+        
+        //Once the recipe has a roadmap to prevent it getting lost through bumblefuckery,
+        //Talk to the server. Get a new random recipe.
         let server = serverRequests()
-        back = callBack
         server.downloadRecipe(callBack: self)
         
     }
     
     //ID Recipe
-    init(id: String, callBack: HomepageViewController) {
-        back = callBack
+    init(RecipeReadyCallback: RecipeReady, id: String) {
+        callback = RecipeReadyCallback
     }
     
     
@@ -58,8 +105,7 @@ class Recipe{
             self.steps += [stepSplit]
         }
         
-        
-        
         //tables[3] contains image
+        callback.onRecipeReady(recipe: self)
     }
 }
