@@ -254,7 +254,8 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        callback.onSuccess(response);
+                        if(callback != null)
+                            callback.onSuccess(response);
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
