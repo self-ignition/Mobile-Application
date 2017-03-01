@@ -42,7 +42,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
         recipeList += [recipe]
         
         //DEBUG PLEASE REMOVE
-        //print("Recipe Name: " + recipe.getTitle() + " Number of recipes in this list = " + String(recipeList.count))
+        print("Recipe Name: " + recipe.getTitle() + " Number of recipes in this list = " + String(recipeList.count))
         
         //FORCE THE LISTVIEW TO UPDATE RB
         UpdateListView()
@@ -58,7 +58,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        print("Recipe count = " + String(recipeList.count))
+        
         return recipeList.count
     }
     
@@ -67,6 +67,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell( withIdentifier: "RecipeCell", for: indexPath) as! RandomMealTableViewCell
         
         cell.recipeTitle.text = recipeList[indexPath.row].getTitle()
+        cell.recipeImage.image = recipeList[indexPath.row].image
         
         return cell
     }
