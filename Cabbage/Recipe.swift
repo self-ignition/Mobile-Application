@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Recipe{
     
@@ -16,6 +17,7 @@ class Recipe{
     var cookt: String = ""
     var author: String = ""
     var yield: String = ""
+    var image: UIImage? = nil
     
     var ingredients: Array<String> = []
     var steps: Array<String> = []
@@ -61,6 +63,10 @@ class Recipe{
     func setYield(Yield: String) -> Void{
         self.yield = Yield
     }
+    func setImage(Image: UIImage) -> Void{
+        self.image = Image
+        callback.onRecipeReady(recipe: self)
+    }
     
     
     //Random Recipe
@@ -105,7 +111,7 @@ class Recipe{
             self.steps += [stepSplit]
         }
         
-        //tables[3] contains image
-        callback.onRecipeReady(recipe: self)
+        let server = serverRequests()
+        server.downloadImage(URL: tables[3], callBack: self)
     }
 }

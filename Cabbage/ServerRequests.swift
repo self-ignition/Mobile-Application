@@ -94,6 +94,30 @@ class serverRequests {
         }
         task.resume()
     }
+    
+    func downloadImage(URL: String, callBack: Recipe)-> Void{
+        //Make URL. CRW
+        let myUrl = NSURL(string: (URL.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed))!)
+        let request = NSMutableURLRequest(url: myUrl! as URL)
+        
+        //Set Method to POST. CRW
+        request.httpMethod = "GET"
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest){data, response, error in
+            if error != nil {
+                print("ERROR ****\(error)")
+                return
+            }
+            //recieve
+            let imageData =  UIImage(data: data!)
+            print("Created image")
+            
+            //Pass back to the recipe
+            callBack.setImage(Image: imageData!)
+
+        }
+        task.resume()
+    }
 
 }
 
