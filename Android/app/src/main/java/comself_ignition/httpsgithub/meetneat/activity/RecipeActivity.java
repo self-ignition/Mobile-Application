@@ -58,7 +58,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
 
         listAdapter = new MyListAdapter(this,titles,details);
         expandableListView.setAdapter(listAdapter);
-        checkIfSaved();
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
 
@@ -276,6 +275,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeReadyCall
         recipe = r;
         Log.i("Recipe callback", "Title of recipe:" + recipe.getTitle());
         UpdateFields();
+        checkIfSaved();
     }
 
     private void UpdateFields() {

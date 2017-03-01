@@ -20,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +53,13 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = this.getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
+        public boolean onCreateOptionsMenu(Menu menu) {
+            MenuInflater inflater = this.getMenuInflater();
+            inflater.inflate(R.menu.options_menu, menu);
 
 
-        MenuItem searchViewItem = menu.findItem(R.id.search);
-        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+            MenuItem searchViewItem = menu.findItem(R.id.search);
+            final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
