@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 import android.widget.EditText;
@@ -109,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
     public void onSuccess(String result) {
         if(result.equals("1"))
         {
-            SaveSharedPreference.setEmailAddress(this, email.getText().toString());
+            SaveSharedPreference.setUserName(this, email.getText().toString());
             SaveSharedPreference.setLoggedIn(this, true);
             Intent intent = new Intent(this, MainActivity.class);
             this.startActivity(intent);

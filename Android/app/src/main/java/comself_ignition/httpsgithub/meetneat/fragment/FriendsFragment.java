@@ -146,4 +146,3 @@ class adapterFriends extends ArrayAdapter<String> {
         }
     }
 }
-
