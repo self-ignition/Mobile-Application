@@ -29,8 +29,6 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class MyFoodFragment extends Fragment {
     ListView list;
-    List<String> food = new ArrayList<>();
-
 
     public MyFoodFragment() {
         // Required empty public constructor
@@ -40,7 +38,6 @@ public class MyFoodFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         list = (ListView) getActivity().findViewById(R.id.foodList);
-        updateFragment();
 
         FloatingActionButton myFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +48,6 @@ public class MyFoodFragment extends Fragment {
 
             }
         });
-
     }
 
     @Override
@@ -62,6 +58,8 @@ public class MyFoodFragment extends Fragment {
     }
 
     private void updateFragment() {
+        String food = "";
+
         try {
             InputStream inputStream = getActivity().openFileInput("food.txt");
 
@@ -72,13 +70,14 @@ public class MyFoodFragment extends Fragment {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    food.add(receiveString);
+                    stringBuilder.append(receiveString);
                 }
 
                 inputStream.close();
-
+                food = stringBuilder.toString();
+                String[] friends = food.split("\\|");
                 list=(ListView) getActivity().findViewById(R.id.foodList);
-                list.setAdapter(new adapterFood(getActivity(), food));
+                list.setAdapter(new adapterFood(getActivity(), friends));
             }
         }
         catch (FileNotFoundException e) {
@@ -91,9 +90,9 @@ public class MyFoodFragment extends Fragment {
 
 class adapterFood extends ArrayAdapter<String> {
     Context context;
-    List<String> names;
+    String[] names;
 
-    adapterFood(Context c, List<String> names) {
+    adapterFood(Context c, String[] names) {
         super(c, R.layout.fragment_my_food_item_row, names);
         this.names = names;
         this.context = c;
@@ -101,7 +100,7 @@ class adapterFood extends ArrayAdapter<String> {
 
     @Override
     public int getCount() {
-        return names.size();
+        return names.length;
     }
 
     @Override
@@ -115,7 +114,7 @@ class adapterFood extends ArrayAdapter<String> {
         View row = inflater.inflate(R.layout.fragment_my_food_item_row, parent, false);
         TextView name = (TextView) row.findViewById(R.id.FoodName);
 
-        name.setText(names.get(position).toString());
+        name.setText(names[position].toString());
 
         return row;
     }

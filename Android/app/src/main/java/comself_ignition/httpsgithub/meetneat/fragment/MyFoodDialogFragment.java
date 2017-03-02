@@ -33,7 +33,7 @@ import static android.R.attr.data;
 import static android.support.design.R.id.text;
 import static comself_ignition.httpsgithub.meetneat.R.id.name;
 
-public class MyFoodDialogFragment extends DialogFragment implements VolleyCallback {
+public class MyFoodDialogFragment extends DialogFragment {
 
     VolleyCallback callback;
     @Override
@@ -74,10 +74,5 @@ public class MyFoodDialogFragment extends DialogFragment implements VolleyCallba
         return rootView;
     }
 
-    @Override
-    public void onSuccess(String result) {
-        Toast.makeText(getActivity(),"Request sent", Toast.LENGTH_SHORT).show();
-        dismiss();
-    }
 }
 
