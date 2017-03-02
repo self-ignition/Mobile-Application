@@ -112,35 +112,22 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.i("no", "onResume: " + SaveSharedPreference.getEmailAddress(this));
+        Log.i("no", "onResume: " + SaveSharedPreference.getUserName(this));
+        Log.i("no", "onResume: " + SaveSharedPreference.getLoggedIn(this));
+
+        loadNavHeader();
+    }
+
     public void image(View v)
     {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto , 1);
-    }
-
-    public void onButtonClicked(View v)
-    {
-        switch (CURRENT_TAG){
-            case TAG_HOME:
-                //((HomeFragment)fragmentInFocus).onButtonPressed( URI stuff....);
-                break;
-            case TAG_RECIPES:
-                //((SavedRecipesFragment)fragmentInFocus).onButtonPressed( URI stuff....);
-                break;
-            case TAG_FRIDGE:
-                //((MyFoodFragment)fragmentInFocus).onButtonPressed( URI stuff....);
-                break;
-            case TAG_FRIENDS:
-                ((FriendsFragment)fragmentInFocus).onButtonClick(v);
-                break;
-            case TAG_NOTIFICATIONS:
-                //((NotificationsFragment)fragmentInFocus).onButtonPressed( URI stuff....);
-                break;
-            case TAG_SETTINGS:
-                //((SettingsFragment)fragmentInFocus).onButtonPressed( URI stuff....);
-                break;
-        }
     }
 
     private int PICK_IMAGE_REQUEST = 1;

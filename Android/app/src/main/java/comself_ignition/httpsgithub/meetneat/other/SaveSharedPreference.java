@@ -11,7 +11,7 @@ public final class SaveSharedPreference {
     static final String PREF_DATE_LOGGED_IN = "date";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
-        return PreferenceManager.getDefaultSharedPreferences(ctx);
+        return ctx.getSharedPreferences("meetneat", Context.MODE_PRIVATE);
     }
 
     public static void setUserName(Context ctx, String userName)
@@ -23,7 +23,7 @@ public final class SaveSharedPreference {
 
     public static String getUserName(Context ctx)
     {
-        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
+        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "None");
     }
 
     public static void setEmailAddress(Context ctx, String userName)
@@ -35,7 +35,7 @@ public final class SaveSharedPreference {
 
     public static String getEmailAddress(Context ctx)
     {
-        return getSharedPreferences(ctx).getString(PREF_EMAIL_ADDRESS, "");
+        return getSharedPreferences(ctx).getString(PREF_EMAIL_ADDRESS, "None");
     }
 
     public static void setLoggedIn(Context ctx, Boolean isLoggedIn)

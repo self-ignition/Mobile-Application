@@ -58,12 +58,19 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Get a list of the saved recipes from the server
-        ServerRequests sr = new ServerRequests();
-        sr.GetSavedRecipes(getActivity(), this, SavedRecipeAction.get, SaveSharedPreference.getUserName(getActivity()));
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_search_results, container, false);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        recipes.clear();
+        ServerRequests sr = new ServerRequests();
+        sr.GetSavedRecipes(getActivity(), this, SavedRecipeAction.get, SaveSharedPreference.getUserName(getActivity()));
     }
 
     public void onSearchComplete(Recipe r) {
