@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -15,6 +16,14 @@
         android:gravity="fill_vertical"
         android:textSize="16sp"
         android:layout_margin="5dp"
-        android:layout_weight="30"/>
+        android:layout_weight="59.51"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/friends_menu_button"
+        android:layout_weight="1"
+        android:background="@android:drawable/ic_menu_edit"/>
+
 
 </LinearLayout>
