@@ -13,6 +13,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
     //Added RECIPEREADY to the class, Swift Protocol = interface
     //List of recipes to be passed to the ListView RB
     var recipeList : Array<Recipe> = []
+    let numRecipes: Int = 10
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -20,9 +21,9 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        //Make 6 Recipe calls RB
+        //Make 10 Recipe calls RB
         var i: Int = 0
-        while(i <  6)
+        while(i < numRecipes)
         {
             //Create the recipe, swift is complaing because i don't then mess w/ the var
             let r : Recipe = Recipe(RecipeReadyCallback: self)

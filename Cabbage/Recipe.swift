@@ -68,7 +68,6 @@ class Recipe{
         callback.onRecipeReady(recipe: self)
     }
     
-    
     //Random Recipe
     init(RecipeReadyCallback: RecipeReady){
         //Set the callback, so the recipe knows the way home before you send it out into the great wild yonder.
@@ -86,8 +85,6 @@ class Recipe{
     init(RecipeReadyCallback: RecipeReady, id: String) {
         callback = RecipeReadyCallback
     }
-    
-    
     
     func randomRecipe(recipe: String) -> Void {
         //splits it into tables, recipe, ingredient, steps
