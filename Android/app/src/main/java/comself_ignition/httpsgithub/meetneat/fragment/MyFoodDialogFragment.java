@@ -35,7 +35,6 @@ import static comself_ignition.httpsgithub.meetneat.R.id.name;
 
 public class MyFoodDialogFragment extends DialogFragment {
 
-    VolleyCallback callback;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_food, container, false);

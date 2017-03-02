@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +70,6 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
-
         });
     }
 

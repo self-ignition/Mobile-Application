@@ -63,7 +63,6 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
         return inflater.inflate(R.layout.activity_search_results, container, false);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
