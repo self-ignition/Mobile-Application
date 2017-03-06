@@ -10,9 +10,10 @@ import UIKit
 
 class MyFridgeTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var ingredientLabel: UILabel!
+    @IBOutlet weak var ingredientNameLabel: UILabel!
     
     override func awakeFromNib() {
+        
         super.awakeFromNib()
         // Initialization code
     }

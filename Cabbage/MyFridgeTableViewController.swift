@@ -9,9 +9,26 @@
 import UIKit
 
 class MyFridgeTableViewController: UITableViewController {
-
+    
+    @IBOutlet var ingredientsTable: UITableView!
+    @IBOutlet weak var addIngredientButton: UIBarButtonItem!
+    
+    let filePath : String = "MyFridge"
+    var ingredientsList : Array<String> = []
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //ingredientsList = ["milk", "chicken", "flour"] //Debug init of ingredients
+        
+        //writeFile(file: filePath, list: ingredientsList)
+        ingredientsList = [] // Debug clear list, to see if they are read from file
+        
+        ingredientsList = readFile(file: filePath)
+        
+        SetButtonOnClick()
+        updateList()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -20,76 +37,91 @@ class MyFridgeTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return ingredientsList.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ingredientRow", for: indexPath) as! MyFridgeTableViewCell
 
-        // Configure the cell...
+        cell.ingredientNameLabel.text = ingredientsList[indexPath.row]
 
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func updateList() -> Void {
+        ingredientsTable.reloadData()
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func readFile(file: String) -> Array<String> {
+        var lines: Array<String> = []
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            let path = dir.appendingPathComponent(file)
+            var text = ""
+            
+            //reading
+            do {
+                text = try String(contentsOf: path, encoding: String.Encoding.utf8)
+            }
+            catch {/* error handling here */}
+            
+            lines =  text.components(separatedBy: ",")
+        }
+        return lines
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func writeFile(file: String, list: Array<String>) -> Void {
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+    
+            let path = dir.appendingPathComponent(file)
+            var text: String = ""
+            
+            for s in list {
+                text += s + ","
+            }
+            
+            //writing
+            do {
+                try text.write(to: path, atomically: false, encoding: String.Encoding.utf8)
+            }
+            catch {/* error handling here */}
+        }
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    func SetButtonOnClick(){
+        //Set action for the button when clicked
+        addIngredientButton.target = self
+        addIngredientButton.action = #selector(PopupDialog)
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    func PopupDialog(){
+        //1. Create Dialog
+        let alert = UIAlertController(title: "Add to my fridge", message: "Enter your ingredient", preferredStyle: .alert)
+        
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = "Apple"
+        }
+        
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        let okAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default)
+        {
+            (result : UIAlertAction) -> Void in
+            self.AddToList(item: (alert.textFields?[0].text)!)
+        }
+        alert.addAction(okAction) 
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+        
+        // 4. add value to the list and commit change to file
+        self.present(alert, animated: true, completion: nil)
     }
-    */
-
+    
+    func AddToList(item: String) -> Void{
+        ingredientsList.append(item)
+        writeFile(file: filePath, list: ingredientsList)
+        updateList()
+    }
 }
