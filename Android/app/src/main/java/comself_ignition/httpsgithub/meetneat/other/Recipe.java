@@ -39,6 +39,7 @@ public class Recipe implements VolleyCallback {
 
     private List<String> ingredients = new ArrayList<>();
     private List<String> steps = new ArrayList<>();
+    private List<String> reviews = new ArrayList<>();
 
     public String getId() { return id; }
     public String getTitle() {
@@ -67,6 +68,7 @@ public class Recipe implements VolleyCallback {
         return imageURL;
     }
     public String getRating() { return rating; }
+    public List<String> getReviews() { return reviews;  }
 
     public void setId (String id) { this.id = id; }
     public void setTitle(String title) {
@@ -95,6 +97,7 @@ public class Recipe implements VolleyCallback {
         this.imageURL = imageURL;
     }
     public void setRating(String rating) { this.rating = rating; }
+    public void setReviews(List<String> reviews) {this.reviews = reviews; }
 
     public void setRecipe(Context context, String term, final RecipeReadyCallback callback) {
         this.callback = callback;
@@ -160,6 +163,15 @@ public class Recipe implements VolleyCallback {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
+        }
+
+        //Reviews Table
+        try {
+            //split third table into steps;
+            parts = Arrays.asList(tables.get(4).split("\\|"));
+            this.setReviews(parts);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
