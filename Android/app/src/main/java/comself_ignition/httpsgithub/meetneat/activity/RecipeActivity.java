@@ -7,6 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.other.ModelObject;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
@@ -43,28 +48,23 @@ import static android.R.attr.data;
 import static android.os.Build.VERSION_CODES.M;
 
 public class RecipeActivity extends AppCompatActivity implements VolleyCallback, RecipeReadyCallback {
-
-    ExpandableListView expandableListView;
-
     Recipe recipe = new Recipe();
 
     List<String> titles;
     Map<String,List<String>> details;
-    ExpandableListAdapter listAdapter;
 
     boolean isAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe);
+        setContentView(R.layout.activity_view_pager);
+        //init();
 
-        expandableListView = (ExpandableListView) findViewById(R.id.exp_list);
-        init();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new CustomPagerAdapter(this));
 
-        listAdapter = new MyListAdapter(this,titles,details);
-        expandableListView.setAdapter(listAdapter);
-
+        //init();
         //Set the recipe
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
@@ -124,39 +124,6 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         }
     }
 
-    public void init()
-    {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Loading, Please wait...");
-
-        TextView time = (TextView) findViewById(R.id.time);
-        time.setText("...");
-
-        TextView yield = (TextView) findViewById(R.id.yield);
-        yield.setText("...");
-
-        TextView author = (TextView) findViewById(R.id.author);
-        author.setText("...");
-
-        titles = new ArrayList<>();
-        details = new HashMap<>();
-
-        titles.add("Ingredients");
-        titles.add("Method");
-        titles.add("Reviews");
-
-        List<String> ingredients = new ArrayList<>();
-        List<String> method = new ArrayList<>();
-        List<String> reviews = new ArrayList<>();
-
-
-        reviews.add("I love when my nan makes me these. 10/10.\n");
-
-        details.put(titles.get(0),ingredients);
-        details.put(titles.get(1),method);
-        details.put(titles.get(2),reviews);
-    }
-
     @Override
     public void onReady(Recipe r) {
         recipe = r;
@@ -181,109 +148,62 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Created by: " + recipe.getAuthor());
 
-        titles = new ArrayList<>();
-        details = new HashMap<>();
+        TextView ingredients = (TextView) findViewById(R.id.ingredients_text);
+        String text = recipe.getIngredients().toString();
+        text = text.replace("[","");
+        text = text.replace("]","");
+        text = text.replace(",","\n\n");
+        ingredients.setText(text);
 
-        titles.add("Ingredients");
-        titles.add("Method");
-        titles.add("Reviews");
-
-        List<String> reviews = new ArrayList<>();
-
-        reviews.add("I love when my nan makes me these. 10/10.\n");
-
-        details.put(titles.get(0),recipe.getIngredients());
-        details.put(titles.get(1),recipe.getSteps());
-        details.put(titles.get(2),reviews);
-
-        listAdapter = new MyListAdapter(this,titles,details);
-        expandableListView.setAdapter(listAdapter);
-        ((BaseAdapter) expandableListView.getAdapter()).notifyDataSetChanged();
+        TextView method = (TextView) findViewById(R.id.method_text);
+        String method_text = recipe.getSteps().toString();
+        method_text = method_text.replace("[","");
+        method_text = method_text.replace("]","");
+        method_text = method_text.replace(".,",".\n\n");
+        method_text = method_text.replace("),",")\n\n");
+        method.setText(method_text);
 
         //Update the image
         ImageView image = (ImageView)findViewById(R.id.image);
-        image.setBackground(new BitmapDrawable(recipe.getImage()));
+        image.setImageDrawable(new BitmapDrawable(recipe.getImage()));
     }
 }
 
-class MyListAdapter extends BaseExpandableListAdapter{
-    Context context;
-    List<String> titles;
-    Map<String,List<String>> details;
+class CustomPagerAdapter extends PagerAdapter {
 
+    private Context mContext;
 
-    public MyListAdapter(Context context, List<String> titles, Map<String, List<String>> details) {
-        this.details = details;
-        this.context = context;
-        this.titles = titles;
+    public CustomPagerAdapter(Context context) {
+        mContext = context;
     }
 
     @Override
-    public int getGroupCount() {
-        return titles.size();
+    public Object instantiateItem(ViewGroup collection, int position) {
+        ModelObject modelObject = ModelObject.values()[position];
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        ViewGroup layout = (ViewGroup) inflater.inflate(modelObject.getLayoutResId(), collection, false);
+        collection.addView(layout);
+        return layout;
     }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
-        return details.get(titles.get(groupPosition)).size();
+    public void destroyItem(ViewGroup collection, int position, Object view) {
+        collection.removeView((View) view);
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
-        return titles.get(groupPosition);
+    public int getCount() {
+        return ModelObject.values().length;
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return details.get(titles.get(groupPosition)).get(childPosition);
+    public boolean isViewFromObject(View view, Object object) {
+        return view == object;
     }
 
     @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String title = (String) getGroup(groupPosition);
-
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.activity_recipe_parent,null);
-        }
-
-        TextView txtParent = (TextView) convertView.findViewById(R.id.txtParent);
-        txtParent.setText(title);
-        return convertView;
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String details = (String) getChild(groupPosition, childPosition);
-
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.activity_recipe_child,null);
-        }
-
-        TextView txtChild = (TextView) convertView.findViewById(R.id.txtChild);
-        txtChild.setText(details);
-
-        return convertView;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+    public CharSequence getPageTitle(int position) {
+        ModelObject customPagerEnum = ModelObject.values()[position];
+        return mContext.getString(customPagerEnum.getTitleResId());
     }
 }

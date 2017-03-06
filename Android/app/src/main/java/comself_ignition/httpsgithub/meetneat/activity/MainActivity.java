@@ -2,6 +2,7 @@ package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -119,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         Log.i("no", "onResume: " + SaveSharedPreference.getEmailAddress(this));
         Log.i("no", "onResume: " + SaveSharedPreference.getUserName(this));
         Log.i("no", "onResume: " + SaveSharedPreference.getLoggedIn(this));
-
-        loadNavHeader();
     }
 
     public void image(View v)
@@ -440,8 +439,13 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         {
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
-                SaveSharedPreference.setLoggedIn(this, false);
-                SaveSharedPreference.setLoggedIn(this, false);
+
+                SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = pref.edit();
+
+                edit.clear();
+                edit.commit();
+
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;

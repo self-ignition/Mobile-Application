@@ -43,6 +43,11 @@
     <string name="login">Login</string>
     <string name="createAccount">Create Account</string>
     <string name="existing">Already a member? Log in</string>
+    <string name="home">Home</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="method">Method</string>
+    <string name="recipe">Recipe</string>
+    <string name="review">Review</string>
 
 
 </resources>

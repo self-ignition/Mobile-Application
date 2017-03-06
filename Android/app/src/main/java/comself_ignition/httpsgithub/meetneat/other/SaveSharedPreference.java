@@ -16,6 +16,7 @@ public final class SaveSharedPreference {
 
     public static void setUserName(Context ctx, String userName)
     {
+
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_USER_NAME, userName);
         editor.commit();
@@ -23,7 +24,7 @@ public final class SaveSharedPreference {
 
     public static String getUserName(Context ctx)
     {
-        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "None");
+        return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
     }
 
     public static void setEmailAddress(Context ctx, String userName)
@@ -35,7 +36,7 @@ public final class SaveSharedPreference {
 
     public static String getEmailAddress(Context ctx)
     {
-        return getSharedPreferences(ctx).getString(PREF_EMAIL_ADDRESS, "None");
+        return getSharedPreferences(ctx).getString(PREF_EMAIL_ADDRESS, "");
     }
 
     public static void setLoggedIn(Context ctx, Boolean isLoggedIn)
