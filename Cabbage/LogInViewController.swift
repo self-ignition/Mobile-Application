@@ -23,19 +23,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     // Do any additional setup after loading the view.
     override func viewDidLoad() {
         super.viewDidLoad()
-        //if defaults have values then send to server requests and log in 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        //if defaults have values then send to server requests and log in
         let defaults = UserDefaults.standard
         let emailStored = defaults.string(forKey: "email")
         let passwordStored = defaults.string(forKey: "password")
-        let server = serverRequests()
         //For DEBUG
         print("PASSWORD STORED ****\(passwordStored)")
         if(emailStored != nil && passwordStored != nil){
-            //do something
-            server.logIn(email: emailStored!, password: passwordStored!, callBack: self)
+            serverRequests().logIn(email: emailStored!, password: passwordStored!, callBack: self)
         }
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -51,7 +51,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return true
     }
     
@@ -80,6 +79,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             return
         }
         else{
+            if(self.loginToggle.isOn){
+                //Save user data to device
+                let defaults = UserDefaults.standard
+                let email = self.UsernameTextField.text!
+                let password = self.PasswordTextField.text!
+                defaults.set(email, forKey:"email")
+                defaults.set(password, forKey:"password")
+                defaults.synchronize()
+            }
             let server = serverRequests()
             server.logIn(email: userEmail, password: userPassword, callBack: self)
         }
@@ -94,15 +102,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             // Move to a background thread to do some long running work. CRW
             DispatchQueue.global(qos: .userInitiated).async {
                 let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBar1") as! UITabBarController
-                if(self.loginToggle.isOn){
-                    //Save user data to device
-                    let defaults = UserDefaults.standard
-                    let email = self.UsernameTextField.text!
-                    let password = self.PasswordTextField.text!
-                    defaults.set(email, forKey:"email")
-                    defaults.set(password, forKey:"password")
-                    defaults.synchronize()
-                }
                 // Bounce back to the main thread to update the UI. CRW
                 DispatchQueue.main.async {
                     self.present(login, animated: true)
