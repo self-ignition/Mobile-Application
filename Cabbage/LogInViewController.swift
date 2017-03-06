@@ -18,16 +18,36 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var LogInButton: UIButton!
     
+    @IBOutlet weak var loginToggle: UISwitch!
+    
+    // Do any additional setup after loading the view.
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        //if defaults have values then send to server requests and log in 
+        let defaults = UserDefaults.standard
+        let emailStored = defaults.string(forKey: "email")
+        let passwordStored = defaults.string(forKey: "password")
+        let server = serverRequests()
+        //For DEBUG
+        print("PASSWORD STORED ****\(passwordStored)")
+        if(emailStored != nil && passwordStored != nil){
+            //do something
+            server.logIn(email: emailStored!, password: passwordStored!, callBack: self)
+        }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+    }
+    
+    @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {}
+    
+    @IBAction func unwindToLogIn(segue: UIStoryboardSegue) {}
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -35,18 +55,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    /*func textFieldDidBeginEditing(_ textField: UITextField) {
-        LogInScrollView.setContentOffset(CGPoint(x: 0,y: 60), animated: true)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        LogInScrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: true)
-    }*/
-    
-    @IBAction func cancelToLogInViewController(segue:UIStoryboardSegue) {}
-    
-    @IBAction func unwindToLogIn(segue: UIStoryboardSegue) {}
-
     //Funciton to create an alert message. CRW
     func displayMyAlertMessage(userMessage:String) {
         //Creating an alert called my alert
@@ -86,7 +94,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             // Move to a background thread to do some long running work. CRW
             DispatchQueue.global(qos: .userInitiated).async {
                 let login = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabBar1") as! UITabBarController
-                
+                if(self.loginToggle.isOn){
+                    //Save user data to device
+                    let defaults = UserDefaults.standard
+                    let email = self.UsernameTextField.text!
+                    let password = self.PasswordTextField.text!
+                    defaults.set(email, forKey:"email")
+                    defaults.set(password, forKey:"password")
+                    defaults.synchronize()
+                }
                 // Bounce back to the main thread to update the UI. CRW
                 DispatchQueue.main.async {
                     self.present(login, animated: true)
