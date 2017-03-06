@@ -15,11 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -53,18 +55,20 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
     List<String> titles;
     Map<String,List<String>> details;
 
+    List<Recipe> recipes = new ArrayList<>();
+    ListView list;
+
     boolean isAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-        //init();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(new CustomPagerAdapter(this));
 
-        //init();
         //Set the recipe
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
@@ -163,9 +167,13 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         method_text = method_text.replace("),",")\n\n");
         method.setText(method_text);
 
+
+        list=(ListView) findViewById(R.id.listView2);
+        list.setAdapter(new adapterReviews(this, recipes));
+
         //Update the image
         ImageView image = (ImageView)findViewById(R.id.image);
-        image.setImageDrawable(new BitmapDrawable(recipe.getImage()));
+        image.setBackground(new BitmapDrawable(recipe.getImage()));
     }
 }
 
@@ -205,5 +213,43 @@ class CustomPagerAdapter extends PagerAdapter {
     public CharSequence getPageTitle(int position) {
         ModelObject customPagerEnum = ModelObject.values()[position];
         return mContext.getString(customPagerEnum.getTitleResId());
+    }
+}
+
+class adapterReviews extends ArrayAdapter<Recipe> {
+    Context context;
+    List<Recipe> recipes;
+
+    adapterReviews(Context c, List<Recipe> recipes) {
+        super(c, R.layout.activity_recipe_review, recipes);
+        this.context = c;
+        this.recipes = recipes;
+    }
+
+    @Override
+    public int getCount() {
+        return recipes.size();
+    }
+
+    @Override
+    public Recipe getItem(int position) {
+        return recipes.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row = inflater.inflate(R.layout.activity_recipe_review, parent, false);
+        TextView review = (TextView) row.findViewById(R.id.reviews_text);
+
+        review.setText(recipes.get(0).getReviews().toString());
+
+        Log.i("RECIPE:", "HELLO NIGGER");
+        return row;
     }
 }
