@@ -11,6 +11,7 @@ import UIKit
 class RandomMealTableViewCell: UITableViewCell {
 
     @IBOutlet weak var recipeImage: UIImageView!
+    
     @IBOutlet weak var recipeTitle: UILabel!
     
     override func awakeFromNib() {
