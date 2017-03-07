@@ -17,6 +17,8 @@
 		A525D0561E45036B00E855F2 /* CabbageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A525D0551E45036B00E855F2 /* CabbageTests.swift */; };
 		A525D0611E45036B00E855F2 /* CabbageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A525D0601E45036B00E855F2 /* CabbageUITests.swift */; };
 		A52756291E4E43B600F8A295 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52756281E4E43B600F8A295 /* LogInViewController.swift */; };
+		A538FC921E6E4A69009BCB56 /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A538FC911E6E4A69009BCB56 /* FriendsTableViewCell.swift */; };
+		A538FC941E6E4A91009BCB56 /* FriendsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A538FC931E6E4A91009BCB56 /* FriendsTableViewController.swift */; };
 		A59600281E4E43020052D6B3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59600271E4E43020052D6B3 /* SignUpViewController.swift */; };
 		A5B435491E619E6D002251AC /* MyFridgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B435481E619E6D002251AC /* MyFridgeTableViewCell.swift */; };
 		A5B4354B1E619E8E002251AC /* MyFridgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4354A1E619E8E002251AC /* MyFridgeTableViewController.swift */; };
@@ -61,6 +63,8 @@
 		A525D0601E45036B00E855F2 /* CabbageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CabbageUITests.swift; sourceTree = "<group>"; };
 		A525D0621E45036B00E855F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A52756281E4E43B600F8A295 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		A538FC911E6E4A69009BCB56 /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		A538FC931E6E4A91009BCB56 /* FriendsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTableViewController.swift; sourceTree = "<group>"; };
 		A59600271E4E43020052D6B3 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A5B435481E619E6D002251AC /* MyFridgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFridgeTableViewCell.swift; sourceTree = "<group>"; };
 		A5B4354A1E619E8E002251AC /* MyFridgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFridgeTableViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 				A5CAC5011E61945700BD8BC0 /* AccountViewController.swift */,
 				A525D03E1E45036B00E855F2 /* AppDelegate.swift */,
 				A5CAC5031E61971D00BD8BC0 /* ChangePasswordViewController.swift */,
+				A538FC911E6E4A69009BCB56 /* FriendsTableViewCell.swift */,
+				A538FC931E6E4A91009BCB56 /* FriendsTableViewController.swift */,
 				A525D0401E45036B00E855F2 /* HomepageViewController.swift */,
 				3F807DD21E6496DC00E1FE66 /* Protocol_Recipe_Ready.swift */,
 				A52756281E4E43B600F8A295 /* LogInViewController.swift */,
@@ -298,6 +304,7 @@
 				A59600281E4E43020052D6B3 /* SignUpViewController.swift in Sources */,
 				A525D03F1E45036B00E855F2 /* AppDelegate.swift in Sources */,
 				A5B4354B1E619E8E002251AC /* MyFridgeTableViewController.swift in Sources */,
+				A538FC921E6E4A69009BCB56 /* FriendsTableViewCell.swift in Sources */,
 				A5CAC5041E61971D00BD8BC0 /* ChangePasswordViewController.swift in Sources */,
 				A5D318EF1E563F8B00C4A9D7 /* RandomMealTableViewCell.swift in Sources */,
 				5D12D83A1E5C919B00C85053 /* ServerRequests.swift in Sources */,
@@ -308,6 +315,7 @@
 				A5B4354D1E61A6BB002251AC /* SettingsViewController.swift in Sources */,
 				5D12D83F1E5E341100C85053 /* Recipe.swift in Sources */,
 				A5CAC5021E61945700BD8BC0 /* AccountViewController.swift in Sources */,
+				A538FC941E6E4A91009BCB56 /* FriendsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomepageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RecipeReady /*UITableViewDataSource,* UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate*/ {
+class HomepageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RecipeReady {
     
     //Added RECIPEREADY to the class, Swift Protocol = interface
     //List of recipes to be passed to the ListView RB
@@ -65,7 +65,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell( withIdentifier: "RecipeCell", for: indexPath) as! RandomMealTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCell", for: indexPath) as! RandomMealTableViewCell
         
         cell.recipeTitle.text = recipeList[indexPath.row].getTitle()
         cell.recipeImage.image = recipeList[indexPath.row].image
