@@ -8,14 +8,22 @@
 
 import UIKit
 
-class HomepageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RecipeReady {
+class HomepageViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate, RecipeReady {
     
     //Added RECIPEREADY to the class, Swift Protocol = interface
     //List of recipes to be passed to the ListView RB
-    var recipeList : Array<Recipe> = []
+    var recipeList: Array<Recipe> = []
     let numRecipes: Int = 10
     
     @IBOutlet weak var tableView: UITableView!
+    
+    //Variables used for search requests. BM
+    var searchController: UISearchController!
+    /*var dataArray = [String]()
+    var filteredArray = [String]()*/
+    var showSearchResults = false
+    
+                var filteredArray: Array<Recipe> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +37,8 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
             let r : Recipe = Recipe(RecipeReadyCallback: self)
             i += 1
         }
+        
+        configureSearchController()
     }
     
     override func didReceiveMemoryWarning() {
@@ -71,6 +81,50 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
         cell.recipeImage.image = recipeList[indexPath.row].image
         
         return cell
+    }
+    
+    //Searching properties. BM
+    func configureSearchController() {
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        
+        // Place the search bar view to the tableview headerview.
+        tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        showSearchResults = true
+        tableView.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        showSearchResults = false
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !showSearchResults {
+            showSearchResults = true
+            tableView.reloadData()
+        }
+        
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        
+        filteredArray = recipeList.filter({ (title) -> Bool in
+            
+            return ((title.getTitle().range(of: searchString!, options: NSString.CompareOptions.caseInsensitive) != nil))
+        })
+        
+        tableView.reloadData()
     }
     
     @IBAction func unwindToHomepage(segue: UIStoryboardSegue) {}
