@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -139,13 +140,13 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
 
             final String friendName = friends.keySet().toArray()[position].toString();
 
-            final Button menuButon = (Button) row.findViewById(R.id.friends_menu_button);
-            menuButon.setOnClickListener(new View.OnClickListener() {
+            final ImageView menuButton = (ImageView) row.findViewById(R.id.friends_menu_button);
+            menuButton.setOnClickListener(new View.OnClickListener() {
 
                                            @Override
                                            public void onClick(View v) {
                                                 Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                                               PopupMenu popup = new PopupMenu(context, menuButon);
+                                               PopupMenu popup = new PopupMenu(context, menuButton);
                                                //Inflating the Popup using xml file
                                                popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
 
