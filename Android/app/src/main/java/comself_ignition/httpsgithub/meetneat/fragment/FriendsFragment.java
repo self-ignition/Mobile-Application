@@ -101,11 +101,6 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
         list=(ListView) getActivity().findViewById(R.id.friendsList);
         list.setAdapter(new adapterFriends(getActivity(),friends, names, this));
     }
-
-    public void onButtonClick(View v) {
-        //Do shit here
-    }
-
 }
 
 class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
@@ -142,7 +137,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
             TextView name = (TextView) row.findViewById(R.id.FriendName);
 
-            final String friendName = name.getText().toString();
+            final String friendName = friends.keySet().toArray()[position].toString();
 
             final Button menuButon = (Button) row.findViewById(R.id.friends_menu_button);
             menuButon.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +160,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                                            case R.id.Remove_Button:
                                                                ServerRequests req = new ServerRequests();
                                                                req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
-                                                               Toast.makeText(context, "Friend request declined", Toast.LENGTH_SHORT).show();
+                                                               Toast.makeText(context, "Friend removed", Toast.LENGTH_SHORT).show();
                                                                return true;
                                                            default:
                                                                return true;
@@ -193,6 +188,6 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
 
     @Override
     public void onSuccess(String result) {
-
+        Log.i("FOCUS YOU FUCK", "onSuccess: "  + result);
     }
 }
