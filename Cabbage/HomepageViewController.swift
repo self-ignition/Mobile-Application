@@ -69,7 +69,7 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        
+
         return recipeList.count
     }
     
@@ -81,6 +81,30 @@ class HomepageViewController: UIViewController, UITableViewDelegate, UITableView
         cell.recipeImage.image = recipeList[indexPath.row].image
         
         return cell
+    }
+    
+    //Segue to RecipeViewController. THIS IS BROKEN. I will try to achieve that with prepare method. BM
+    /*public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        let recipeView = storyBoard.instantiateViewController(withIdentifier: "page1")
+        recipeView.recipeImage.image = recipeList[indexPath.row].image
+    }*/
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "page1" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let recipe: Recipe
+                if searchController.isActive && searchController.searchBar.text != "" {
+                    recipe = filteredArray[indexPath.row]
+                } else {
+                    recipe = recipeList[indexPath.row]
+                }
+                let controller = (segue.destination as! UINavigationController).topViewController as! RecipePage1
+                controller.detailRecipe = recipe
+                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
+            }
+        }
     }
     
     //Searching properties. BM

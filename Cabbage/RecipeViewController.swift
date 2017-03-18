@@ -20,9 +20,11 @@ class RecipeViewController: UIPageViewController, UIPageViewControllerDataSource
         
         let page1: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "page1")
         let page2: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "page2")
+        let page3: UIViewController! = storyboard?.instantiateViewController(withIdentifier: "page3")
         
         pages.append(page1)
         pages.append(page2)
+        pages.append(page3)
         
         setViewControllers([page1], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
 
@@ -36,9 +38,9 @@ class RecipeViewController: UIPageViewController, UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
-        let previousIndex = abs((currentIndex - 1) % pages.count)
+        let previousIndex = abs((currentIndex + 1) % pages.count)
         
-        guard previousIndex < currentIndex else {            
+        guard previousIndex > currentIndex else {
             return nil
         }
         
@@ -47,9 +49,9 @@ class RecipeViewController: UIPageViewController, UIPageViewControllerDataSource
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let currentIndex = pages.index(of: viewController)!
-        let nextIndex = abs((currentIndex + 1) % pages.count)
+        let nextIndex = abs((currentIndex - 1) % pages.count)
         
-        guard nextIndex > currentIndex else {
+        guard nextIndex < currentIndex else {
             return nil
         }
         
