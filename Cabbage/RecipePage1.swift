@@ -11,6 +11,10 @@ import UIKit
 class RecipePage1: UIViewController {
 
     @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var recipeName: UILabel!
+    @IBOutlet weak var recipeTime: UILabel!
+    @IBOutlet weak var recipeYield: UILabel!
+    @IBOutlet weak var recipeAuthor: UILabel!
     
     var detailRecipe: Recipe? {
         didSet {
