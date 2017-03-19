@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -113,7 +114,7 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
 
         final String friendName = name.getText().toString();
 
-        ImageButton AcceptButton = (ImageButton) row.findViewById(R.id.acceptButton);
+        ImageView AcceptButton = (ImageView) row.findViewById(R.id.acceptButton);
         AcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,7 +124,7 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             }
         });
 
-        ImageButton DeclineButton = (ImageButton) row.findViewById(R.id.rejectButton);
+        ImageView DeclineButton = (ImageView) row.findViewById(R.id.rejectButton);
         DeclineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -440,11 +440,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
 
-                SharedPreferences pref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor edit = pref.edit();
-
-                edit.clear();
-                edit.commit();
+                SaveSharedPreference.setLoggedIn(this, false);
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);

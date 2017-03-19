@@ -38,5 +38,6 @@ dependencies {
     compile 'com.github.d-max:spots-dialog:0.7@aar'
     compile 'com.truizlop.fabreveallayout:library:1.0.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
     testCompile 'junit:junit:4.12'
 }
