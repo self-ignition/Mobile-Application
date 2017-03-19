@@ -341,8 +341,55 @@ public class ServerRequests {
         //add the request to the queue
         queue.add(request);
     }
+
     public void GetSavedRecipes(final Context context, final VolleyCallback callback, final SavedRecipeAction action, final String You) {
         GetSavedRecipes(context, callback, action, You, "");
+    }
+
+    public void MessageRequest(final Context context, final VolleyCallback callback, final MessageAction action, final String sender, final String recipient, final String message) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/message.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //CALL THE LOGIN METHOD
+                        if (callback != null)
+                            callback.onSuccess(response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+                switch (action)
+                {
+                    case GET:
+                        params.put("intent", "SEND");
+                        break;
+                    case SEND:
+                        params.put("intent", "GET");
+                        break;
+                }
+
+                params.put("sender", sender);
+                params.put("recipient", recipient);
+                params.put("content", message);
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
     }
 }
 
