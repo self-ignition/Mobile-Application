@@ -1,8 +1,10 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,17 +51,21 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        list = (ListView) getActivity().findViewById(R.id.friendsList);
-        Context c = getActivity().getApplicationContext();
-        ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "");
-
         FloatingActionButton myFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 final MyFriendsDialogFragment dialogFragment = new MyFriendsDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");
+
+                fm.executePendingTransactions();
+                dialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        onResume();
+                    }
+                });
 
             }
         });
@@ -68,6 +76,15 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        list = (ListView) getActivity().findViewById(R.id.friendsList);
+        Context c = getActivity().getApplicationContext();
+        ServerRequests sr = new ServerRequests();
+        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "");
     }
 
     @Override
@@ -99,6 +116,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
             names.add(s);
 
         }
+        Collections.sort(names);
         list=(ListView) getActivity().findViewById(R.id.friendsList);
         list.setAdapter(new adapterFriends(getActivity(),friends, names, this));
     }
@@ -161,7 +179,6 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                                            case R.id.Remove_Button:
                                                                ServerRequests req = new ServerRequests();
                                                                req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
-                                                               Toast.makeText(context, "Friend removed", Toast.LENGTH_SHORT).show();
                                                                return true;
                                                            default:
                                                                return true;
@@ -190,5 +207,42 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
     @Override
     public void onSuccess(String result) {
         Log.i("FOCUS YOU FUCK", "onSuccess: "  + result);
+    }
+}
+
+class MyFriendsDialogFragment extends DialogFragment implements VolleyCallback {
+
+    VolleyCallback callback;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_add_friend, container, false);
+        getDialog().setTitle("Simple Dialog");
+        final Button add = (Button) rootView.findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                EditText name = (EditText) rootView.findViewById(R.id.input_addFriend);
+                String str = name.getText().toString();
+                ServerRequests ser = new ServerRequests();
+                ser.Friends(getActivity(), callback, FriendAction.add, SaveSharedPreference.getUserName(getActivity()), str );
+                dismiss();
+            }
+        });
+
+        Button dismiss = (Button) rootView.findViewById(R.id.cancel);
+        dismiss.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        return rootView;
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        Toast.makeText(getActivity(),"Request sent", Toast.LENGTH_SHORT).show();
     }
 }

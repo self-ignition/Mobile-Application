@@ -1,6 +1,7 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,16 +33,19 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 
+import static android.R.attr.data;
+import static android.R.attr.fragment;
 import static android.R.id.list;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class MyFoodFragment extends Fragment {
+public class MyFoodFragment extends Fragment{
 
     public Button btnSearch;
     public Button btnRemove;
@@ -53,13 +57,21 @@ public class MyFoodFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FloatingActionButton myFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        final FloatingActionButton myFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 final MyFoodDialogFragment dialogFragment = new MyFoodDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");
 
+                fm.executePendingTransactions();
+                dialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        onResume();
+                    }
+                });
             }
         });
     }
@@ -145,12 +157,11 @@ public class MyFoodFragment extends Fragment {
                                 }
                             }
                         }
-
                         try {
-
                             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("food.txt", Context.MODE_PRIVATE));
                             outputStreamWriter.write(data);
                             outputStreamWriter.close();
+                            onResume();
                         }
                         catch (IOException e) {
                             Log.e("Exception", "File write failed: " + e.toString());
@@ -167,6 +178,7 @@ public class MyFoodFragment extends Fragment {
             Log.e("login activity", "Can not read file: " + e.toString());
         }
     }
+
 }
 
 class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {
@@ -230,7 +242,7 @@ class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {
 class MyFoodDialogFragment extends DialogFragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
         getDialog().setTitle("Simple Dialog");
         final Button add = (Button) rootView.findViewById(R.id.add);
@@ -244,10 +256,10 @@ class MyFoodDialogFragment extends DialogFragment {
 
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("food.txt", Context.MODE_APPEND));
                     outputStreamWriter.append(str + "|");
+                    outputStreamWriter.flush();
                     outputStreamWriter.close();
                     Toast.makeText(getActivity(),str + " added", Toast.LENGTH_SHORT).show();
                     dismiss();
-
                 }
                 catch (IOException e) {
                     Log.e("Exception", "File write failed: " + e.toString());

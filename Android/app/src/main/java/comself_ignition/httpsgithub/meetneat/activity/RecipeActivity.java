@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
@@ -38,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
 import comself_ignition.httpsgithub.meetneat.other.ModelObject;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
@@ -173,7 +176,13 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
 
         //Update the image
         ImageView image = (ImageView)findViewById(R.id.image);
-        image.setBackground(new BitmapDrawable(recipe.getImage()));
+
+        Glide.with(this)
+                .load(recipe.getImageURL())
+                .crossFade()
+                .centerCrop()
+                .into(image);
+        //image.setImageDrawable(new BitmapDrawable(recipe.getImage()));
     }
 }
 
