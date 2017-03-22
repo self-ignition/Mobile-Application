@@ -143,22 +143,18 @@ public class MyFoodFragment extends Fragment{
                 RecyclerView rv = (RecyclerView) getActivity().findViewById(R.id.foodList);
                 LinearLayoutManager llm = new LinearLayoutManager(getContext());
                 rv.setLayoutManager(llm);
-                if(foodList.size() > 0){
-                    rv.setAdapter(new adapterFood(foodList));
-                    for (food s: foodList) {
-                        Log.i("onresume", "onResume: " + s.getName());
-                    }
+                rv.setAdapter(new adapterFood(foodList));
 
-                }
                 final adapterFood mAdapter = new adapterFood(foodList);
 
                 btnSearch = (Button) getActivity().findViewById(R.id.searchBtn);
+                btnSearch.setEnabled(foodList.size() > 0);
                 btnSearch.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View v) {
                         String data = "";
                         List<food> foodlist = mAdapter.getFoodList();
-
                         for (int i = 0; i < foodlist.size(); i++) {
                             food singleFood = foodlist.get(i);
                             if (singleFood.isSelected()) {
@@ -169,13 +165,17 @@ public class MyFoodFragment extends Fragment{
                                 }
                             }
                         }
+                        //Create new view of search results
                         Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+                        //add data(the ingredients) to the new view
                         intent.putExtra("query", data);
+                        //start the activity
                         getActivity().startActivity(intent);
                     }
                 });
 
                 btnRemove = (Button) getActivity().findViewById(R.id.removeBtn);
+                btnRemove.setEnabled(foodList.size() > 0);
                 btnRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -213,7 +213,6 @@ public class MyFoodFragment extends Fragment{
             Log.e("login activity", "Can not read file: " + e.toString());
         }
     }
-
 }
 
 class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {

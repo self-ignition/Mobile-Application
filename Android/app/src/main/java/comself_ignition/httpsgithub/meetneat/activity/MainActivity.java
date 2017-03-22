@@ -234,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             drawer.closeDrawers();
 
             // show or hide the fab button
-            toggleFab();
             return;
         }
 
@@ -259,9 +258,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         if (mPendingRunnable != null) {
             mHandler.post(mPendingRunnable);
         }
-
-        // show or hide the fab button
-        toggleFab();
 
         //Closing drawer on item click
         drawer.closeDrawers();
@@ -425,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         // Inflate the menu; this adds items to the action bar if it is present.
 
         // show menu only when home fragment is selected
-        if (navItemIndex == 0 || navItemIndex == 2) {
+        if (navItemIndex == 0 || navItemIndex == 2 || navItemIndex == 3) {
             getMenuInflater().inflate(R.menu.main, menu);
         }
 
@@ -448,14 +444,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    // show or hide the fab
-    private void toggleFab() {
-        if (navItemIndex == 3)
-            fab.show();
-        else
-            fab.hide();
     }
 
     @Override
