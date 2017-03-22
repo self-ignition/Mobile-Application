@@ -151,6 +151,10 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         for (String s: recipe.getReviews()) {
             review_string += s;
         }
+
+        if(recipe.getReviews().isEmpty()) {
+            review_string = "Be the first to leave a review!";
+        }
         review.setText(review_string);
 
         Glide.with(this)

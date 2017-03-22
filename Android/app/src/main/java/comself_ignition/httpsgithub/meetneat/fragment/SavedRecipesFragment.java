@@ -19,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +42,7 @@ import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import static android.R.id.list;
+import static comself_ignition.httpsgithub.meetneat.R.string.recipe;
 
 public class SavedRecipesFragment extends Fragment implements VolleyCallback, SearchResultCallback {
     SearchResult searchResults;
@@ -139,8 +143,11 @@ class adapter extends ArrayAdapter<Recipe> {
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
         servings.setText(recipes.get(position).getYield());
-        image.setBackground(new BitmapDrawable(recipes.get(position).getImage()));
-
+        Glide.with(getContext())
+                .load(recipes.get(position).getImageURL())
+                .crossFade()
+                .centerCrop()
+                .into(image);
         return row;
     }
 }
