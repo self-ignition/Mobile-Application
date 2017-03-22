@@ -2,43 +2,35 @@ package comself_ignition.httpsgithub.meetneat.other;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
-import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 
 /**
  * Created by ctrue on 22/03/2017.
  */
 
+public class MyFriendsDialogFragment extends DialogFragment implements VolleyCallback {
 
-public class ReviewsDialogFragment extends DialogFragment {
-
-    String id;
-
-    public ReviewsDialogFragment(String id) {
-        this.id = id;
-    }
-
+    VolleyCallback callback;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.activity_recipe_review_dialog, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_add_friend, container, false);
         getDialog().setTitle("Simple Dialog");
-        final Button add = (Button) rootView.findViewById(R.id.submit);
+        final Button add = (Button) rootView.findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                EditText review = (EditText) rootView.findViewById(R.id.input_addReview);
-                String str = review.getText().toString();
+                EditText name = (EditText) rootView.findViewById(R.id.input_addFriend);
+                String str = name.getText().toString();
                 ServerRequests ser = new ServerRequests();
-                ser.AddReview(getActivity(), SaveSharedPreference.getUserName(getActivity()), id, str);
+                ser.Friends(getActivity(), callback, FriendAction.add, SaveSharedPreference.getUserName(getActivity()), str );
                 dismiss();
             }
         });
@@ -52,5 +44,10 @@ public class ReviewsDialogFragment extends DialogFragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        Toast.makeText(getActivity(),"Request sent", Toast.LENGTH_SHORT).show();
     }
 }
