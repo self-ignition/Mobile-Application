@@ -418,8 +418,12 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         // Inflate the menu; this adds items to the action bar if it is present.
 
         // show menu only when home fragment is selected
-        if (navItemIndex == 0 || navItemIndex == 2 || navItemIndex == 3) {
+        if (navItemIndex == 0 ) {
             getMenuInflater().inflate(R.menu.main, menu);
+        } else if (navItemIndex == 2) {
+            getMenuInflater().inflate(R.menu.food, menu);
+        } else if (navItemIndex == 3) {
+            getMenuInflater().inflate(R.menu.friends, menu);
         }
 
         return true;

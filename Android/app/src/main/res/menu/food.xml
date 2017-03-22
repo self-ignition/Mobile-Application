@@ -8,9 +8,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_refresh"
+        android:id="@+id/action_addFood"
         android:orderInCategory="1"
-        android:title="Refresh"
+        android:title="Add Food"
         app:showAsAction="never" />
-
 </menu>

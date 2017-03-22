@@ -53,6 +53,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -87,7 +88,7 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
     {
         switch (item.getItemId())
         {
-            case R.id.action_add:
+            case R.id.action_addFriend:
                 FragmentManager fm = getFragmentManager();
                 final MyFriendsDialogFragment dialogFragment = new MyFriendsDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");
