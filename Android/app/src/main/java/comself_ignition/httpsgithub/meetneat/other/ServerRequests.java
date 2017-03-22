@@ -35,8 +35,13 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        callback.onSuccess(response);
-
+                        try {
+                            callback.onSuccess(response);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -97,7 +102,13 @@ public class ServerRequests {
                             context.startActivity(previous);
                         }
                         else{
-                            callback.onSuccess(response);
+                            try {
+                                callback.onSuccess(response);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     //What happens if the request fails
@@ -124,6 +135,7 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
+
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -201,7 +213,13 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         String s = response.replace("&#39;", "'");
-                        callback.onSuccess(s);
+                        try {
+                            callback.onSuccess(s);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -226,7 +244,13 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        callback.onSuccess(response);
+                        try {
+                            callback.onSuccess(response);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
 
                     }
                     //What happens if the request fails
@@ -266,7 +290,13 @@ public class ServerRequests {
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
                         if (callback != null)
-                            callback.onSuccess(response);
+                            try {
+                                callback.onSuccess(response);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -319,8 +349,13 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        if (callback != null)
-                            callback.onSuccess(response);
+                        if (callback != null){
+                            try {
+                                callback.onSuccess(response);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -370,8 +405,15 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        if (callback != null)
-                            callback.onSuccess(response);
+                        if (callback != null) {
+                            try {
+                                callback.onSuccess(response);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {

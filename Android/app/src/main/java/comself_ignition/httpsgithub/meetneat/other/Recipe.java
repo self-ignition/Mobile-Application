@@ -223,6 +223,12 @@ class downloadImage extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        callback.onReady(r);
+        try {
+            callback.onReady(r);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
