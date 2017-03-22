@@ -5,9 +5,20 @@
     tools:context="comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello, setting fragment" />
+
+    <!-- log in button -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_resetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:padding="12dp"
+        android:background="#648ed1"
+        android:text="@string/resetPassword"
+        android:onClick="resetPassword"
+        android:layout_weight="0.25"
+        />
 
 </FrameLayout>
