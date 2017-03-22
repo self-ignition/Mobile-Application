@@ -185,7 +185,6 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-
         if(friends.get(names.get(position))) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
