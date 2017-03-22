@@ -83,16 +83,8 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         final ReviewsDialogFragment dialog = new ReviewsDialogFragment(recipe.getId());
         dialog.show(getSupportFragmentManager(), "Review Fragment");
 
-        frag.executePendingTransactions();
-      /*  dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                onResume();
-            }
-        });
-*/
     }
+
     @Override
     public void onSuccess(String result) {
         //CHECK TO SEE IF THE RECIPE IS IN THE LIST OF RESULTS.
@@ -194,6 +186,7 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         String reviews_text = recipe.getReviews().toString();
         reviews_text = reviews_text.replace("[","");
         reviews_text = reviews_text.replace("]","");
+        reviews_text = reviews_text.replace(".,", "\n\n");
         review.setText(reviews_text);
 
         Glide.with(this)
