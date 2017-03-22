@@ -447,7 +447,7 @@ public class ServerRequests {
         queue.add(request);
     }
 
-    public void AddReview(final Context context, final VolleyCallback callback, final SavedRecipeAction action, final String You, final String recipeID, final String content) {
+    public void AddReview(final Context context, final String You, final String recipeID, final String content) {
         RequestQueue queue = Volley.newRequestQueue(context);
         final String url = "http://computing.derby.ac.uk/~cabbage/review.php";
 

@@ -10,7 +10,7 @@ public enum ModelObject {
 
     RECIPE(R.string.recipe, R.layout.activity_recipe),
     METHOD(R.string.method, R.layout.activity_recipe_method),
-    REVIEW(R.string.review, R.layout.activity_recipe_review_list);
+    REVIEW(R.string.review, R.layout.activity_recipe_review);
 
     private int mTitleResId;
     private int mLayoutResId;

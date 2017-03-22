@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
-    private FloatingActionButton fab;
     private Fragment fragmentInFocus;
 
     // index to identify current nav menu item
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // Navigation view header
         navHeader = navigationView.getHeaderView(0);
@@ -233,8 +231,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
 
-            // show or hide the fab button
-            toggleFab();
             return;
         }
 
@@ -259,9 +255,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         if (mPendingRunnable != null) {
             mHandler.post(mPendingRunnable);
         }
-
-        // show or hide the fab button
-        toggleFab();
 
         //Closing drawer on item click
         drawer.closeDrawers();
@@ -448,14 +441,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    // show or hide the fab
-    private void toggleFab() {
-        if (navItemIndex == 3)
-            fab.show();
-        else
-            fab.hide();
     }
 
     @Override
