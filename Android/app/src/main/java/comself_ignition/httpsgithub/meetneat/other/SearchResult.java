@@ -2,6 +2,7 @@ package comself_ignition.httpsgithub.meetneat.other;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,12 +21,14 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
         this.context = context;
     }
 
+    //Ingredients
     public void Search(String terms, SearchResultCallback callback){
         this.callback = callback;
         ServerRequests ser = new ServerRequests();
         ser.DoSearch(context, terms, SearchType.OR, this);
     }
 
+    //Recipe
     public void Retrieve(String terms, SearchResultCallback callback){
         this.callback = callback;
         for (String id: terms.split("\\|")) {
@@ -42,7 +45,6 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
 
         //Spilt response into parts
         results = Arrays.asList(result.split("¦"));
-
 
         for (String s: results) {
             //Spilt recipe into parts

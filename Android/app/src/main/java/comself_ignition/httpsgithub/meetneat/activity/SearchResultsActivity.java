@@ -85,7 +85,6 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
 
     public void onSearchComplete(Recipe r) {
         recipes.add(r);
-
         UpdateFields();
     }
 

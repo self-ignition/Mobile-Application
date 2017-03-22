@@ -1,8 +1,10 @@
 package comself_ignition.httpsgithub.meetneat.other;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,9 +12,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.util.ContentLengthInputStream;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import comself_ignition.httpsgithub.meetneat.activity.MainActivity;
 
 public class ServerRequests {
 
@@ -58,7 +63,7 @@ public class ServerRequests {
 
     }
 
-    public void DoSearch(Context context, final String query, final SearchType type, final VolleyCallback callback) {
+    public void DoSearch(final Context context, final String query, final SearchType type, final VolleyCallback callback) {
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
         String searchMethod = "";
@@ -84,7 +89,16 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        callback.onSuccess(response);
+                        if(response.equals("\r\n0 results")) {
+                            //error
+                            Toast.makeText(context, "No recipes found", Toast.LENGTH_LONG).show();
+                            //other page
+                            Intent previous = new Intent(context, MainActivity.class);
+                            context.startActivity(previous);
+                        }
+                        else{
+                            callback.onSuccess(response);
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -93,7 +107,6 @@ public class ServerRequests {
                 callback.onSuccess("Failed");
             }
         });
-
         queue.add(request);
     }
 
