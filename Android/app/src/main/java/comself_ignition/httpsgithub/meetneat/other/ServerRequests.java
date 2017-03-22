@@ -446,6 +446,41 @@ public class ServerRequests {
         //add the request to the queue
         queue.add(request);
     }
+
+    public void AddReview(final Context context, final String You, final String recipeID, final String content) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/review.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //CALL THE LOGIN METHOD
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("recipe_id", recipeID);
+                params.put("username", You);
+                params.put("content", content);
+                return params;
+            }
+        };
+        //add the request to the queue
+        queue.add(request);
+    }
 }
 
 

@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private ImageView imgNavHeaderBg, imgProfile;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
-    private FloatingActionButton fab;
     private Fragment fragmentInFocus;
 
     // index to identify current nav menu item
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // Navigation view header
         navHeader = navigationView.getHeaderView(0);
@@ -233,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
 
-            // show or hide the fab button
             return;
         }
 
@@ -421,7 +418,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         // Inflate the menu; this adds items to the action bar if it is present.
 
         // show menu only when home fragment is selected
-        if (navItemIndex == 0 || navItemIndex == 2 || navItemIndex == 3) {
+        if (navItemIndex == 0 || navItemIndex == 2) {
             getMenuInflater().inflate(R.menu.main, menu);
         }
 

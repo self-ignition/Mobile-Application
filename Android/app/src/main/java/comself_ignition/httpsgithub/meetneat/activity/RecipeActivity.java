@@ -1,12 +1,16 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.animation.ValueAnimator;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +22,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -41,6 +48,7 @@ import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
+import comself_ignition.httpsgithub.meetneat.other.FriendAction;
 import comself_ignition.httpsgithub.meetneat.other.ModelObject;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
@@ -49,17 +57,11 @@ import comself_ignition.httpsgithub.meetneat.other.SavedRecipeAction;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
-import static android.R.attr.data;
-import static android.os.Build.VERSION_CODES.M;
+import static comself_ignition.httpsgithub.meetneat.R.id.Reviews;
+import static comself_ignition.httpsgithub.meetneat.R.string.recipe;
 
 public class RecipeActivity extends AppCompatActivity implements VolleyCallback, RecipeReadyCallback {
     Recipe recipe = new Recipe();
-
-    List<String> titles;
-    Map<String,List<String>> details;
-
-    List<Recipe> recipes = new ArrayList<>();
-    ListView list;
 
     boolean isAdded = false;
 
@@ -74,6 +76,13 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
 
         //Set the recipe
         recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
+    }
+
+    public void reviewDialog(View v) {
+        FragmentManager frag = getFragmentManager();
+        final ReviewsDialogFragment dialog = new ReviewsDialogFragment(recipe.getId());
+        dialog.show(getSupportFragmentManager(), "Review Fragment");
+
     }
 
     @Override
@@ -170,12 +179,15 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         method_text = method_text.replace("),",")\n\n");
         method.setText(method_text);
 
-
-        list=(ListView) findViewById(R.id.listView2);
-        list.setAdapter(new adapterReviews(this, recipes));
-
         //Update the image
         ImageView image = (ImageView)findViewById(R.id.image);
+
+        TextView review = (TextView) findViewById(R.id.reviews_text);
+        String reviews_text = recipe.getReviews().toString();
+        reviews_text = reviews_text.replace("[","");
+        reviews_text = reviews_text.replace("]","");
+        reviews_text = reviews_text.replace(".,", "\n\n");
+        review.setText(reviews_text);
 
         Glide.with(this)
                 .load(recipe.getImageURL())
@@ -224,40 +236,39 @@ class CustomPagerAdapter extends PagerAdapter {
     }
 }
 
-class adapterReviews extends ArrayAdapter<Recipe> {
-    Context context;
-    List<Recipe> recipes;
+class ReviewsDialogFragment extends DialogFragment{
 
-    adapterReviews(Context c, List<Recipe> recipes) {
-        super(c, R.layout.activity_recipe_review, recipes);
-        this.context = c;
-        this.recipes = recipes;
+    String id;
+
+    public ReviewsDialogFragment(String id) {
+        this.id = id;
     }
 
     @Override
-    public int getCount() {
-        return recipes.size();
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.activity_recipe_review_dialog, container, false);
+        getDialog().setTitle("Simple Dialog");
+        final Button add = (Button) rootView.findViewById(R.id.submit);
+        add.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public Recipe getItem(int position) {
-        return recipes.get(position);
-    }
+            @Override
+            public void onClick(View v) {
+                EditText review = (EditText) rootView.findViewById(R.id.input_addReview);
+                String str = review.getText().toString();
+                ServerRequests ser = new ServerRequests();
+                ser.AddReview(getActivity(), SaveSharedPreference.getUserName(getActivity()), id, str);
+                dismiss();
+            }
+        });
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
+        Button dismiss = (Button) rootView.findViewById(R.id.cancel);
+        dismiss.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.activity_recipe_review, parent, false);
-        TextView review = (TextView) row.findViewById(R.id.reviews_text);
-
-        review.setText(recipes.get(0).getReviews().toString());
-
-        Log.i("RECIPE:", "HELLO NIGGER");
-        return row;
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        return rootView;
     }
 }
