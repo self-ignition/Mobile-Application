@@ -458,13 +458,6 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        if (callback != null){
-                            try {
-                                callback.onSuccess(response);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
