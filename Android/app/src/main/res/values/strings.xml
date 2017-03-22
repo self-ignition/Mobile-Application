@@ -48,6 +48,7 @@
     <string name="method">Method</string>
     <string name="recipe">Recipe</string>
     <string name="review">Review</string>
+    <string name="forgotPassword">Forgot Password</string>
 
 
 </resources>

@@ -65,6 +65,7 @@
                     android:textColor="#ffffff"/>
             </android.support.design.widget.TextInputLayout>
 
+            <!-- log in button -->
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_login"
                 android:layout_width="fill_parent"
@@ -76,6 +77,19 @@
                 android:onClick="buttonFunction"
                 android:layout_weight="0.25"/>
 
+            <!-- Forgot Password -->
+            <TextView android:id="@+id/link_forgotPassword"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:text="@string/forgotPassword"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:onClick="forgotFunction"
+                android:layout_weight="0.25"
+                android:textColor="#ffffff"/>
+
+            <!-- Create account -->
             <TextView android:id="@+id/link_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"

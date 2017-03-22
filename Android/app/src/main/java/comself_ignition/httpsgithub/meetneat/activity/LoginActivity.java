@@ -107,6 +107,11 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
         startActivity(intent);
     }
 
+    public void forgotFunction(View v) {
+        ServerRequests serv = new ServerRequests();
+        serv.forgotPassword(this, email.getText().toString());
+    }
+
     @Override
     public void onSuccess(String result) {
         if(result.equals("1"))

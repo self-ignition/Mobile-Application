@@ -457,7 +457,7 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //CALL THE LOGIN METHOD
+
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -479,6 +479,37 @@ public class ServerRequests {
             }
         };
         //add the request to the queue
+        queue.add(request);
+    }
+
+    public void forgotPassword(final Context context, final String email) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/forgottenpassword.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("response", response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("email", email);
+                return params;
+            }
+        };
         queue.add(request);
     }
 }
