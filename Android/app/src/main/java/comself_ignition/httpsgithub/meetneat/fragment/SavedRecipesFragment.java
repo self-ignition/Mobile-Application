@@ -80,7 +80,7 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
 
     private void UpdateFields() {
         list=(ListView) getActivity().findViewById(R.id.listView);
-        list.setAdapter(new adapter(getActivity(), recipes)); /*MAYBE NO*/
+        list.setAdapter(new adapter(getActivity(), recipes));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
