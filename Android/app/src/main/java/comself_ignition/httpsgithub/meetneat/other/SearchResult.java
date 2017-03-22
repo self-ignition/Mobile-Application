@@ -70,7 +70,12 @@ public class SearchResult implements VolleyCallback, RecipeReadyCallback{
 
     @Override
     public void onReady(Recipe r) {
-        callback.onSearchComplete(r);
+        try {
+            callback.onSearchComplete(r);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 
