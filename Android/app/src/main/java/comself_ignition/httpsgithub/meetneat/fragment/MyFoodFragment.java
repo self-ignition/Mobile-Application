@@ -3,12 +3,8 @@ package comself_ignition.httpsgithub.meetneat.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,15 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -37,18 +28,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
-import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
-
-import static android.R.attr.data;
-import static android.R.attr.fragment;
-import static android.R.id.list;
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import comself_ignition.httpsgithub.meetneat.other.MyFoodDialogFragment;
 
 public class MyFoodFragment extends Fragment{
 
@@ -125,12 +109,15 @@ public class MyFoodFragment extends Fragment{
         }
     }
 
-    @Override
     public void onResume() {
         super.onResume();
-        String food = "";
-        String[] friends;
+
+        String foodItem = "";
+        // split food from stored list
+        String[] storedFood;
+        // Array for each food item, has to be done this way for check boxes to work
         List<food> foodList = new ArrayList<food>();
+
         try {
             InputStream inputStream = getActivity().openFileInput("food.txt");
 
@@ -145,18 +132,24 @@ public class MyFoodFragment extends Fragment{
                 }
 
                 inputStream.close();
-                food = stringBuilder.toString();
-                friends = food.split("\\|");
+                foodItem = stringBuilder.toString();
+                storedFood = foodItem.split("\\|");
 
-                for (int i = 0; i < friends.length; i++) {
-                    food foods = new food(friends[i]);
-                    foodList.add(foods);
+                for (int i = 0; i < storedFood.length; i++) {
+                    food foods = new food(storedFood[i]);
+                    if(foods.getName().length() > 0)
+                        foodList.add(foods);
                 }
                 RecyclerView rv = (RecyclerView) getActivity().findViewById(R.id.foodList);
                 LinearLayoutManager llm = new LinearLayoutManager(getContext());
                 rv.setLayoutManager(llm);
-                rv.setAdapter(new adapterFood(foodList));
+                if(foodList.size() > 0){
+                    rv.setAdapter(new adapterFood(foodList));
+                    for (food s: foodList) {
+                        Log.i("onresume", "onResume: " + s.getName());
+                    }
 
+                }
                 final adapterFood mAdapter = new adapterFood(foodList);
 
                 btnSearch = (Button) getActivity().findViewById(R.id.searchBtn);
@@ -279,48 +272,6 @@ class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {
     public List<food> getFoodList() {
         return names;
     }
-}
-
-class MyFoodDialogFragment extends DialogFragment {
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_add_food, container, false);
-        getDialog().setTitle("Simple Dialog");
-        final Button add = (Button) rootView.findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                EditText name = (EditText) rootView.findViewById(R.id.input_addFood);
-                String str = name.getText().toString();
-                try {
-
-                    OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("food.txt", Context.MODE_APPEND));
-                    outputStreamWriter.append(str + "|");
-                    outputStreamWriter.flush();
-                    outputStreamWriter.close();
-                    Toast.makeText(getActivity(),str + " added", Toast.LENGTH_SHORT).show();
-                    dismiss();
-                }
-                catch (IOException e) {
-                    Log.e("Exception", "File write failed: " + e.toString());
-                }
-            }
-        });
-
-        Button dismiss = (Button) rootView.findViewById(R.id.cancel);
-        dismiss.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        return rootView;
-    }
-
 }
 
 class food {
