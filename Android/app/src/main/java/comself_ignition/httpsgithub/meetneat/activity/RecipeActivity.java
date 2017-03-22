@@ -130,28 +130,28 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         author.setText("Created by: " + recipe.getAuthor());
 
         TextView ingredients = (TextView) findViewById(R.id.ingredients_text);
-        String text = recipe.getIngredients().toString();
-        text = text.replace("[","");
-        text = text.replace("]","");
-        text = text.replace(",","\n\n");
-        ingredients.setText(text);
+        String ingredients__string = "";
+        for (String s: recipe.getIngredients()) {
+            ingredients__string += s;
+        }
+        ingredients.setText(ingredients__string);
 
         TextView method = (TextView) findViewById(R.id.method_text);
-        String method_text = recipe.getSteps().toString();
-        method_text = method_text.replace("[","");
-        method_text = method_text.replace("]","");
-        method_text = method_text.replace(".,",".\n\n");
-        method_text = method_text.replace("),",")\n\n");
-        method.setText(method_text);
+        String method_string = "";
+        for (String s: recipe.getSteps()) {
+            method_string += s;
+        }
+        method.setText(method_string);
 
         //Update the image
         ImageView image = (ImageView)findViewById(R.id.image);
 
         TextView review = (TextView) findViewById(R.id.reviews_text);
-        String reviews_text = recipe.getReviews().toString();
-        reviews_text = reviews_text.replace("[","");
-        reviews_text = reviews_text.replace("]","");
-        review.setText(reviews_text);
+        String review_string = "";
+        for (String s: recipe.getReviews()) {
+            review_string += s;
+        }
+        review.setText(review_string);
 
         Glide.with(this)
                 .load(recipe.getImageURL())

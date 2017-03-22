@@ -90,7 +90,7 @@ public class MyFoodFragment extends Fragment{
     {
         switch (item.getItemId())
         {
-            case R.id.action_add:
+            case R.id.action_addFood:
                 FragmentManager fm = getFragmentManager();
                 final MyFoodDialogFragment dialogFragment = new MyFoodDialogFragment();
                 dialogFragment.show(fm, "Sample Fragment");

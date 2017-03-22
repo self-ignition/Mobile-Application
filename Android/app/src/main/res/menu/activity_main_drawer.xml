@@ -4,29 +4,29 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/home"
             android:title="@string/nav_home" />
         <item
             android:id="@+id/nav_recipes"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/savedrecipes"
             android:title="@string/nav_recipes" />
         <item
             android:id="@+id/nav_fridge"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/myfood"
             android:title="@string/nav_fridge" />
 
         <item
             android:id="@+id/nav_friends"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/friends"
             android:title="@string/nav_friends" />
         <item
             android:id="@+id/nav_notifications"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/notification"
             android:title="@string/nav_notifications" />
 
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/placeholder_icon"
+            android:icon="@drawable/settings"
             android:title="@string/nav_settings" />
     </group>
 
