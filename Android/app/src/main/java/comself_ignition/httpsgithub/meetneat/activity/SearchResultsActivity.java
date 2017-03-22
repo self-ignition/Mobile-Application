@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.SearchResult;
 import comself_ignition.httpsgithub.meetneat.other.SearchResultCallback;
+
+import static comself_ignition.httpsgithub.meetneat.R.string.recipe;
 
 public class SearchResultsActivity extends AppCompatActivity implements SearchResultCallback {
 
@@ -144,7 +148,12 @@ class adapter extends ArrayAdapter<Recipe> {
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
         servings.setText(recipes.get(position).getYield());
-        image.setImageDrawable(new BitmapDrawable(recipes.get(position).getImage()));
+
+        Glide.with(getContext())
+                .load(recipes.get(position).getImageURL())
+                .crossFade()
+                .centerCrop()
+                .into(image);
 
         return row;
     }

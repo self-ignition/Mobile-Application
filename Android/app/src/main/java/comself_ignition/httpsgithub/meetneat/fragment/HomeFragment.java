@@ -18,6 +18,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,8 @@ import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
+
+import static java.lang.System.load;
 
 public class HomeFragment extends Fragment implements RecipeReadyCallback {
     List<Recipe> recipes = new ArrayList<Recipe>();
@@ -151,8 +155,12 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
             }
         });
 
-        button.setImageDrawable(new BitmapDrawable(recipe.getImage()));
-        text.setText(recipe.getTitle());
+            Glide.with(getContext())
+                    .load(recipe.getImageURL())
+                    .crossFade()
+                    .centerCrop()
+                    .into(button);
+            text.setText(recipe.getTitle());
         buttonToSet++;
     }
 }

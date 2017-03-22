@@ -182,7 +182,6 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
                 .crossFade()
                 .centerCrop()
                 .into(image);
-        //image.setImageDrawable(new BitmapDrawable(recipe.getImage()));
     }
 }
 
