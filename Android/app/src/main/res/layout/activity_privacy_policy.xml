@@ -15,5 +15,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/private_policy"
-        android:text="@string/privacy_policy"/>
+        android:text="@string/privacy"/>
 </ScrollView>

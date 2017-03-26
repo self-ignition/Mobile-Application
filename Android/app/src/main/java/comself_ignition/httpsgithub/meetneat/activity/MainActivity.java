@@ -36,6 +36,7 @@ import java.io.OutputStreamWriter;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.fragment.FriendsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.HomeFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.MessagesFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.MyFoodFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.NotificationsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SavedRecipesFragment;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private static final String TAG_RECIPES = "recipes";
     private static final String TAG_FRIDGE = "my food";
     private static final String TAG_FRIENDS = "friends";
+    private static final String TAG_MESSAGES = "messages";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_HOME;
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
         // showing dot next to notifications label
-        navigationView.getMenu().getItem(4).setActionView(R.layout.menu_dot);
+        navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
 
         try {
             InputStream inputStream = this.openFileInput("image.txt");
@@ -282,11 +284,14 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                 fragmentInFocus = new FriendsFragment();
                 return fragmentInFocus;
             case 4:
+                // messages fragment
+                fragmentInFocus = new MessagesFragment();
+                return fragmentInFocus;
+            case 5:
                 // notifications fragment
                 fragmentInFocus = new NotificationsFragment();
                 return fragmentInFocus;
-
-            case 5:
+            case 6:
                 fragmentInFocus = new SettingsFragment();
                 return fragmentInFocus;
             default:
@@ -330,15 +335,17 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_FRIENDS;
                         break;
-                    case R.id.nav_notifications:
+                    case R.id.nav_messages:
                         navItemIndex = 4;
+                        CURRENT_TAG = TAG_MESSAGES;
+                    case R.id.nav_notifications:
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 5;
+                        navItemIndex = 6;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
-
                     case R.id.nav_about_us:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
@@ -425,7 +432,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         } else if (navItemIndex == 3) {
             getMenuInflater().inflate(R.menu.friends, menu);
         }
-
         return true;
     }
 
