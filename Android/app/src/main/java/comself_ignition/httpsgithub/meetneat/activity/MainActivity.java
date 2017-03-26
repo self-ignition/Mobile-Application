@@ -338,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                     case R.id.nav_messages:
                         navItemIndex = 4;
                         CURRENT_TAG = TAG_MESSAGES;
+                        break;
                     case R.id.nav_notifications:
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
