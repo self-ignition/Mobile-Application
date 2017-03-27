@@ -521,6 +521,39 @@ public class ServerRequests {
         };
         queue.add(request);
     }
+
+    public void resetPassword(final Context context, final String email, final String currentPassword, final String newPassword) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final String url = "http://computing.derby.ac.uk/~cabbage/resetpassword.php";
+
+        //Create the request
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                //What happens when the request completes
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("response", response);
+                    }
+                    //What happens if the request fails
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("volley", "That didn't work!");
+                //CALL DISPLAY ERROR METHOD
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                //create the map for keypairs
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("email", email);
+                params.put("currentPassword", currentPassword);
+                params.put("newPassword", newPassword);
+                return params;
+            }
+        };
+        queue.add(request);
+    }
 }
 
 

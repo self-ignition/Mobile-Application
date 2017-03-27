@@ -78,7 +78,6 @@ public class SignUpActivity extends AppCompatActivity {
         final  String _password = password.getText().toString();
         final  String _password2 = password2.getText().toString();
 
-
         if (_user.isEmpty()) {
             username.setError("Please enter a valid username");
         } else if (_email.isEmpty()) {
