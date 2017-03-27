@@ -24,4 +24,8 @@ public class Conversation {
             }
         }
     }
+
+    public int Count(){
+        return (Sent.size() + Recieved.size());
+    }
 }
