@@ -80,17 +80,16 @@ class adapterMessage extends ArrayAdapter<Message> {
         if (conversation.getAggreateConversation().get(position).getSender().equals(Sender)) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.incomingMessage);
-            name.setText(names.get(position).toString());
+            TextView message = (TextView) row.findViewById(R.id.incomingMessage);
+            message.setText(conversation.getAggreateConversation().get(position).getBody().toString());
 
 
             return row;
         } else {
             //Pending Friend request
             View row = inflater.inflate(R.layout.activity_message_incoming_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.outgoingMessage);
-
-            name.setText(names.get(position).toString());
+            TextView message = (TextView) row.findViewById(R.id.outgoingMessage);
+            message.setText(conversation.getAggreateConversation().get(position).getBody().toString());
 
             return row;
         }
