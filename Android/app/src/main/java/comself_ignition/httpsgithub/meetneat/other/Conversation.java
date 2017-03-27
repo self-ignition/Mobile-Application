@@ -10,22 +10,38 @@ import java.util.List;
 public class Conversation {
     List<Message> Sent = new ArrayList<>();
     List<Message> Recieved = new ArrayList<>();
+    List<Message> aggreateConversation = new ArrayList<>();
 
     public Conversation(String convesation, String localUsername){
         String[] messages = convesation.split("\\r\\n\\r\\n");
 
         for (String s: messages) {
-            if(s.split("\\|")[0].equals(localUsername)){
-                Sent.add(new Message(s));
+            Message m = new Message(s);
+            aggreateConversation.add(m);
+
+            if(m.getSender().equals(localUsername)){
+                Sent.add(m);
             }
             else
             {
-                Recieved.add(new Message(s));
+                Recieved.add(m);
             }
         }
     }
 
     public int Count(){
         return (Sent.size() + Recieved.size());
+    }
+
+    public List<Message> getSent() {
+        return Sent;
+    }
+
+    public List<Message> getRecieved() {
+        return Recieved;
+    }
+
+    public List<Message> getAggreateConversation() {
+        return aggreateConversation;
     }
 }
