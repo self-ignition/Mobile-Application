@@ -77,7 +77,7 @@ class adapterMessage extends ArrayAdapter<Message> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (conversation.getAggreateConversation().get(position).getSender().equals(Sender)) {
+        if (conversation.getAggreateConversation().get(position).getSender().equals("cryodor")) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.incomingMessage);
