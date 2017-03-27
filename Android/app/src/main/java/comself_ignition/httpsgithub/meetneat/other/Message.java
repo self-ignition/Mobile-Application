@@ -12,11 +12,11 @@ import java.util.Date;
  */
 
 public class Message {
-    String sender;
-    String recipient;
-    Date date;
-    Date time;
-    String body;
+    String sender = "";
+    String recipient = "";
+    Date date = new Date();
+    Date time = new Date();
+    String body = "";
 
     Message(String message)
     {
@@ -40,7 +40,8 @@ public class Message {
     }
 
     public void setSender(String sender) {
-        this.sender = sender;
+        if(sender != null)
+            this.sender = sender;
     }
     public void setRecipient(String recipient) {
         this.recipient = recipient;
@@ -48,7 +49,8 @@ public class Message {
     public void setDate(String date) {
         DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
         try {
-            this.date = df.parse(date);
+            if(date != null)
+                this.date = df.parse(date);
         } catch (ParseException e) {
             Log.e("Error Setting Date", "setDate: " + e.getLocalizedMessage() );
         }
@@ -56,21 +58,29 @@ public class Message {
     public void setTime(String time) {
         DateFormat df = new SimpleDateFormat("hh:mm:ss");
         try {
-            this.time = df.parse(time);
+            if(time != null)
+                this.time = df.parse(time);
         } catch (ParseException e) {
             Log.e("Error Setting Date", "setDate: " + e.getLocalizedMessage() );
         }
     }
     public void setBody(String body) {
-        this.body = body;
+        if(body != null)
+            this.body = body;
     }
 
     void parse(String message){
         String[] parts = message.split("\\|");
-        setSender(parts[0]);
-        setRecipient(parts[1]);
-        setDate(parts[2]);
-        setTime(parts[3]);
-        setBody(parts[4]);
+        try {
+            setSender(parts[0]);
+            setRecipient(parts[1]);
+            setDate(parts[2]);
+            setTime(parts[3]);
+            setBody(parts[4]);
+        }
+        catch (Exception e)
+        {
+            Log.e("Message Error", e.getLocalizedMessage());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package comself_ignition.httpsgithub.meetneat.other;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 

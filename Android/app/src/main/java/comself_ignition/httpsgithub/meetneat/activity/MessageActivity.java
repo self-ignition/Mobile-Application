@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,6 +53,7 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
 
     @Override
     public void onSuccess(String result) {
+        Log.e("result", "onSuccess: " + result );
         conversation = new Conversation(result, Sender);
         list=(ListView) findViewById(R.id.messageList);
         list.setAdapter(new adapterMessage(this,conversation));
@@ -85,7 +87,10 @@ class adapterMessage extends ArrayAdapter<Message> {
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
-        if (conversation.getAggreateConversation().get(position).getSender().equals(Sender)) {
+
+        String Sender = conversation.getAggreateConversation().get(position).getSender();
+
+        if (Sender.equals(this.Sender)) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.incomingMessage);
@@ -99,7 +104,7 @@ class adapterMessage extends ArrayAdapter<Message> {
             //Pending Friend request
             View row = inflater.inflate(R.layout.activity_message_incoming_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.outgoingMessage);
-            message.setText(conversation.getAggreateConversation().get(position).getBody().toString());
+            message.setText(Sender == null ? "Was Null!" : Sender);
 
             return row;
         }

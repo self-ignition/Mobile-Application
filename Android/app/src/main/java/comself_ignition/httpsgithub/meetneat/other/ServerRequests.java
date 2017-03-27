@@ -437,10 +437,10 @@ public class ServerRequests {
                 switch (action)
                 {
                     case GET:
-                        params.put("intent", "SEND");
+                        params.put("intent", "GET");
                         break;
                     case SEND:
-                        params.put("intent", "GET");
+                        params.put("intent", "SEND");
                         break;
                     case POPULATE:
                         params.put("intent", "POPULATE");
