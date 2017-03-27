@@ -3,6 +3,7 @@ package comself_ignition.httpsgithub.meetneat.activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,16 @@ import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import comself_ignition.httpsgithub.meetneat.other.Message;
 
+import static android.R.id.list;
+import static android.provider.Telephony.TextBasedSmsColumns.BODY;
+
 
 public class MessageActivity extends AppCompatActivity implements VolleyCallback {
 
     String Sender;
     String Recipient;
     Conversation conversation;
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
     @Override
     public void onSuccess(String result) {
         conversation = new Conversation(result, Sender);
+        list=(ListView) findViewById(R.id.messageList);
+        list.setAdapter(new adapterMessage(this,conversation));
     }
 }
 
@@ -77,11 +84,14 @@ class adapterMessage extends ArrayAdapter<Message> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
         if (conversation.getAggreateConversation().get(position).getSender().equals(Sender)) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.incomingMessage);
             message.setText(conversation.getAggreateConversation().get(position).getBody().toString());
+
+            Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
 
 
             return row;
