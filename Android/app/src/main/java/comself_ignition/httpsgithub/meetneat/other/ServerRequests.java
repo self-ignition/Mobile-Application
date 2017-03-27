@@ -42,6 +42,7 @@ public class ServerRequests {
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
                         try {
+
                             callback.onSuccess(response);
                         }
                         catch (Exception e)
@@ -441,6 +442,8 @@ public class ServerRequests {
                     case SEND:
                         params.put("intent", "GET");
                         break;
+                    case POPULATE:
+                        params.put("intent", "POPULATE");
                 }
 
                 params.put("sender", sender);

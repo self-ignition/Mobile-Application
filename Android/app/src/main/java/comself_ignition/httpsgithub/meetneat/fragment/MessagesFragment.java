@@ -3,7 +3,6 @@ package comself_ignition.httpsgithub.meetneat.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,24 +24,22 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.activity.MessageActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
-import comself_ignition.httpsgithub.meetneat.other.FriendAction;
+import comself_ignition.httpsgithub.meetneat.other.MessageAction;
 import comself_ignition.httpsgithub.meetneat.other.MyFriendsDialogFragment;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
-import static android.R.id.list;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class MessagesFragment extends Fragment implements VolleyCallback{
 
-    Map<String, Boolean> friends = new HashMap<>();
+    List<String> Recipients = new ArrayList<>();
     ListView list;
 
 
@@ -120,54 +117,35 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
         list = (ListView) getActivity().findViewById(R.id.messageList);
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
-        sr.Friends(c, this, FriendAction.getSender, SaveSharedPreference.getUserName(c), "");
+        sr.MessageRequest(c, this, MessageAction.POPULATE, SaveSharedPreference.getUserName(c), "", "");
     }
 
     @Override
     public void onSuccess(String result) {
-        String[] friends = result.split("¦");
-        try{
-            for (String friend : friends) {
-                String name = friend.split("\\|")[0];
-                Boolean confirmed;
-                if(friend.split("\\|")[1].charAt(0) == '1')
-                {
-                    confirmed = true;
-                }
-                else {
-                    confirmed = false;
-                }
-                this.friends.put(name, confirmed);
-            }
-            UpdateList();
-        } catch(IndexOutOfBoundsException e) {
-            Log.e("RESULT", result);
-        }
+        Log.i("NO", "onSuccess: " + result);
+        for (String s : result.split("\\r\\n\\r\\n")) {
+            Recipients.add(s);
+        };
 
+        UpdateList();
     }
 
     private void UpdateList() {
-        List<String> names = new ArrayList<>();
-        for (String s : friends.keySet()) {
-            names.add(s);
-        }
-        Collections.sort(names);
+        Collections.sort(Recipients);
         list=(ListView) getActivity().findViewById(R.id.messageList);
-        list.setAdapter(new adapterMessages(getActivity(),friends, names, this));
+        list.setAdapter(new adapterMessages(getActivity(), Recipients, this));
     }
 }
 
 class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
     Context context;
-    Map<String, Boolean> friends = new HashMap<>();
     List<String> names;
     VolleyCallback callback;
 
-    adapterMessages(Context c, Map<String, Boolean> friends, List<String> names, final VolleyCallback callback) {
+    adapterMessages(Context c, List<String> names, final VolleyCallback callback) {
         super(c, R.layout.fragment_friends_row, names);
         this.names = names;
         this.context = c;
-        this.friends = friends;
         this.callback = callback;
     }
 
@@ -185,57 +163,57 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        if(friends.get(names.get(position))) {
-            //Not pending request, should have menu button in it
-            View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.FriendName);
+        //Not pending request, should have menu button in it
+        View row = inflater.inflate(R.layout.fragment_messages_row, parent, false);
+        TextView name = (TextView) row.findViewById(R.id.FriendMessageName);
 
-            final String friendName = friends.keySet().toArray()[position].toString();
+        name.setText(names.get(position).toString());
 
-            final ImageView menuButton = (ImageView) row.findViewById(R.id.friends_menu_button);
-            menuButton.setOnClickListener(new View.OnClickListener() {
+        //Card View
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Remove this!", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, MessageActivity.class);
+                i.putExtra("sender", SaveSharedPreference.getUserName(context));
+                i.putExtra("recipient", ((TextView) v.findViewById(R.id.FriendMessageName)).getText().toString() );
+                context.startActivity(i);
+            }
+        });
 
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
-                    PopupMenu popup = new PopupMenu(context, menuButton);
-                    //Inflating the Popup using xml file
-                    popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
+        // Menu Button
+        final ImageView menuButton = (ImageView) row.findViewById(R.id.friendsMessage_menu_button);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                PopupMenu popup = new PopupMenu(context, menuButton);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
 
-                    //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getItemId())
-                            {
-                                case R.id.Message_Button:
-                                    Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
-                                    return true;
-                                case R.id.Remove_Button:
-                                    ServerRequests req = new ServerRequests();
-                                    req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
-                                    return true;
-                                default:
-                                    return true;
-                            }
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId())
+                        {
+                            case R.id.Message_Button:
+                                Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.Remove_Button:
+                                ServerRequests req = new ServerRequests();
+                                //TODO: Delete Message History
+                                return true;
+                            default:
+                                return true;
                         }
-                    });
+                    }
+                });
 
-                    popup.show();
-                }
-            });
+                popup.show();
+            }
+        });
 
-            name.setText(names.get(position).toString());
-
-            return row;
-        } else {
-            //Pending Friend request
-            View row = inflater.inflate(R.layout.fragment_friends_pending_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.FriendName);
-
-            name.setText(names.get(position).toString());
-
-            return row;
-        }
+        return row;
     }
 
     @Override

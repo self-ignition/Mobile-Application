@@ -5,5 +5,5 @@ package comself_ignition.httpsgithub.meetneat.other;
  */
 
 public enum MessageAction {
-    GET, SEND;
+    GET, SEND, POPULATE;
 }

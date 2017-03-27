@@ -201,7 +201,6 @@ public class MyFoodFragment extends Fragment{
                         catch (IOException e) {
                             Log.e("Exception", "File write failed: " + e.toString());
                         }
-
                     }
                 });
 
