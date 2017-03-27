@@ -417,8 +417,10 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                 return;
             }
         }
-
-        super.onBackPressed();
+        else
+        {
+            return;
+        }
     }
 
     @Override
