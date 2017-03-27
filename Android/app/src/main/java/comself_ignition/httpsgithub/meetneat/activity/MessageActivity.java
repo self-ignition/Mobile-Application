@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
         setContentView(R.layout.activity_message);
         this.Sender = getIntent().getStringExtra("sender");
         this.Recipient = getIntent().getStringExtra("recipient");
+        TextView user = (TextView) findViewById(R.id.usernameMessage);
+        user.setText(this.Recipient);
         message = (EditText) findViewById(R.id.messageText);
     }
 

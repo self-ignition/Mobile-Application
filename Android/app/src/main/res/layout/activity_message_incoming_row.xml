@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:paddingBottom="20dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/incoming_bubble"
-        android:id="@+id/incomingMessage"/>
+        android:id="@+id/incomingMessage"
+        android:textSize="18sp"
+        android:text="nigger"
+        android:paddingLeft="25dp"
+        android:paddingRight="10dp"/>
 </LinearLayout>
