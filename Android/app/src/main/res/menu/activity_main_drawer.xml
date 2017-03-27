@@ -21,7 +21,7 @@
             android:title="@string/nav_friends" />
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/friends"
+            android:icon="@drawable/messages"
             android:title="@string/nav_messages" />
         <item
             android:id="@+id/nav_notifications"
