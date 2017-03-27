@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
     String Recipient;
     Conversation conversation;
     ListView list;
+    EditText message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
         setContentView(R.layout.activity_message);
         this.Sender = getIntent().getStringExtra("sender");
         this.Recipient = getIntent().getStringExtra("recipient");
+        message = (EditText) findViewById(R.id.messageText);
     }
 
     @Override
@@ -53,10 +56,17 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
 
     @Override
     public void onSuccess(String result) {
-        Log.e("result", "onSuccess: " + result );
+      /*  Log.e("result", "onSuccess: " + result );
         conversation = new Conversation(result, Sender);
         list=(ListView) findViewById(R.id.messageList);
-        list.setAdapter(new adapterMessage(this,conversation));
+        list.setAdapter(new adapterMessage(this,conversation));*/
+    }
+
+    public void sendMessage(View v) {
+        String sendMessage = message.getText().toString();
+
+        ServerRequests ser = new ServerRequests();
+        ser.MessageRequest(this, this, MessageAction.SEND, SaveSharedPreference.getUserName(this), Recipient, sendMessage);
     }
 }
 
