@@ -56,10 +56,10 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
 
     @Override
     public void onSuccess(String result) {
-      /*  Log.e("result", "onSuccess: " + result );
+        Log.e("result", "onSuccess: " + result );
         conversation = new Conversation(result, Sender);
         list=(ListView) findViewById(R.id.messageList);
-        list.setAdapter(new adapterMessage(this,conversation));*/
+        list.setAdapter(new adapterMessage(this,conversation));
     }
 
     public void sendMessage(View v) {
@@ -95,26 +95,20 @@ class adapterMessage extends ArrayAdapter<Message> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
-
         String Sender = conversation.getAggreateConversation().get(position).getSender();
 
         if (Sender.equals(SaveSharedPreference.getUserName(context))) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
-            TextView message = (TextView) row.findViewById(R.id.incomingMessage);
-            message.setText(conversation.getAggreateConversation().get(position).getBody().toString().equals(null) ? "Was Null!" : Sender);
-
-            Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
-
+            TextView message = (TextView) row.findViewById(R.id.outgoingMessage);
+            message.setText(conversation.getAggreateConversation().get(position).getBody());
 
             return row;
         } else {
             //Pending Friend request
             View row = inflater.inflate(R.layout.activity_message_incoming_row, parent, false);
-            TextView message = (TextView) row.findViewById(R.id.outgoingMessage);
-            message.setText(conversation.getAggreateConversation().get(position).getBody().toString().equals(null) ? "Was Null!" : Sender);
+            TextView message = (TextView) row.findViewById(R.id.incomingMessage);
+            message.setText(conversation.getAggreateConversation().get(position).getBody());
 
             return row;
         }
