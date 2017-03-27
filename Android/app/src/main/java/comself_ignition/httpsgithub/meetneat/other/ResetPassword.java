@@ -27,9 +27,9 @@ public class ResetPassword extends AppCompatActivity {
         newPassword = (EditText) findViewById(R.id.input_reset1);
         currentPassword = (EditText) findViewById(R.id.input_reset2);
 
-        currentPassword.setFilters(new InputFilter[]{filter});
+        /*currentPassword.setFilters(new InputFilter[]{filter});
         newPassword.setFilters(new InputFilter[]{filter});
-        cNewPassword.setFilters(new InputFilter[]{filter});
+        cNewPassword.setFilters(new InputFilter[]{filter});*/
     }
 
     InputFilter filter = new InputFilter() {
