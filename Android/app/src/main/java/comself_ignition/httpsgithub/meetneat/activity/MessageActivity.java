@@ -100,11 +100,11 @@ class adapterMessage extends ArrayAdapter<Message> {
 
         String Sender = conversation.getAggreateConversation().get(position).getSender();
 
-        if (Sender.equals(this.Sender)) {
+        if (Sender.equals(SaveSharedPreference.getUserName(context))) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.activity_message_outgoing_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.incomingMessage);
-            message.setText(conversation.getAggreateConversation().get(position).getBody().toString());
+            message.setText(conversation.getAggreateConversation().get(position).getBody().toString().equals(null) ? "Was Null!" : Sender);
 
             Log.i("BODY: ", conversation.getAggreateConversation().get(position).getBody().toString());
 
@@ -114,7 +114,7 @@ class adapterMessage extends ArrayAdapter<Message> {
             //Pending Friend request
             View row = inflater.inflate(R.layout.activity_message_incoming_row, parent, false);
             TextView message = (TextView) row.findViewById(R.id.outgoingMessage);
-            message.setText(Sender == null ? "Was Null!" : Sender);
+            message.setText(conversation.getAggreateConversation().get(position).getBody().toString().equals(null) ? "Was Null!" : Sender);
 
             return row;
         }
