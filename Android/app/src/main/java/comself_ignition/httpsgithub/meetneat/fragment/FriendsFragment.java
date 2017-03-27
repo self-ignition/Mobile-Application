@@ -34,6 +34,7 @@ import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.MainActivity;
+import comself_ignition.httpsgithub.meetneat.activity.MessageActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
 import comself_ignition.httpsgithub.meetneat.other.*;
 
@@ -183,21 +184,22 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         if(friends.get(names.get(position))) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.FriendName);
+            final TextView name = (TextView) row.findViewById(R.id.FriendName);
 
             final String friendName = friends.keySet().toArray()[position].toString();
+            name.setText(names.get(position).toString());
 
             final ImageView menuButton = (ImageView) row.findViewById(R.id.friends_menu_button);
             menuButton.setOnClickListener(new View.OnClickListener() {
 
                                            @Override
-                                           public void onClick(View v) {
+                                           public void onClick(final View v) {
                                                 Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                                                PopupMenu popup = new PopupMenu(context, menuButton);
                                                //Inflating the Popup using xml file
@@ -210,6 +212,10 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                                        {
                                                            case R.id.Message_Button:
                                                                Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
+                                                               Intent i = new Intent(context, MessageActivity.class);
+                                                               i.putExtra("sender", SaveSharedPreference.getUserName(context));
+                                                               i.putExtra("recipient", name.getText().toString());
+                                                               context.startActivity(i);
                                                                return true;
                                                            case R.id.Remove_Button:
                                                                ServerRequests req = new ServerRequests();
@@ -225,7 +231,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                            }
                                        });
 
-            name.setText(names.get(position).toString());
+
 
             return row;
         } else {
