@@ -50,6 +50,11 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        list = (ListView) getActivity().findViewById(R.id.messageList);
+        Context c = getActivity().getApplicationContext();
+        ServerRequests sr = new ServerRequests();
+        sr.MessageRequest(c, this, MessageAction.POPULATE, SaveSharedPreference.getUserName(c), "", "");
+
         setHasOptionsMenu(true);
     }
     @Override
@@ -114,10 +119,7 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
     @Override
     public void onResume() {
         super.onResume();
-        list = (ListView) getActivity().findViewById(R.id.messageList);
-        Context c = getActivity().getApplicationContext();
-        ServerRequests sr = new ServerRequests();
-        sr.MessageRequest(c, this, MessageAction.POPULATE, SaveSharedPreference.getUserName(c), "", "");
+
     }
 
     @Override
@@ -132,8 +134,13 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
 
     private void UpdateList() {
         Collections.sort(Recipients);
-        list=(ListView) getActivity().findViewById(R.id.messageList);
-        list.setAdapter(new adapterMessages(getActivity(), Recipients, this));
+        if(Recipients.equals("")) {
+
+        } else {
+            list=(ListView) getActivity().findViewById(R.id.messageList);
+            list.setAdapter(new adapterMessages(getActivity(), Recipients, this));
+        }
+
     }
 }
 

@@ -38,6 +38,7 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
     Conversation conversation;
     ListView list;
     EditText message;
+    adapterMessage adapterMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
 
         ServerRequests ser = new ServerRequests();
         ser.MessageRequest(this, this, MessageAction.SEND, SaveSharedPreference.getUserName(this), Recipient, sendMessage);
+
     }
 }
 
