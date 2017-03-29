@@ -102,7 +102,7 @@ We are committed to conducting our business in accordance with these principles 
     <string name="recipe">Recipe</string>
     <string name="review">Review</string>
     <string name="forgotPassword">Forgot Password</string>
-    <string name="resetPassword">Reset Password</string>
+    <string name="changePassword">Change Password</string>
     <string name="currentPassword">Current Password</string>
     <string name="reset1">New Password</string>
     <string name="reset2">Confirm New Password</string>
