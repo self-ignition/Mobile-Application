@@ -1,13 +1,19 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -17,7 +23,9 @@ import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -28,11 +36,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
+import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
+import comself_ignition.httpsgithub.meetneat.other.MyFriendsDialogFragment;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.SavedRecipeAction;
@@ -57,6 +69,53 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchResults = new SearchResult(getActivity().getBaseContext());
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                doMySearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_logout:
+                Toast.makeText(getContext(), "Logged out", Toast.LENGTH_LONG).show();
+
+                SaveSharedPreference.setLoggedIn(getActivity(), false);
+
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void doMySearch(String query) {
+        Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+        intent.putExtra("query", query);
+        getActivity().startActivity(intent);
     }
 
     @Override
@@ -150,4 +209,5 @@ class adapter extends ArrayAdapter<Recipe> {
                 .into(image);
         return row;
     }
+
 }

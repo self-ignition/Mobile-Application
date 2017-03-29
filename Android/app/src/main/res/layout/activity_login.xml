@@ -26,18 +26,18 @@
 
             <ImageView android:src="@drawable/logo"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginBottom="24dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.4"/>
 
             <!-- Email Label -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_weight="0.25"
+                android:layout_weight="0.1"
                 android:textColorHint="#ffffff">
                 <EditText android:id="@+id/input_email"
                     android:layout_width="match_parent"
@@ -51,10 +51,10 @@
             <!-- Password Label -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_weight="0.25"
+                android:layout_weight="0.1"
                 android:textColorHint="#ffffff">
                 <EditText android:id="@+id/input_password"
                     android:layout_width="match_parent"
@@ -65,40 +65,51 @@
                     android:textColor="#ffffff"/>
             </android.support.design.widget.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/checkboxLogin"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:checked="false"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:text="Remember me"
+                android:layout_weight="0.1"
+                android:buttonTint="#ffffff"/>
+
             <!-- log in button -->
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_login"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
                 android:text="@string/login"
                 android:onClick="buttonFunction"
-                android:layout_weight="0.25"/>
+                android:layout_weight="0.1"/>
 
             <!-- Forgot Password -->
             <TextView android:id="@+id/link_forgotPassword"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginBottom="2dp"
                 android:text="@string/forgotPassword"
                 android:gravity="center"
                 android:textSize="16sp"
                 android:onClick="forgotFunction"
-                android:layout_weight="0.25"
+                android:layout_weight="0.1"
                 android:textColor="#ffffff"/>
 
             <!-- Create account -->
             <TextView android:id="@+id/link_signup"
                 android:layout_width="fill_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginBottom="2dp"
                 android:text="@string/createAccount"
                 android:gravity="center"
                 android:textSize="16sp"
                 android:onClick="clickFunction"
-                android:layout_weight="0.25"
+                android:layout_weight="0.1"
                 android:textColor="#ffffff"/>
         </LinearLayout>
     </FrameLayout>
