@@ -8,15 +8,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,6 +62,8 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
         //Sets the title to the username the messages are from - CT
         TextView user = (TextView) findViewById(R.id.usernameMessage);
         user.setText(this.Recipient);
+
+        message = (EditText) findViewById(R.id.messageText);
 
         //Retrieves the messages from the database - CT
         ServerRequests sr = new ServerRequests();
@@ -125,7 +124,6 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
             adapterMessage = new adapterMessage(this, messageList);
             messageRecyclerView.setAdapter(adapterMessage);
         }
-
     }
 
     public void sendMessage(View v) {
