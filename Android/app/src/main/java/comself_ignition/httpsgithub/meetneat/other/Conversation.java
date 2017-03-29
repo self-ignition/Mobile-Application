@@ -46,4 +46,5 @@ public class Conversation {
     public List<Message> getAggreateConversation() {
         return aggreateConversation;
     }
+
 }

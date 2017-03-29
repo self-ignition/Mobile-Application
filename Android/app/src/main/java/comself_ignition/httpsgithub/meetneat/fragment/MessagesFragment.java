@@ -180,7 +180,6 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Remove this!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, MessageActivity.class);
                 i.putExtra("sender", SaveSharedPreference.getUserName(context));
                 i.putExtra("recipient", ((TextView) v.findViewById(R.id.FriendMessageName)).getText().toString() );
@@ -193,7 +192,6 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                 PopupMenu popup = new PopupMenu(context, menuButton);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
@@ -204,7 +202,6 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
                         switch (item.getItemId())
                         {
                             case R.id.Message_Button:
-                                Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.Remove_Button:
                                 ServerRequests req = new ServerRequests();

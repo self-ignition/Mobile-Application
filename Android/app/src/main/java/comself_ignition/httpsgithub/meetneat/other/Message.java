@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by r-bur on 27/03/2017.
@@ -14,11 +15,11 @@ import java.util.Date;
 public class Message {
     String sender = "";
     String recipient = "";
-    Date date = new Date();
-    Date time = new Date();
+    String date = "";
+    String time = "";
     String body = "";
 
-    Message(String message)
+    public Message(String message)
     {
         parse(message);
     }
@@ -29,10 +30,10 @@ public class Message {
     public String getRecipient() {
         return recipient;
     }
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
     public String getBody() {
@@ -47,22 +48,11 @@ public class Message {
         this.recipient = recipient;
     }
     public void setDate(String date) {
-        DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
-        try {
-            if(date != null)
-                this.date = df.parse(date);
-        } catch (ParseException e) {
-            Log.e("Error Setting Date", "setDate: " + e.getLocalizedMessage() );
-        }
+
+        this.date = date;
     }
     public void setTime(String time) {
-        DateFormat df = new SimpleDateFormat("hh:mm:ss");
-        try {
-            if(time != null)
-                this.time = df.parse(time);
-        } catch (ParseException e) {
-            Log.e("Error Setting Date", "setDate: " + e.getLocalizedMessage() );
-        }
+        this.time = time;
     }
     public void setBody(String body) {
         if(body != null)
@@ -72,10 +62,11 @@ public class Message {
     void parse(String message){
         String[] parts = message.split("\\|");
         try {
+
             setSender(parts[0]);
             setRecipient(parts[1]);
-            setDate(parts[2]);
-            setTime(parts[3]);
+            setTime(parts[2]);
+            setDate(parts[3]);
             setBody(parts[4]);
         }
         catch (Exception e)

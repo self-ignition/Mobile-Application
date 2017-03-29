@@ -412,7 +412,7 @@ public class ServerRequests {
                     @Override
                     public void onResponse(String response) {
                         //CALL THE LOGIN METHOD
-                        if (callback != null) {
+                        if (callback != null && action == MessageAction.GET || action == MessageAction.POPULATE) {
                             try {
                                 callback.onSuccess(response);
                             }

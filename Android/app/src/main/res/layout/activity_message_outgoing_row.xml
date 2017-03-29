@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
-    android:paddingBottom="20dp">
-
-    <TextView
-        android:layout_width="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+    <RelativeLayout
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@drawable/outgoing_bubble"
-        android:id="@+id/outgoingMessage"
-        android:textSize="18sp"
-        android:text="nigger"
-        android:paddingLeft="10dp"
-        android:paddingRight="25dp"/>
+        android:layout_gravity="right">
+        <TextView
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/outgoingMessage"
+            android:textSize="16sp"
+            android:layout_gravity="right"
+            android:text="Test message to see how big the layoutout will get gggggggggg"
+            android:paddingLeft="10dp"
+            android:paddingRight="25dp" />
+
+        <TextView
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/outgoingTime"
+            android:textSize="10sp"
+            android:paddingTop="10dp"
+            android:layout_gravity="right"
+            android:text="Date"
+            android:paddingLeft="12dp"
+            android:paddingRight="25dp"
+            android:layout_below="@id/outgoingMessage"/>
+    </RelativeLayout>
+
+
 </LinearLayout>
