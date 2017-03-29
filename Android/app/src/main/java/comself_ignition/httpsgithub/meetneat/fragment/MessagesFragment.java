@@ -38,15 +38,15 @@ import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class MessagesFragment extends Fragment implements VolleyCallback{
+public class MessagesFragment extends Fragment implements VolleyCallback {
 
     List<String> Recipients = new ArrayList<>();
     ListView list;
 
-
     public MessagesFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +55,9 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
         Context c = getActivity().getApplicationContext();
         ServerRequests sr = new ServerRequests();
         sr.MessageRequest(c, this, MessageAction.POPULATE, SaveSharedPreference.getUserName(c), "", "");
-
         setHasOptionsMenu(true);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater = getActivity().getMenuInflater();
@@ -87,10 +87,8 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_logout:
                 Toast.makeText(getContext(), "Logged out", Toast.LENGTH_LONG).show();
 
@@ -122,20 +120,18 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
         Log.i("NO", "onSuccess: " + result);
         for (String s : result.split("\\r\\n\\r\\n")) {
             Recipients.add(s);
-        };
+        }
+        ;
 
         UpdateList();
     }
 
     private void UpdateList() {
         Collections.sort(Recipients);
-        if(Recipients.equals("")) {
-
-        } else {
-            list=(ListView) getActivity().findViewById(R.id.messageList);
+        if (Recipients.size() > 0) {
+            list = (ListView) getActivity().findViewById(R.id.messageList);
             list.setAdapter(new adapterMessages(getActivity(), Recipients, this));
         }
-
     }
 }
 

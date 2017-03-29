@@ -147,11 +147,11 @@ public class FriendsFragment extends Fragment implements VolleyCallback {
 
     }
 
+
     private void UpdateList() {
         List<String> names = new ArrayList<>();
         for (String s : friends.keySet()) {
             names.add(s);
-
         }
         Collections.sort(names);
         list=(ListView) getActivity().findViewById(R.id.friendsList);
@@ -166,7 +166,11 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
     VolleyCallback callback;
 
     adapterFriends(Context c, Map<String, Boolean> friends, List<String> names, final VolleyCallback callback) {
+        //names = sorted list of keys
+        //friends = dictionary
         super(c, R.layout.fragment_friends_row, names);
+        //set map alphabetically
+        //
         this.names = names;
         this.context = c;
         this.friends = friends;
@@ -187,12 +191,13 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
+
         if(friends.get(names.get(position))) {
             //Not pending request, should have menu button in it
             View row = inflater.inflate(R.layout.fragment_friends_row, parent, false);
             final TextView name = (TextView) row.findViewById(R.id.FriendName);
 
-            final String friendName = friends.keySet().toArray()[position].toString();
+            final String friendName = names.get(position);
             name.setText(names.get(position).toString());
 
             final ImageView menuButton = (ImageView) row.findViewById(R.id.friends_menu_button);
@@ -200,7 +205,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
 
                                            @Override
                                            public void onClick(final View v) {
-                                                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
+                                               //Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                                                PopupMenu popup = new PopupMenu(context, menuButton);
                                                //Inflating the Popup using xml file
                                                popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
@@ -211,7 +216,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                                        switch (item.getItemId())
                                                        {
                                                            case R.id.Message_Button:
-                                                               Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
+                                                               //Toast.makeText(context, "Suck me off", Toast.LENGTH_SHORT).show();
                                                                Intent i = new Intent(context, MessageActivity.class);
                                                                i.putExtra("sender", SaveSharedPreference.getUserName(context));
                                                                i.putExtra("recipient", name.getText().toString());
@@ -247,7 +252,7 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
 
     @Override
     public void onSuccess(String result) {
-        Log.i("FOCUS YOU FUCK", "onSuccess: "  + result);
+        Log.i("onSuccess", "onSuccess: "  + result);
     }
 }
 
