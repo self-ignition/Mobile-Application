@@ -37,7 +37,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_weight="0.1"
+                android:layout_weight="0.15"
                 android:textColorHint="#ffffff">
                 <EditText android:id="@+id/input_email"
                     android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_weight="0.1"
+                android:layout_weight="0.15"
                 android:textColorHint="#ffffff">
                 <EditText android:id="@+id/input_password"
                     android:layout_width="match_parent"
@@ -88,17 +88,6 @@
                 android:onClick="buttonFunction"
                 android:layout_weight="0.1"/>
 
-            <!-- Forgot Password -->
-            <TextView android:id="@+id/link_forgotPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="2dp"
-                android:text="@string/forgotPassword"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:onClick="forgotFunction"
-                android:layout_weight="0.1"
-                android:textColor="#ffffff"/>
 
             <!-- Create account -->
             <TextView android:id="@+id/link_signup"
