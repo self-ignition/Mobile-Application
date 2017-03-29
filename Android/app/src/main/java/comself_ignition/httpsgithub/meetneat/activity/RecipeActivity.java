@@ -1,12 +1,15 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
 import android.animation.ValueAnimator;
-import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +22,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import comself_ignition.httpsgithub.meetneat.R;
-import comself_ignition.httpsgithub.meetneat.other.ModelObject;
+import comself_ignition.httpsgithub.meetneat.fragment.RecipeFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.RecipeMethodFragment;
+import comself_ignition.httpsgithub.meetneat.fragment.RecipeReviewFragment;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.other.ReviewsDialogFragment;
@@ -28,29 +33,68 @@ import comself_ignition.httpsgithub.meetneat.other.SavedRecipeAction;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 
+import static comself_ignition.httpsgithub.meetneat.R.id.pager;
+
 public class RecipeActivity extends AppCompatActivity implements VolleyCallback, RecipeReadyCallback {
     Recipe recipe = new Recipe();
+
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    PagerAdapter adapter;
 
     boolean isAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_pager);
+        setContentView(R.layout.activity_recipe);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setVisibility(View.GONE);
+
+        //Initializing the tablayout
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+        //Adding the tabs using addTab() method
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+        tabLayout.addTab(tabLayout.newTab().setText("Method"));
+        tabLayout.addTab(tabLayout.newTab().setText("Reviews"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        viewPager = (ViewPager)findViewById(pager);
         viewPager.setOffscreenPageLimit(3);
-        viewPager.setAdapter(new CustomPagerAdapter(this));
 
-        //Set the recipe
-        recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
+        adapter = new PagerAdapter(getSupportFragmentManager());
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+
+        viewPager.setAdapter(adapter);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
 
     public void reviewDialog(View v) {
-        FragmentManager frag = getFragmentManager();
         final ReviewsDialogFragment dialog = new ReviewsDialogFragment(recipe.getId());
         dialog.show(getSupportFragmentManager(), "Review Fragment");
-
     }
 
     @Override
@@ -168,41 +212,32 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
     }
 }
 
-class CustomPagerAdapter extends PagerAdapter {
+class PagerAdapter extends FragmentStatePagerAdapter {
 
-    private Context mContext;
-
-    public CustomPagerAdapter(Context context) {
-        mContext = context;
+    public PagerAdapter(FragmentManager fm) {
+        super(fm);
     }
 
     @Override
-    public Object instantiateItem(ViewGroup collection, int position) {
-        ModelObject modelObject = ModelObject.values()[position];
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        ViewGroup layout = (ViewGroup) inflater.inflate(modelObject.getLayoutResId(), collection, false);
-        collection.addView(layout);
-        return layout;
-    }
+    public Fragment getItem(int position) {
 
-    @Override
-    public void destroyItem(ViewGroup collection, int position, Object view) {
-        collection.removeView((View) view);
+        switch (position) {
+            case 0:
+                RecipeFragment tab1 = new RecipeFragment();
+                return tab1;
+            case 1:
+                RecipeMethodFragment tab2 = new RecipeMethodFragment();
+                return tab2;
+            case 2:
+                RecipeReviewFragment tab3 = new RecipeReviewFragment();
+                return tab3;
+            default:
+                return null;
+        }
     }
 
     @Override
     public int getCount() {
-        return ModelObject.values().length;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        ModelObject customPagerEnum = ModelObject.values()[position];
-        return mContext.getString(customPagerEnum.getTitleResId());
+        return 3;
     }
 }

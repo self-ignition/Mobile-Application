@@ -1,8 +1,6 @@
 package comself_ignition.httpsgithub.meetneat.fragment;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -16,21 +14,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 import comself_ignition.httpsgithub.meetneat.other.Recipe;
 import comself_ignition.httpsgithub.meetneat.other.RecipeReadyCallback;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.RecipeActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
 
-import static java.lang.System.load;
 
 public class HomeFragment extends Fragment implements RecipeReadyCallback {
     List<Recipe> recipes = new ArrayList<Recipe>();
