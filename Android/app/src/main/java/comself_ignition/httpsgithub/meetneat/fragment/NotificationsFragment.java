@@ -41,6 +41,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class NotificationsFragment extends Fragment implements VolleyCallback {
     Map<String, Boolean> friends = new HashMap<>();
+    List<String> names = new ArrayList<>();
     ListView list;
 
     public NotificationsFragment() {
@@ -125,7 +126,7 @@ public class NotificationsFragment extends Fragment implements VolleyCallback {
             Log.e("RESULT", result);
         }
     }
-    List<String> names = new ArrayList<>();
+
     private void UpdateList() {
 
         for (String s : friends.keySet()) {
@@ -174,6 +175,8 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             public void onClick(View view) {
                 ServerRequests req = new ServerRequests();
                 req.Friends(context, callback, FriendAction.confirm, friendName, SaveSharedPreference.getUserName(context));
+                names.remove(friendName);
+                notifyDataSetChanged();
                 Toast.makeText(context, "Friend request accepted", Toast.LENGTH_SHORT).show();
             }
         });
@@ -184,6 +187,8 @@ final class adapterFriendsNotification extends ArrayAdapter<String> implements V
             public void onClick(View view) {
                 ServerRequests req = new ServerRequests();
                 req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
+                names.remove(friendName);
+                notifyDataSetChanged();
                 Toast.makeText(context, "Friend request declined", Toast.LENGTH_SHORT).show();
             }
         });

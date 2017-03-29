@@ -121,14 +121,13 @@ public class MessagesFragment extends Fragment implements VolleyCallback {
         for (String s : result.split("\\r\\n\\r\\n")) {
             Recipients.add(s);
         }
-        ;
 
         UpdateList();
     }
 
     private void UpdateList() {
         Collections.sort(Recipients);
-        if (Recipients.size() > 0) {
+        if (!Recipients.get(0).equals("")) {
             list = (ListView) getActivity().findViewById(R.id.messageList);
             list.setAdapter(new adapterMessages(getActivity(), Recipients, this));
         }
@@ -141,7 +140,7 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
     VolleyCallback callback;
 
     adapterMessages(Context c, List<String> names, final VolleyCallback callback) {
-        super(c, R.layout.fragment_friends_row, names);
+        super(c, R.layout.fragment_messages_row, names);
         this.names = names;
         this.context = c;
         this.callback = callback;
@@ -171,10 +170,7 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, MessageActivity.class);
-                i.putExtra("sender", SaveSharedPreference.getUserName(context));
-                i.putExtra("recipient", ((TextView) v.findViewById(R.id.FriendMessageName)).getText().toString() );
-                context.startActivity(i);
+                openMessage(v);
             }
         });
 
@@ -182,10 +178,10 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
         final ImageView menuButton = (ImageView) row.findViewById(R.id.friendsMessage_menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 PopupMenu popup = new PopupMenu(context, menuButton);
                 //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.friends_menu, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.message_menu, popup.getMenu());
 
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -193,6 +189,7 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
                         switch (item.getItemId())
                         {
                             case R.id.Message_Button:
+                                openMessage(v);
                                 return true;
                             case R.id.Remove_Button:
                                 ServerRequests req = new ServerRequests();
@@ -207,12 +204,18 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
                 popup.show();
             }
         });
-
         return row;
     }
 
     @Override
     public void onSuccess(String result) {
         Log.i("FOCUS YOU FUCK", "onSuccess: "  + result);
+    }
+
+    public void openMessage(View v) {
+        Intent i = new Intent(context, MessageActivity.class);
+        i.putExtra("sender", SaveSharedPreference.getUserName(context));
+        i.putExtra("recipient", ((TextView) v.findViewById(R.id.FriendMessageName)).getText().toString() );
+        context.startActivity(i);
     }
 }

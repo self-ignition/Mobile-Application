@@ -9,12 +9,8 @@
         <!-- log in button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_resetPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="175dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:padding="12dp"
             android:text="@string/changePassword"
             android:textAlignment="center"
@@ -22,25 +18,20 @@
             android:textColor="#ffffff"
             android:onClick="changePassword"
             android:layout_weight="0.25"
-            android:background="#D9DBDB"
-            />
+            android:background="@color/colorPrimaryDark" />
 
-        <!-- Noftications -->
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rbtn_notifications"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_changeProfilePicture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="200dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="0dp"
             android:padding="12dp"
-            android:background="#D9DBDB"
-            android:text="Notifications"
+            android:text="@string/changePicture"
             android:textAlignment="center"
             android:textSize="16dp"
             android:textColor="#ffffff"
-            android:textAllCaps="true"
+            android:onClick="changePicture"
             android:layout_weight="0.25"
-            />
+            android:background="@color/colorPrimaryDark" />
+
 </LinearLayout>
+

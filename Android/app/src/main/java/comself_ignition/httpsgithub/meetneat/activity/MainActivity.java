@@ -1,5 +1,8 @@
 package comself_ignition.httpsgithub.meetneat.activity;
 
+import android.app.FragmentManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -42,9 +46,12 @@ import comself_ignition.httpsgithub.meetneat.fragment.NotificationsFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SavedRecipesFragment;
 import comself_ignition.httpsgithub.meetneat.fragment.SettingsFragment;
 import comself_ignition.httpsgithub.meetneat.other.CircleTransform;
+import comself_ignition.httpsgithub.meetneat.other.FriendAction;
 import comself_ignition.httpsgithub.meetneat.other.SaveSharedPreference;
 import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
+
+import static comself_ignition.httpsgithub.meetneat.R.drawable.notification;
 
 
 public class MainActivity extends AppCompatActivity implements VolleyCallback{
@@ -106,6 +113,28 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         // initializing navigation menu
         setUpNavigationView();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (true) {
+                    try {
+                        Thread.sleep(60000);
+                        mHandler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                updateList();
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        return;
+                    }
+                }
+            }
+        }).start();
+
         if (savedInstanceState == null) {
             navItemIndex = 0;
             CURRENT_TAG = TAG_HOME;
@@ -113,6 +142,10 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         }
     }
 
+    public void updateList() {
+        ServerRequests sr = new ServerRequests();
+        sr.Friends(this, this, FriendAction.getRecipient, "", SaveSharedPreference.getUserName(this));
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -132,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
     private int PICK_IMAGE_REQUEST = 1;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -182,8 +215,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
                 .bitmapTransform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
-        // showing dot next to notifications label
-        navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
 
         try {
             InputStream inputStream = this.openFileInput("image.txt");
@@ -466,7 +497,28 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
     @Override
     public void onSuccess(String result) {
-        txtName.setText(result);
-        SaveSharedPreference.setUserName(this, result);
+        if(result.equals(SaveSharedPreference.getUserName(this)) || SaveSharedPreference.getUserName(this).equals("")) {
+            txtName.setText(result);
+            SaveSharedPreference.setUserName(this, result);
+        } else if (result.length() > 0)  {
+            navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
+
+           /* Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            intent.putExtra("notification", "notification");
+
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.logo)
+                            .setContentTitle("Meet \'n\' Eat")
+                            .setContentText(result + " wants to be friends");
+            mBuilder.setContentIntent(pendingIntent);
+
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotificationManager.notify(001, mBuilder.build());*/
+        } else {
+            navigationView.getMenu().getItem(5).setActionView(null);
+        }
     }
 }
