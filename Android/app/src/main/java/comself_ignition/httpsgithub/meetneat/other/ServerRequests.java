@@ -522,9 +522,9 @@ public class ServerRequests {
         queue.add(request);
     }
 
-    public void resetPassword(final Context context, final String email, final String currentPassword, final String newPassword) {
+    public void changePassword(final Context context, final String email, final String currentPassword, final String newPassword) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        final String url = "http://computing.derby.ac.uk/~cabbage/resetpassword.php";
+        final String url = "http://computing.derby.ac.uk/~cabbage/changepassword.php";
 
         //Create the request
         StringRequest request = new StringRequest(Request.Method.POST, url,
