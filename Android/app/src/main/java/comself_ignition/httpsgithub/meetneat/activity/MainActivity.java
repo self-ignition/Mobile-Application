@@ -434,6 +434,14 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             getMenuInflater().inflate(R.menu.food, menu);
         } else if (navItemIndex == 3) {
             getMenuInflater().inflate(R.menu.friends, menu);
+        } else if (navItemIndex == 1) {
+            getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
+        }else if (navItemIndex == 4) {
+            getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
+        } else if (navItemIndex == 5) {
+            getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
+        } else if (navItemIndex == 6) {
+            getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
         }
         return true;
     }

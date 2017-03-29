@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import comself_ignition.httpsgithub.meetneat.R;
+import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 import comself_ignition.httpsgithub.meetneat.activity.MessageActivity;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
 import comself_ignition.httpsgithub.meetneat.other.MessageAction;
@@ -90,19 +91,13 @@ public class MessagesFragment extends Fragment implements VolleyCallback{
     {
         switch (item.getItemId())
         {
-            case R.id.action_addFriend:
-                FragmentManager fm = getFragmentManager();
-                final MyFriendsDialogFragment dialogFragment = new MyFriendsDialogFragment();
-                dialogFragment.show(fm, "Sample Fragment");
+            case R.id.action_logout:
+                Toast.makeText(getContext(), "Logged out", Toast.LENGTH_LONG).show();
 
-                fm.executePendingTransactions();
-                dialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                SaveSharedPreference.setLoggedIn(getActivity(), false);
 
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        onResume();
-                    }
-                });
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
