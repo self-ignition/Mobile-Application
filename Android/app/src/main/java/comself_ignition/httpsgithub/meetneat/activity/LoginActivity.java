@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.content.Intent;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -114,16 +115,22 @@ public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
     @Override
     public void onSuccess(String result) {
-        if(result.equals("1"))
+        CheckBox check = (CheckBox)findViewById(R.id.checkboxLogin);
+        if(result.equals("1") && check.isChecked())
         {
             SaveSharedPreference.setEmailAddress(this, email.getText().toString());
             SaveSharedPreference.setLoggedIn(this, true);
 
             Intent intent = new Intent(this, MainActivity.class);
             this.startActivity(intent);
-        }
-        else
+        } else if (result.equals("1") && !check.isChecked())
         {
+            SaveSharedPreference.setEmailAddress(this, email.getText().toString());
+            SaveSharedPreference.setLoggedIn(this, false);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
+        } else {
             Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         }
     }
