@@ -522,7 +522,7 @@ public class ServerRequests {
         queue.add(request);
     }
 
-    public void changePassword(final Context context, final String email, final String currentPassword, final String newPassword) {
+    public void changePassword(final Context context, final String email, final String currentPassword, final String newPassword, final VolleyCallback callback) {
         RequestQueue queue = Volley.newRequestQueue(context);
         final String url = "http://computing.derby.ac.uk/~cabbage/changepassword.php";
 
@@ -532,6 +532,7 @@ public class ServerRequests {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        callback.onSuccess(response);
                         Log.e("response", response);
                     }
                     //What happens if the request fails

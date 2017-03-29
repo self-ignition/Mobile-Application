@@ -12,7 +12,7 @@ import android.widget.Toast;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.LoginActivity;
 
-public class ResetPassword extends AppCompatActivity {
+public class ResetPassword extends AppCompatActivity implements VolleyCallback {
 
     EditText currentPassword;
     EditText newPassword;
@@ -67,12 +67,7 @@ public class ResetPassword extends AppCompatActivity {
         }
         else if(_newPassword.equals(_cNewPassword)){
             ServerRequests serverRequest = new ServerRequests();
-            serverRequest.changePassword(this, _email, _currentPassword, _newPassword);
-
-            Toast.makeText(this, "Successfully Changed Password, Please log in again", Toast.LENGTH_LONG).show();
-            SaveSharedPreference.setLoggedIn(this, false);
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+            serverRequest.changePassword(this, _email, _currentPassword, _newPassword, this);
         }
         else{
             return;
@@ -81,5 +76,19 @@ public class ResetPassword extends AppCompatActivity {
 
     public void confirmChange(View v){
         validate();
+    }
+
+
+    @Override
+    public void onSuccess(String result) {
+        if(result.equals("1")){
+            Toast.makeText(this, "Successfully Changed Password, Please log in again", Toast.LENGTH_LONG).show();
+            SaveSharedPreference.setLoggedIn(this, false);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "Oops...Something Went Wrong", Toast.LENGTH_LONG).show();
+        }
     }
 }
