@@ -18,8 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -33,6 +35,8 @@ import java.util.List;
 import comself_ignition.httpsgithub.meetneat.R;
 import comself_ignition.httpsgithub.meetneat.activity.SearchResultsActivity;
 import comself_ignition.httpsgithub.meetneat.other.MyFoodDialogFragment;
+
+import static comself_ignition.httpsgithub.meetneat.R.id.search;
 
 public class MyFoodFragment extends Fragment{
 
@@ -62,7 +66,7 @@ public class MyFoodFragment extends Fragment{
         inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-        MenuItem searchViewItem = menu.findItem(R.id.search);
+        MenuItem searchViewItem = menu.findItem(search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -165,12 +169,15 @@ public class MyFoodFragment extends Fragment{
                                 }
                             }
                         }
-                        //Create new view of search results
-                        Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
-                        //add data(the ingredients) to the new view
-                        intent.putExtra("query", data);
-                        //start the activity
-                        getActivity().startActivity(intent);
+
+                        if(data.equals("")) {
+                            Toast.makeText(getContext(),"Please select an item to search", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+                            intent.putExtra("query", data);
+                            getActivity().startActivity(intent);
+                        }
+
                     }
                 });
 
@@ -192,14 +199,18 @@ public class MyFoodFragment extends Fragment{
                                 }
                             }
                         }
-                        try {
-                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("food.txt", Context.MODE_PRIVATE));
-                            outputStreamWriter.write(data);
-                            outputStreamWriter.close();
-                            onResume();
-                        }
-                        catch (IOException e) {
-                            Log.e("Exception", "File write failed: " + e.toString());
+                        if(!data.equals("")) {
+                            Toast.makeText(getContext(),"Please select an item to remove", Toast.LENGTH_SHORT).show();
+                        } else {
+                            try {
+                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("food.txt", Context.MODE_PRIVATE));
+                                outputStreamWriter.write(data);
+                                outputStreamWriter.close();
+                                onResume();
+                            }
+                            catch (IOException e) {
+                                Log.e("Exception", "File write failed: " + e.toString());
+                            }
                         }
                     }
                 });
@@ -248,7 +259,6 @@ class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
                 food name = (food) cb.getTag();
-
                 name.setSelected(cb.isChecked());
                 names.get(position).setSelected(cb.isChecked());
             }
@@ -259,11 +269,15 @@ class adapterFood extends RecyclerView.Adapter<adapterFood.ViewHolder> {
 
         TextView name;
         CheckBox check;
+        Button search;
+        Button remove;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = (TextView)itemView.findViewById(R.id.FoodName);
             check = (CheckBox)itemView.findViewById(R.id.checkbox);
+            search = (Button) itemView.findViewById(R.id.searchBtn);
+            remove = (Button) itemView.findViewById(R.id.removeBtn);
         }
     }
 

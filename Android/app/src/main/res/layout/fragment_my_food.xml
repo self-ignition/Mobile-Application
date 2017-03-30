@@ -23,12 +23,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Search" />
+                android:text="Search"
+                android:enabled="false"/>
             <Button
                 android:id="@+id/removeBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Remove"/>
+                android:text="Remove"
+                android:enabled="false"/>
     </LinearLayout>
 </LinearLayout>
