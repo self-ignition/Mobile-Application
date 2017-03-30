@@ -23,10 +23,12 @@ import comself_ignition.httpsgithub.meetneat.other.ServerRequests;
 import comself_ignition.httpsgithub.meetneat.other.VolleyCallback;
 import dmax.dialog.SpotsDialog;
 
+
+
 public class LoginActivity extends AppCompatActivity implements VolleyCallback {
 
-    EditText email;
-    EditText password;
+    private EditText email;
+    private EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

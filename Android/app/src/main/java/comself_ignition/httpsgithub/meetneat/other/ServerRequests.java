@@ -18,18 +18,46 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.security.*;
 
 import comself_ignition.httpsgithub.meetneat.activity.MainActivity;
 
 import static comself_ignition.httpsgithub.meetneat.R.string.recipe;
 import static org.apache.commons.lang3.StringUtils.split;
 
+
 public class ServerRequests {
+
+
+    private static final String md5(final String s) {
+        final String MD5 = "MD5";
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     //Test update for software engineering
     public void Login(final Context context, String _email, String _password, final VolleyCallback callback) {
         final String email = _email;
-        final String password = _password;
+        final String password = md5(_password);
         Map<String, String> mParams;
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "http://computing.derby.ac.uk/~cabbage/login.php";
@@ -175,7 +203,7 @@ public class ServerRequests {
 
         final String username = _username;
         final String email = _email;
-        final String password = _password;
+        final String password = md5(_password);
 
         //Create the request
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -555,8 +583,8 @@ public class ServerRequests {
                 Map<String, String> params = new HashMap<String, String>();
 
                 params.put("email", email);
-                params.put("currentPassword", currentPassword);
-                params.put("newPassword", newPassword);
+                params.put("currentPassword", md5(currentPassword));
+                params.put("newPassword", md5(newPassword));
                 return params;
             }
         };
