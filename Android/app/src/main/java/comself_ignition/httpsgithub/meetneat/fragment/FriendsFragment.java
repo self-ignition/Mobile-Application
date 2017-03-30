@@ -225,6 +225,8 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
                                                            case R.id.Remove_Button:
                                                                ServerRequests req = new ServerRequests();
                                                                req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
+                                                               req.MessageRequest(context, callback, MessageAction.DELETE, SaveSharedPreference.getUserName(context),
+                                                                       friendName, "");
                                                                names.remove(friendName);
                                                                notifyDataSetChanged();
                                                                return true;
