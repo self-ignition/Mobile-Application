@@ -246,10 +246,22 @@ class adapterFriends extends ArrayAdapter<String> implements VolleyCallback{
         } else {
             //Pending Friend request
             View row = inflater.inflate(R.layout.fragment_friends_pending_row, parent, false);
-            TextView name = (TextView) row.findViewById(R.id.FriendName);
+            final TextView name = (TextView) row.findViewById(R.id.FriendName);
 
-            name.setText(names.get(position).toString());
+            final String friendName = names.get(position).toString();
+            name.setText(names.get(position).toString() + "(Pending)");
 
+            final ImageView removeButton = (ImageView) row.findViewById(R.id.rejectButton);
+            removeButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    ServerRequests req = new ServerRequests();
+                    req.Friends(context, callback, FriendAction.remove, SaveSharedPreference.getUserName(context), friendName);
+                    names.remove(friendName);
+                    notifyDataSetChanged();
+                }
+            });
             return row;
         }
     }
