@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
         } else if (result.length() > 0)  {
             navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
 
-           /* Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             intent.putExtra("notification", "notification");
 
@@ -516,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
 
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            mNotificationManager.notify(001, mBuilder.build());*/
+            mNotificationManager.notify(001, mBuilder.build());
         } else {
             navigationView.getMenu().getItem(5).setActionView(null);
         }

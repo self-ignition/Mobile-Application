@@ -89,7 +89,7 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
 
             }
         });
-        recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
+        recipe.setRecipe(this, getIntent().getStringExtra("recipe-id"), this);
     }
 
     public void reviewDialog(View v) {

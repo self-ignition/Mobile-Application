@@ -60,6 +60,7 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
     SearchResult searchResults;
     List<Recipe> recipes = new ArrayList<>();
     ListView list;
+    adapter adapter;
 
     public SavedRecipesFragment() {
         // Required empty public constructor
@@ -149,19 +150,25 @@ public class SavedRecipesFragment extends Fragment implements VolleyCallback, Se
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Get the recipe we want to load.
                 Recipe r = (Recipe) list.getItemAtPosition(position);
-
                 //Start the recipe activity for the recipe we chose.
                 Intent i = new Intent(getContext(), RecipeActivity.class);
                 i.putExtra("recipe-id", r.getId());
                 startActivity(i);
             }
         });
-        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+        //((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
     public void onSuccess(String result) {
-        searchResults.Retrieve(result, this);
+
+        if(result.equals("")) {
+            list=(ListView) getActivity().findViewById(R.id.listView);
+            list.setAdapter(null);
+        } else {
+            searchResults.Retrieve(result, this);
+        }
+
     }
 }
 
