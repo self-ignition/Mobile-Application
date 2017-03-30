@@ -421,6 +421,9 @@ public class ServerRequests {
                                 e.printStackTrace();
                             }
                         }
+                        else{
+                            //Toast.makeText(context, response, Toast.LENGTH_LONG).show();
+                        }
                     }
                     //What happens if the request fails
                 }, new Response.ErrorListener() {
@@ -444,6 +447,10 @@ public class ServerRequests {
                         break;
                     case POPULATE:
                         params.put("intent", "POPULATE");
+                        break;
+                    case DELETE:
+                        params.put("intent", "DELETE");
+                        break;
                 }
 
                 params.put("sender", sender);

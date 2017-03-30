@@ -157,7 +157,7 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         //Not pending request, should have menu button in it
@@ -189,12 +189,13 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
                         switch (item.getItemId())
                         {
                             case R.id.Message_Button:
-                                openMessage(v);
+                                openMessage(convertView);
                                 return true;
                             case R.id.Remove_Button:
                                 ServerRequests req = new ServerRequests();
                                 //TODO: Delete Message History
-                                return true;
+                                req.MessageRequest(context, callback, MessageAction.DELETE, SaveSharedPreference.getUserName(context),
+                                        ((TextView) convertView.findViewById(R.id.FriendMessageName)).getText().toString(), "");
                             default:
                                 return true;
                         }
@@ -209,7 +210,7 @@ class adapterMessages extends ArrayAdapter<String> implements VolleyCallback {
 
     @Override
     public void onSuccess(String result) {
-        Log.i("FOCUS YOU FUCK", "onSuccess: "  + result);
+        Log.i("onSuccess", "onSuccess: "  + result);
     }
 
     public void openMessage(View v) {
