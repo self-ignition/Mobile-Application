@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,31 +99,40 @@ public class MessageActivity extends AppCompatActivity implements VolleyCallback
         sr.MessageRequest(this, this, MessageAction.GET, Sender, Recipient, "");
     }
 
+    public void createAdapter(String result) {
+        //Begin setting up the recycler view - CT
+        conversation = new Conversation(result, Sender);
+        messageRecyclerView = (RecyclerView)findViewById(R.id.messageList);
+        messageList = conversation.getAggreateConversation();
+
+        //Handles how the layout will look - CT
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.scrollToPosition(messageList.size() - 1);
+
+        //Sets the layout to the recycler view - CT
+        messageRecyclerView.setLayoutManager(linearLayoutManager);
+        messageRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //Attaches the adapter to the recycler view - CT
+        adapterMessage = new adapterMessage(this, messageList);
+        messageRecyclerView.setAdapter(adapterMessage);
+
+        if(result.equals("")) {
+            messageRecyclerView.setAdapter(null);
+        }
+    }
+
     @Override
     public void onSuccess(String result) {
-
+        if(result.equals("")) {
+            createAdapter(result);
+        }
         //Will only run if the new result is different to the previous result - CT
-        if(!result.equals(getResult())) {
+        else if(!result.equals(getResult()) && result.length() > 0) {
             //Set the new result
             setResult(result);
-
-            //Begin setting up the recycler view - CT
-            conversation = new Conversation(result, Sender);
-            messageRecyclerView = (RecyclerView)findViewById(R.id.messageList);
-            messageList = conversation.getAggreateConversation();
-
-            //Handles how the layout will look - CT
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, OrientationHelper.VERTICAL, false);
-            linearLayoutManager.setStackFromEnd(true);
-            linearLayoutManager.scrollToPosition(messageList.size() - 1);
-
-            //Sets the layout to the recycler view - CT
-            messageRecyclerView.setLayoutManager(linearLayoutManager);
-            messageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-            //Attaches the adapter to the recycler view - CT
-            adapterMessage = new adapterMessage(this, messageList);
-            messageRecyclerView.setAdapter(adapterMessage);
+            createAdapter(result);
         }
     }
 
