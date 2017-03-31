@@ -206,6 +206,13 @@ class adapter extends ArrayAdapter<Recipe> {
         TextView servings = (TextView) row.findViewById(R.id.textView4);
         ImageView image = (ImageView) row.findViewById(R.id.imageView);
 
+        Collections.sort(recipes, new Comparator<Recipe>() {
+            @Override
+            public int compare(Recipe o1, Recipe o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+
         title.setText(recipes.get(position).getTitle());
         prepTime.setText(recipes.get(position).getPrepTime());
         servings.setText(recipes.get(position).getYield());
