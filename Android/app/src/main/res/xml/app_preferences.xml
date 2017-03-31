@@ -3,13 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="General Settings"
-        android:windowBackground="@color/colorPrimaryDark">
+        android:title="General Settings">
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="key1"
             android:title="Notifications"
-            android:summary="Switch notifications on/off"
+            android:summary="Toggle device notifications"
             android:defaultValue="true"/>
         <Preference
             android:key="key2"

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -168,9 +169,10 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         title.setText(recipe.getTitle());
 
         TextView time = (TextView) findViewById(R.id.time);
-        time.setText("Prep time: " + recipe.getPrepTime() + "/ Cook Time: " + recipe.getCookTime());
+        time.setText("Prep time: " + recipe.getPrepTime() + "\nCook Time: " + recipe.getCookTime());
 
         TextView yield = (TextView) findViewById(R.id.yield);
+        Toast.makeText(this, recipe.getYield(), Toast.LENGTH_SHORT).show();
         yield.setText(recipe.getYield());
 
         TextView author = (TextView) findViewById(R.id.author);
