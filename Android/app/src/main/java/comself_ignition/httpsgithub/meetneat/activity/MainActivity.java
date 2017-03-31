@@ -18,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -135,11 +136,10 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             }
         }).start();
 
-        if (savedInstanceState == null) {
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
-            loadHomeFragment();
-        }
+        navItemIndex = 0;
+        CURRENT_TAG = TAG_HOME;
+        loadHomeFragment();
+
     }
 
     public void updateList() {
@@ -471,8 +471,6 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
         } else if (navItemIndex == 5) {
             getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
-        } else if (navItemIndex == 6) {
-            getMenuInflater().inflate(R.menu.savedrecipes_menu, menu);
         }
         return true;
     }
@@ -504,19 +502,27 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback{
             navigationView.getMenu().getItem(5).setActionView(R.layout.menu_dot);
 
             Intent intent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-            intent.putExtra("notification", "notification");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("KEY", "notification");
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            result = result.replace("|0¦", "");
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
+                            .setAutoCancel(true)
                             .setSmallIcon(R.drawable.logo)
                             .setContentTitle("Meet \'n\' Eat")
                             .setContentText(result + " wants to be friends");
             mBuilder.setContentIntent(pendingIntent);
 
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            PreferenceManager preferenceManager = new PreferenceManager(this);
+            if (preferenceManager.getSharedPreferences().getBoolean("key1", true)) {
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            mNotificationManager.notify(001, mBuilder.build());
+                mNotificationManager.notify(001, mBuilder.build());
+            } else {
+                // Your switch is off
+            }
         } else {
             navigationView.getMenu().getItem(5).setActionView(null);
         }

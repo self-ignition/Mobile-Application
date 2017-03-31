@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="General Settings"
+        android:windowBackground="@color/colorPrimaryDark">
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:key="key1"
+            android:title="Notifications"
+            android:summary="Switch notifications on/off"
+            android:defaultValue="true"/>
+        <Preference
+            android:key="key2"
+            android:title="Change password" />
+        <Preference
+            android:key="key4"
+            android:title="Change display picture" />
+        <Preference
+            android:key="key3"
+            android:title="Logout"/>
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
