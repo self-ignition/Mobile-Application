@@ -104,6 +104,7 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
                 //Start the recipe activity for the recipe we chose.
                 Intent i = new Intent(getBaseContext(), RecipeActivity.class);
                 i.putExtra("recipe-id", r.getId());
+                i.putExtra("recipeYield", r.getYield());
                 startActivity(i);
             }
         });

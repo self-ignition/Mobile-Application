@@ -173,7 +173,7 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
 
         TextView yield = (TextView) findViewById(R.id.yield);
         Toast.makeText(this, recipe.getYield(), Toast.LENGTH_SHORT).show();
-        yield.setText(recipe.getYield());
+        yield.setText(getIntent().getStringExtra("recipeYield"));
 
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Created by: " + recipe.getAuthor());

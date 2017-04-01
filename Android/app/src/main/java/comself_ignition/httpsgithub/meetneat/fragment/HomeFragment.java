@@ -145,6 +145,7 @@ public class HomeFragment extends Fragment implements RecipeReadyCallback {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity().getBaseContext(), RecipeActivity.class);
                 i.putExtra("recipe-id", recipe.getId());
+                i.putExtra("recipeYield", recipe.getYield());
                 Log.i("Intent Extra", "id of recipe:" + recipe.getId());
                 startActivity(i);
             }
