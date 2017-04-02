@@ -32,7 +32,7 @@ public class Recipe implements VolleyCallback {
     private String prepTime = "none";
     private String cookTime = "none";
     private String author = "none";
-    private String yield = "none";
+    private String yield = "Servings Unavailable";
     private String imageURL = "none";
     private Bitmap image = null;
     private String rating = "none";
