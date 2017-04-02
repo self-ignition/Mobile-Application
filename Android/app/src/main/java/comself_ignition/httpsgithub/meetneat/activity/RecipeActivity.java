@@ -172,8 +172,7 @@ public class RecipeActivity extends AppCompatActivity implements VolleyCallback,
         time.setText("Prep time: " + recipe.getPrepTime() + "\nCook Time: " + recipe.getCookTime());
 
         TextView yield = (TextView) findViewById(R.id.yield);
-        Toast.makeText(this, recipe.getYield(), Toast.LENGTH_SHORT).show();
-        yield.setText(getIntent().getStringExtra("recipeYield"));
+        yield.setText(recipe.getYield());
 
         TextView author = (TextView) findViewById(R.id.author);
         author.setText("Created by: " + recipe.getAuthor());
